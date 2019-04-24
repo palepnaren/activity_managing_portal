@@ -1,0 +1,37 @@
+<div id="search" class="container-fuild">
+  <div class="form-group container">
+    <div class="input-group">
+      <a routerLink="/search"><i id="icon-search" class="fas fa-search input-group-addon"></i></a>
+      <input type="search" class="form-control input-group-text" placeholder="search">
+   </div>
+  </div>
+</div>
+
+<div id="content" class="row">
+
+  <div #graph id="graph" class="col-4">
+    
+  </div>
+
+  <div id="weather" class="col-6">
+    <div class="card">
+      <div class="card-body">
+        {{date | date}}  <span>{{date | date:'hh:mm:ss'}}</span>
+      </div>
+    </div>
+    <!-- <hr> -->
+    <div class="card">
+      <div class="card-body">
+        <span>Current Temp:{{temp}}&#8457;</span>
+        <span>Maximum Temp:{{maxTemp}}&#8457;</span>
+        <span>Minimum Temp:{{minTemp}}&#8457;</span>
+        <span>Weather: {{description}}</span>
+        <span>Speed: {{windSpeed}} meter/sec</span>
+        <span>Humidity: {{humidity}}&#37; <img src="https://img.icons8.com/color/48/000000/dew-point.png"></span>
+        <img [src]="imgSrc">
+        {{result | json}}
+      </div>
+    </div>
+  </div>
+
+</div>

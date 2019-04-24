@@ -27,9 +27,14 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.less"
+              "src/styles.less",
+              "./node_modules/bootstrap-less-port/less/bootstrap.less"
             ],
-            "scripts": [],
+            "scripts": [
+              "./node_modules/jquery/dist/jquery.min.js"
+  
+            
+            ],
             "es5BrowserSupport": true
           },
           "configurations": {

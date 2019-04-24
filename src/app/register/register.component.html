@@ -1,0 +1,30 @@
+<div class="container compress">
+  <form class="form-group" [formGroup]= "registerGroup">
+    <div class="input-group">
+      <i class=" fas fa-user input-group-addon"></i>
+        <input 
+        name="email" 
+        formControlName="email"
+        class="form-control input-group-text" type="text" placeholder="Username/Email" #email>
+    </div>
+    <div class="input-group">
+        <i class=" fas fa-lock input-group-addon"></i>
+        <input 
+        name="password" 
+        formControlName="password"
+        class="form-control input-group-text" type="password" placeholder="Password" #password>
+    </div>
+    <div class="input-group">
+      <i class=" fas fa-lock input-group-addon"></i>
+      <input 
+      name="cmp_password" 
+      formControlName="cmp_password"
+      class="form-control input-group-text" type="password" placeholder="Re-enter Password" #cmp_password>
+   </div>
+   <div id="error" *ngIf="comparePwd(password.value, cmp_password.value)" class="alert alert-danger">
+     Passwords not match!
+   </div>
+    <button id="register" class="btn btn-success" (click)="register(email.value, password.value, cmp_password.value)" type="submit">Register</button>
+    <p>Have an account already?<a routerLink="/"> login here.</a></p>
+  </form>
+</div>

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # TeamProject
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.7.
@@ -25,3 +26,7 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+=======
+# activity_managing_portal
+Using this portal you can keep track of your daily appointments, you can create your todo tasks, check your progress and share talks with each other.
+>>>>>>> 504e614d931aef466a5e0a98677590bcf30b57a9

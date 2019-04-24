@@ -1,0 +1,97 @@
+@margin: 10px;
+@phone: 576px;
+@tablet: 768px;
+@laptop: 1200px;
+@small: 350px;
+.compress{
+    width: 300px;
+    margin: 151px auto;
+    background-color: rgba(231, 120, 16, 0.2);
+    padding: 50px;
+    -webkit-box-sizing: border-box;
+    box-shadow:3px 3px 5px grey;
+}
+
+.center,p{
+    text-align: center;
+    position: relative;
+    left: -15px;
+}
+
+.custome{
+    border-radius: 5px 5px;
+    margin-top: @margin;
+    
+}
+form{
+    position: relative;
+    top: 20px;
+    left: 20px;
+}
+
+button{
+
+    margin: @margin auto;
+    position: relative;
+    left: 55px;
+
+}
+
+i{
+    background-color:rgba(255, 117, 168, 0.4);;
+    border-radius: 5px 5px;
+    margin-top: @margin;
+    position: absolute;
+    padding: 11px;
+    left: -33px;
+}
+
+input{
+    .custome();
+    
+}
+
+@media only screen and (max-width: @small){
+
+    .compress{
+        width: auto;
+    }
+    button{
+        width: auto;
+        margin: @margin auto;
+        position: relative;
+        left: 15px;
+    }
+
+}
+@media only screen and (min-width:@small) and (max-width: @phone){
+    
+    .compress{
+        width: auto;
+    }
+
+    button{
+        width: auto;
+        margin: @margin auto;
+        position: relative;
+        left: 43px;
+    }
+   
+
+}
+
+
+@media only screen and (min-width: @phone) and (max-width: @tablet) {
+
+    .compress{
+        width: 300px;
+    }
+}
+
+@media only screen and (min-width: @tablet) and (max-width: @laptop) {
+    .compress{
+        width: 300px;
+    }
+    
+}
+

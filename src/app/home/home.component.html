@@ -1,0 +1,22 @@
+
+<div class="container compress">
+  <form class="form-group" [formGroup]="formGroup">
+    <h3 class="center">Login:</h3>
+    <div class="input-group">
+      <i class=" fas fa-user input-group-addon"></i>
+        <input
+         name="email" 
+         formControlName="email"
+         class="form-control input-group-text" type="text" placeholder="Username/Email" #email>
+    </div>
+    <div class="input-group">
+        <i class=" fas fa-lock input-group-addon"></i>
+        <input 
+        name="password" 
+        formControlName="password"
+        class="form-control input-group-text" type="password" placeholder="Password" #password>
+    </div>
+    <button id="login" class="btn btn-success text-center" (click)="auth(email.value, password.value)" type="submit">login</button>
+    <p>Are you new user?<a routerLink="/register"> signup here.</a></p>
+  </form>
+</div>
