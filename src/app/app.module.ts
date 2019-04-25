@@ -1,3 +1,4 @@
+import { LoginService } from './home/login.service';
 import { HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './home/home.component';
 import { RouterModule } from '@angular/router';
@@ -11,6 +12,8 @@ import { RegisterComponent } from './register/register.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { WeatherService } from './service/weather.service';
+import { SharedTalksComponent } from './shared-talks/shared-talks.component';
+import { CanActivateRouterGuard } from './guard-routing/CanActivateRouterGuard';
 
 @NgModule({
   declarations: [
@@ -18,7 +21,8 @@ import { WeatherService } from './service/weather.service';
     ProfileComponent,
     HomeComponent,
     RegisterComponent,
-    DashboardComponent
+    DashboardComponent,
+    SharedTalksComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +36,8 @@ import { WeatherService } from './service/weather.service';
       },
       {
         path: 'profile',
-        component: ProfileComponent
+        component: ProfileComponent,
+        canActivate: [CanActivateRouterGuard]
       },
       {
         path: 'register',
@@ -40,11 +45,18 @@ import { WeatherService } from './service/weather.service';
       },
       {
         path: 'dashboard',
-        component: DashboardComponent
+        component: DashboardComponent,
+        canActivate: [CanActivateRouterGuard]
+      },
+      {
+        path: 'sharedTalks',
+        component: SharedTalksComponent,
+        canActivate: [CanActivateRouterGuard]
+
       }
   ])
   ],
-  providers: [WeatherService],
+  providers: [WeatherService, LoginService, CanActivateRouterGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

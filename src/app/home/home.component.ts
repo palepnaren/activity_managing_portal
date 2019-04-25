@@ -1,3 +1,4 @@
+import { LoginService } from './login.service';
 import { Router } from '@angular/router';
 import { FormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
@@ -12,7 +13,7 @@ export class HomeComponent implements OnInit {
 
   formGroup: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private router: Router) { }
+  constructor(private formBuilder: FormBuilder, private service: LoginService) { }
 
   ngOnInit() {
 
@@ -23,15 +24,9 @@ export class HomeComponent implements OnInit {
 
   }
 
-  auth(email, pwd) {
+   auth(email, pwd): boolean {
 
-    if (email === localStorage.getItem('email') && pwd === localStorage.getItem('pwd')) {
-      console.log('Login success');
-      this.router.navigateByUrl('/dashboard');
-    } else {
-      alert('Username or password is incorrect');
-      this.router.navigateByUrl('/');
-    }
+    return this.service.isAuth(email, pwd);
 
   }
 

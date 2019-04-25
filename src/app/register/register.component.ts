@@ -40,7 +40,9 @@ export class RegisterComponent implements OnInit {
     localStorage.setItem('pwd', pwd);
     localStorage.setItem('cmpPwd', cmpPwd);
 
+    this.registerGroup.reset();
     alert('User registered successfully');
+
 
   }
 

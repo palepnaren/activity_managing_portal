@@ -1,3 +1,4 @@
+import { LoginService } from './home/login.service';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import * as $ from 'jquery';
@@ -13,7 +14,7 @@ export class AppComponent implements OnInit {
   test: any;
 
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient, private router: Router, private login: LoginService) {
 
   }
 
@@ -28,9 +29,11 @@ j_Query() {
         e.preventDefault();
         $('#collapsibleNavbar').toggleClass('active');
         if ($('#collapsibleNavbar').hasClass('active')) {
+          $('#collapsibleNavbar').addClass('left bg-dark navbar-dark');
           $('#collapsibleNavbar').show();
         } else {
           $('#collapsibleNavbar').removeClass('active');
+          $('#collapsibleNavbar').removeClass('left bg-dark navbar-dark');
           $('#collapsibleNavbar').hide();
         }
     });
@@ -55,8 +58,9 @@ j_Query() {
 }
 
 logout() {
-localStorage.removeItem('email');
-localStorage.removeItem('pwd');
+// localStorage.removeItem('email');
+// localStorage.removeItem('pwd');
+this.login.isLoggedIn = false;
 
 this.router.navigateByUrl('/');
 }
