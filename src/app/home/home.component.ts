@@ -15,6 +15,7 @@ export class HomeComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private service: LoginService) { }
 
+
   ngOnInit() {
 
     this.formGroup = this.formBuilder.group({
@@ -25,9 +26,7 @@ export class HomeComponent implements OnInit {
   }
 
    auth(email, pwd): boolean {
-
     return this.service.isAuth(email, pwd);
-
   }
 
   get f() {

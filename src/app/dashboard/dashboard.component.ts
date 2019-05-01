@@ -3,6 +3,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import * as d3 from 'd3';
 import { values } from 'd3';
 import { WeatherService } from '../service/weather.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -26,13 +27,14 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   description;
   windSpeed;
   date;
-  constructor(private service: WeatherService) {
+  constructor(private service: WeatherService, private route: Router) {
 
   }
 
   ngOnInit() {
     this.createGraph();
     this.date = Date.now();
+
   }
 
   ngAfterViewInit() {
@@ -40,7 +42,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   weather() {
-
     navigator.geolocation.getCurrentPosition(data => {
       this.service.getWeather(data.coords.latitude, data.coords.longitude)
                   .subscribe(res => {
