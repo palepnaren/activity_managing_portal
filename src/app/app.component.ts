@@ -21,11 +21,11 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.isLoggedIn = localStorage.getItem('flag');
-    if (this.isLoggedIn) {
-      this.ngOnInit();
-    } else {
-      this.ngOnInit();
-    }
+    // if (this.isLoggedIn) {
+    //   this.ngOnInit();
+    // } else {
+    //   this.ngOnInit();
+    // }
     this.j_Query();
 }
 

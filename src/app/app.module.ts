@@ -1,3 +1,4 @@
+import { AudioService } from './service/audio.service';
 import { LoginService } from './home/login.service';
 import { HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './home/home.component';
@@ -14,6 +15,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { WeatherService } from './service/weather.service';
 import { SharedTalksComponent } from './shared-talks/shared-talks.component';
 import { CanActivateRouterGuard } from './guard-routing/CanActivateRouterGuard';
+import { PaginationComponent } from './pagination/pagination.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import { CanActivateRouterGuard } from './guard-routing/CanActivateRouterGuard';
     HomeComponent,
     RegisterComponent,
     DashboardComponent,
-    SharedTalksComponent
+    SharedTalksComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,
@@ -51,12 +54,12 @@ import { CanActivateRouterGuard } from './guard-routing/CanActivateRouterGuard';
       {
         path: 'sharedTalks',
         component: SharedTalksComponent,
-        canActivate: [CanActivateRouterGuard]
+        // canActivate: [CanActivateRouterGuard]
 
       }
   ])
   ],
-  providers: [WeatherService, LoginService, CanActivateRouterGuard],
+  providers: [WeatherService, LoginService, CanActivateRouterGuard, AudioService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

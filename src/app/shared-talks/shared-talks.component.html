@@ -1,6 +1,20 @@
 
-<input type="file" placeholder="choose a file">
+<div class="container" [formGroup]="talksGroup">
+    <div id="files">
+      <div class="custom-file">
+          <input 
+          id="customFile"
+          formControlName="file" 
+          type="file"
+          name="file"
+          class="custom-file-input" placeholder="choose a file" #file (change)="getFile($event)">
+          <label class="custom-file-label" for="customFile">Choose file</label>
+      </div>
+        <button id="upload" class="btn btn-success" type="submit" (click)="fileUpload()">Upload</button>&nbsp;&nbsp;
+        <button id="upload" class="btn btn-success" type="submit" (click)="fileDownload()">View</button>
+    </div>
+</div>
 
-<ul>
-  <li></li>
-</ul>
+
+<br>
+<pagination [items]="listOfTalks" [size]="lengthOfItems"></pagination>

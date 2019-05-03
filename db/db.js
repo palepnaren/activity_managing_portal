@@ -9,10 +9,17 @@ firebase.initializeApp({
     storageBucket:'gs://team-portal-dd915.appspot.com'
 });
 
-
+var bucket = firebase.storage().bucket();
 // firebase.storage().bucket('test').create();
 
 //creating a file and saving some date to it.
-var test = firebase.storage().bucket().file('test1').save('hello1').catch(err => console.log(err));
 
-firebase.database();
+exports.saveFile = (name, data) => {
+    
+    bucket.file('/audio/'+name).save(data);
+
+
+   
+};
+// test.then(result => console.log(result));
+// firebase.database();
