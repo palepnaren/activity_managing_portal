@@ -10,13 +10,18 @@ firebase.initializeApp({
 });
 
 var bucket = firebase.storage().bucket();
+var database = firebase.database().ref('/audio');
 // firebase.storage().bucket('test').create();
 
 //creating a file and saving some date to it.
 
 exports.saveFile = (name, data) => {
-    
+    var object = {
+        fileName: name,
+        content: data
+    }
     bucket.file('/audio/'+name).save(data);
+    var key = database.push(object);
 
 
    
