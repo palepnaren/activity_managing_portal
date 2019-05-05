@@ -1,6 +1,7 @@
 import { AudioService } from './../service/audio.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-shared-talks',
@@ -16,19 +17,19 @@ export class SharedTalksComponent implements OnInit {
   file;
   fileName;
   fileData;
+  uploadResponse = {};
   constructor(private builder: FormBuilder, private service: AudioService) {
     this.talksGroup = this.builder.group({
       file: ['', Validators.required]
     });
-
   }
 
   ngOnInit() {
 
-
+    // this.uploadResponse[message] = 0;
   }
 
-  getFile(e) {
+getFile(e) {
 
     e.preventDefault();
 
@@ -37,30 +38,48 @@ export class SharedTalksComponent implements OnInit {
     const index = this.fileName.lastIndexOf('.');
     this.fileType = this.fileName.substr(index);
 
-    console.log(this.fileName);
-    console.log(this.fileType);
+    // this.talksGroup.get('file').setValue(this.file);
+
+    // console.log(this.fileName);
+    // console.log(this.fileType);
 
     if (this.fileType === '.mp3') {
       const reader = new FileReader();
-
+      const file = new File([this.file], this.fileName, {
+        type: 'audio/mp3',
+      });
+      console.log(file.size);
       reader.addEventListener('load', () => {
       this.fileData = reader.result;
       console.log(this.fileData);
     });
 
-      reader.readAsDataURL(this.file);
+      reader.readAsBinaryString(this.file);
     }
 
   }
 
-  fileUpload() {
+fileUpload() {
 
     if (this.fileType === '.mp3') {
-     this.service.fileUpload(this.fileName, this.fileData);
+
+      const formData = new FormData();
+      formData.append('file', this.talksGroup.get('file').value);
+
+      console.log(formData.get('file'));
+      this.service.fileUpload(formData, this.fileData).subscribe(res => {
+        // console.log(res.message);
+        this.uploadResponse = res;
+      }, err => {
+        console.log(err);
+      });
 
     } else {
       alert('Please choose mp3 file type only');
     }
+    setTimeout(() => {
+      $('#progress-bar').hide().fadeOut();
+    }, 2000);
 
   }
 
