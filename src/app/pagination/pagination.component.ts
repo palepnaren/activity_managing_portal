@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -6,12 +6,14 @@ import { Component, OnInit, Input } from '@angular/core';
   templateUrl: './pagination.component.html',
   styleUrls: ['./pagination.component.less']
 })
-export class PaginationComponent implements OnInit {
+export class PaginationComponent implements OnInit, AfterViewInit {
 
   // tslint:disable-next-line:no-input-rename
   @Input('items') listOfItems;
   // tslint:disable-next-line:no-input-rename
   @Input('size') lengthOfList: number;
+  // tslint:disable-next-line:no-input-rename
+  @Input('viewType') viewType: string;
 
   currentList = [];
   itemList = [];
@@ -21,16 +23,21 @@ export class PaginationComponent implements OnInit {
 
   ngOnInit() {
 
-    this.itemList = this.listOfItems.slice(0, 10);
-    this.currentSetIn = '1 - ' + this.itemList.length + ' of ' + this.listOfItems.length;
+  }
 
-    this.paginate(this.lengthOfList);
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.paginate(this.lengthOfList);
+      this.itemList = this.listOfItems.slice(0, 10);
+      this.currentSetIn = '1 - ' + this.itemList.length + ' of ' + this.listOfItems.length;
+    }, 1500);
   }
 
   paginate(size) {
+    console.log(size);
 
     if ( size < 10) {
-
+      this.currentList.push(['Showing All ' + size]);
     } else if (size === 10) {
       this.currentList.push(['10']);
     } else if (size > 10 && size < 20) {

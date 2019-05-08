@@ -1,8 +1,6 @@
 var firebase = require('firebase-admin');
 var chalk = require('chalk');
-var os = require('os');
 var serviceAccount = require('/Users/narenpalep/Desktop/Angular:AngularJS/Angular2/team-project/firebase.json');
-
 
 firebase.initializeApp({
     credential: firebase.credential.cert(serviceAccount),
@@ -10,29 +8,31 @@ firebase.initializeApp({
     storageBucket:'gs://team-portal-dd915.appspot.com'
 });
 
-var bucket = firebase.storage().bucket();
-// var database = firebase.database().ref('/audio');
-// firebase.storage().bucket('test').create();
+// fire.initializeApp(firebaseConfig);
+
+
+ var bucket = firebase.storage().bucket();
+
 
 //creating a file and saving some date to it.
 
 exports.saveFile = (name, data) => {
-    // const userInfo = os.userInfo();
-    // console.log(userInfo);
+  
     const index = name.lastIndexOf('\\');
     name = name.substr(index + 1);
-    console.log(name);
-    bucket.file('/audio/'+name).save(data);
-    // var key = database.push(object);
-
-    // bucket.upload('/audio/'+name).then(file => {
-    //     console.log("file is uploaded");
-    // }, err => {
-    //     console.log(err);
-    // });
-
-
+    
+   data = Object.values(data);
+   var buffer = Buffer.from(data);
+   console.log(buffer);
    
+    bucket.file('/audio/'+name).save(buffer,{contentType:'audio/mp3'}).then(() => {
+        console.log("File pushed onto server ");
+    });
+  
 };
-// test.then(result => console.log(result));
-// firebase.database();
+
+exports.downloadFiles = () =>{
+    return bucket.getFiles();
+}
+
+

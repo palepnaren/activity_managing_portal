@@ -4,15 +4,17 @@
         <li><a href="#" (click)="showSetIn($event, set)">{{set}}</a></li>
       </ul>
 </div>
-
-
-<br>
 <br>
 <p class="text-center" id="currentSet">{{currentSetIn}}</p>
 <br>
 <div class="padding-talks container">
     <ul *ngFor="let item of itemList" class="list-group" id="list" >
-        <li class="list-group-item list-group-item-action">{{item}}</li>
+        <li class="list-group-item list-group-item-action mp3">
+          <span>{{item.name}}</span>&nbsp;&nbsp;
+          <audio controls id="audio">
+            <source [src]="item.url" type="audio/mp3"> 
+          </audio>
+        </li>
     </ul>
 </div>
 

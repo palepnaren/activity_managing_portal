@@ -10,14 +10,14 @@ import { map } from 'rxjs/operators';
 export class AudioService {
 
   data = {
-    name: undefined,
+    file: undefined,
     content: undefined
   };
   constructor(private http: HttpClient) { }
 
-  fileUpload(formData, data) {
+  fileUpload(file, data) {
     // console.log(formData);
-    this.data.name = formData.get('file');
+    this.data.file = file.name;
     this.data.content = data;
     const url = 'http://localhost:9500/file';
     return this.http.post(url, this.data, {
@@ -35,5 +35,12 @@ export class AudioService {
             return `Unhandled event: ${event.type}`;
       }
     }));
+  }
+
+  fileDownload() {
+    const url = 'http://localhost:9500/download';
+
+    // tslint:disable-next-line:no-shadowed-variable
+    return this.http.get(url).map(file => file);
   }
 }
