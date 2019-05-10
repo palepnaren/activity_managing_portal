@@ -16,6 +16,11 @@
         formControlName="password"
         class="form-control input-group-text" type="password" placeholder="Password" #password>
     </div>
+    <div class="input-group">
+        <input type="checkbox"
+        name="rememberMe"
+        formControlName="rememberMe" #remember><span id="remember">Remember Me</span>
+    </div>
     <button id="login" class="btn btn-success text-center" (click)="auth(email.value, password.value)" type="submit">login</button>
     <p>Are you new user?<a routerLink="/register"> signup here.</a></p>
   </form>

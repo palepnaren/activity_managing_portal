@@ -1,3 +1,4 @@
+import { UserService } from './../service/user.service';
 import { FormBuilder, FormGroup, Validators, FormsModule } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 
@@ -10,15 +11,31 @@ export class RegisterComponent implements OnInit {
 
   registerGroup: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) { }
+  user = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    username: '',
+    password: '',
+    role: '',
+    upline: ''
+  };
+  saved;
+  isLoading = false;
+
+  constructor(private formBuilder: FormBuilder, private service: UserService) { }
 
   ngOnInit() {
 
    this.registerGroup = this.formBuilder.group({
-
+      first_name: ['', [Validators.required]],
+      last_name: ['', [Validators.required]],
       email : ['', [Validators.email, Validators.required]],
+      username: ['', [Validators.required, Validators.maxLength(15), Validators.minLength(4)]],
       password : ['', [Validators.required, Validators.minLength(6)]],
-      cmp_password : ['', [Validators.required, Validators.minLength(6)]]
+      cmp_password : ['', [Validators.required, Validators.minLength(6)]],
+      role: ['', [Validators.required]],
+      upline: ['', [Validators.required]]
 
    });
   }
@@ -34,19 +51,39 @@ export class RegisterComponent implements OnInit {
 
   }
 
-  register(email, pwd, cmpPwd) {
+  register(fname, lname, email, username, pwd, role, upline) {
 
-    localStorage.setItem('email', email);
-    localStorage.setItem('pwd', pwd);
-    localStorage.setItem('cmpPwd', cmpPwd);
+    this.isLoading = true;
 
+    console.log(fname + '~' + '~' + lname + '~' + email + '~' + username + '~' + pwd + '~' + role + '~' + upline);
+
+    this.user.firstName = fname;
+    this.user.lastName = lname;
+    this.user.email = email;
+    this.user.username = username;
+    this.user.password = pwd;
+    this.user.role = role;
+    this.user.upline = upline;
+
+    this.service.regUser(this.user).subscribe( savedUser => {
+      this.saved = savedUser;
+    });
+
+    setTimeout(() => {
+      console.log(this.saved);
+      if (this.saved) {
+        this.isLoading = false;
+        setTimeout(() => {
+          alert('User registered successfully');
+        }, 200);
+      } else {
+        alert('Error saving user');
+      }
+    }, 16000);
     this.registerGroup.reset();
-    alert('User registered successfully');
-
-
   }
 
-  get fr() {
+  get reg() {
     return this.registerGroup.controls;
   }
 

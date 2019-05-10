@@ -12,7 +12,8 @@ firebase.initializeApp({
 
 
  var bucket = firebase.storage().bucket();
-
+ var db = firebase.database().ref('/users');
+ var flag;
 
 //creating a file and saving some date to it.
 
@@ -23,7 +24,7 @@ exports.saveFile = (name, data) => {
     
    data = Object.values(data);
    var buffer = Buffer.from(data);
-   console.log(buffer);
+   //console.log(buffer);
    
     bucket.file('/audio/'+name).save(buffer,{contentType:'audio/mp3'}).then(() => {
         console.log("File pushed onto server ");
@@ -33,6 +34,20 @@ exports.saveFile = (name, data) => {
 
 exports.downloadFiles = () =>{
     return bucket.getFiles();
-}
+};
+
+exports.saveUser = (user) =>{
+
+    var key = db.child('/'+user.fname).push(user);
+
+    if(key != null){
+        flag = true;
+    } else {
+        flag = false ;
+    }
+
+    return flag;
+    
+};
 
 

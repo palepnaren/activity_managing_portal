@@ -20,7 +20,8 @@ export class HomeComponent implements OnInit {
 
     this.formGroup = this.formBuilder.group({
          email: ['', Validators.required],
-         password: ['', Validators.required]
+         password: ['', Validators.required],
+         rememberMe: ['']
     });
 
   }

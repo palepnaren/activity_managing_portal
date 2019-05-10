@@ -1,13 +1,31 @@
 <div class="container compress">
   <form class="form-group" [formGroup]= "registerGroup">
       <h3 class="center">Register:</h3>
+      <div class="input-group">
+          <i class=" fas fa-user input-group-addon"></i>
+            <input 
+            name="first_name" 
+            formControlName="first_name"
+            class="form-control input-group-text col-6 col-sm-6 col-md-6 col-lg-6" type="text" placeholder="First name" #first_name>&nbsp;&nbsp;
+            <input 
+            name="last_name" 
+            formControlName="last_name"
+            class="form-control input-group-text col-6 col-sm-6 col-md-6 col-lg-6" type="text" placeholder="Last name" #last_name>
+      </div>
     <div class="input-group">
-      <i class=" fas fa-user input-group-addon"></i>
+      <i class=" fas fa-at input-group-addon"></i>
         <input 
         name="email" 
         formControlName="email"
-        class="form-control input-group-text" type="text" placeholder="Username/Email" #email>
+        class="form-control input-group-text" type="text" placeholder="Email" #email>
     </div>
+    <div class="input-group">
+        <i class=" fas fa-user input-group-addon"></i>
+          <input 
+          name="username" 
+          formControlName="username"
+          class="form-control input-group-text" type="text" placeholder="Username" #username>
+      </div>
     <div class="input-group">
         <i class=" fas fa-lock input-group-addon"></i>
         <input 
@@ -22,10 +40,41 @@
       formControlName="cmp_password"
       class="form-control input-group-text" type="password" placeholder="Re-enter Password" #cmp_password>
    </div>
+   <div class="input-group">
+      <i class=" fas fa-user-tag input-group-addon"></i>
+      <select
+      id="role"
+      name="role"
+      formControlName="role"
+      [(ngModel)]="role.value"
+      class="form-control input-group-text" #role>
+      <option value="default" selected aria-selected="true">----Select your Pin----</option>
+      <option value="ibo">IBO</option>
+      <option value="silver">Silver</option>
+      <option value="Eagle">Eagle</option>
+      <option value="platinum">Platinum</option>
+      <option value="ruby">Ruby</option>
+      <option value="emerald">Emerald</option>
+      <option value="diamond">Diamond</option>
+      <option value="edc">EDC</option>
+      <option value="crown">Crown</option>
+    </select>
+   </div>
+   <div class="input-group">
+      <i class=" fas fa-user-plus input-group-addon"></i>
+      <input 
+      name="upline" 
+      formControlName="upline"
+      class="form-control input-group-text" type="text" placeholder="Upline name" #upline>
+   </div>
    <div id="error" *ngIf="comparePwd(password.value, cmp_password.value)" class="alert alert-danger">
      Passwords not match!
    </div>
-    <button id="register" class="btn btn-success" (click)="register(email.value, password.value, cmp_password.value)" type="submit">Register</button>
+    <button id="register" class="btn btn-success" (click)="register(first_name.value, last_name.value, email.value, username.value, password.value, role.value, upline.value)" type="submit">Register</button>
     <p>Have an account already?<a routerLink="/"> login here.</a></p>
   </form>
+  <div *ngIf="isLoading" id="loading">
+    <p class="text-center">Saving...</p>
+    <div class="spinner-border text-primary" id="spinner"></div>
+  </div>
 </div>

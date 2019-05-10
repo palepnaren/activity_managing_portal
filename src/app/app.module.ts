@@ -1,3 +1,4 @@
+import { UserService } from './service/user.service';
 import { AudioService } from './service/audio.service';
 import { LoginService } from './home/login.service';
 import { HttpClientModule } from '@angular/common/http';
@@ -59,7 +60,7 @@ import { PaginationComponent } from './pagination/pagination.component';
       }
   ])
   ],
-  providers: [WeatherService, LoginService, CanActivateRouterGuard, AudioService],
+  providers: [WeatherService, LoginService, CanActivateRouterGuard, AudioService, UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
