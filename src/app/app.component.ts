@@ -74,6 +74,7 @@ logout() {
 // localStorage.removeItem('pwd');
 // localStorage.removeItem('flag');
 this.login.isLoggedIn = false;
+sessionStorage.setItem('isAuth', '' + this.login.isLoggedIn);
 this.router.navigateByUrl('/');
 
 
