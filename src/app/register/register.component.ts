@@ -77,7 +77,10 @@ export class RegisterComponent implements OnInit {
           alert('User registered successfully');
         }, 200);
       } else {
-        alert('Error saving user');
+        this.isLoading = false;
+        setTimeout(() => {
+          alert('Error saving user');
+        }, 200);
       }
     }, 16000);
     this.registerGroup.reset();

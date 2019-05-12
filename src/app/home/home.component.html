@@ -1,5 +1,9 @@
 
 <div class="container compress">
+    <div class="container alert alert-danger alert-dismissible" *ngIf="!isLoggedIn">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <p class="text-justify">Username/Password incorrect!</p>
+    </div>
   <form class="form-group" [formGroup]="formGroup">
     <h3 class="center">Login:</h3>
     <div class="input-group">
@@ -24,4 +28,8 @@
     <button id="login" class="btn btn-success text-center" (click)="auth(email.value, password.value)" type="submit">login</button>
     <p>Are you new user?<a routerLink="/register"> signup here.</a></p>
   </form>
+  <div *ngIf="isLoading" id="loading">
+      <p class="text-center">Checking Credentials...</p>
+      <div class="spinner-border text-primary" id="spinner"></div>
+  </div>
 </div>

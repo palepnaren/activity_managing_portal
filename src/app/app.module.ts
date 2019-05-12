@@ -55,7 +55,7 @@ import { PaginationComponent } from './pagination/pagination.component';
       {
         path: 'sharedTalks',
         component: SharedTalksComponent,
-        // canActivate: [CanActivateRouterGuard]
+        canActivate: [CanActivateRouterGuard]
 
       }
   ])

@@ -38,7 +38,7 @@ exports.downloadFiles = () =>{
 
 exports.saveUser = (user) =>{
 
-    var key = db.child('/'+user.fname).push(user);
+    var key = db.child('/'+user.email.split('@')[0]).push(user);
 
     if(key != null){
         flag = true;
@@ -49,5 +49,18 @@ exports.saveUser = (user) =>{
     return flag;
     
 };
+
+
+exports.authUser = (user, cb) => {
+    var data;
+    db.child('/'+user.email.split('@')[0]).on('value', (snapshot) => {
+        data = snapshot.val();
+        cb(data);
+    }, (err) => {
+        console.log("no details found");
+        data = null;
+        cb(data);
+    });
+}
 
 

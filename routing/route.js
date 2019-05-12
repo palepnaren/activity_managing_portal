@@ -23,6 +23,9 @@ var user = {
 var salt = 15;
 var isSaved = null;
 var hashed = null;
+var key = null;
+var isValid;
+var isUser;
 routing.route('/file').post((req, res) => {
     file = req.body.file;
     data = req.body.content;
@@ -39,7 +42,7 @@ routing.route('/download').get((req, res) => {
                 file.getSignedUrl({action: 'read', expires: '02-03-2491'}).then(url => {
                     // console.log(url[0]);
                     setTimeout(()=>{
-                        console.log(url[0]);
+                        // console.log(url[0]);
                         files.push({name: file.name, _url: url[0]}); 
                     },100)
                 });
@@ -79,5 +82,44 @@ routing.route('/save').post((req, res) => {
     }, 13000);
     
 });
+
+routing.route('/auth').post((req, res) => {
+    req.session.user = req.body.email;
+    const user = {
+        email: req.body.email,
+        pwd: req.body.pwd
+    }
+    var loggedInUser = {
+        fullName: '',
+        username: '',
+        role: '',
+        upline: ''
+    }
+    
+    // console.log(req.session.user);
+    
+    db.authUser(user, (authUser) => {
+        
+        key = Object.keys(authUser);
+        isUser = authUser[key[0]];
+        if((req.body.email === isUser.email || req.body.email === isUser.username)){
+            crypt.compare(req.body.pwd, isUser.pwd, (err,  match) => {
+                isValid = match;
+                // console.log(isValid);
+            });
+        } else {
+            isValid = false;
+        }
+    });
+
+    setTimeout(() => {
+        loggedInUser.fullName = isUser.fname+ ' ' + isUser.lname;
+        loggedInUser.username = isUser.username;
+        loggedInUser.role = isUser.role;
+        loggedInUser.upline = isUser.upline;
+        res.send({loggedIn:isValid, user: loggedInUser});
+    }, 3000);
+    
+})
 
 module.exports = routing;

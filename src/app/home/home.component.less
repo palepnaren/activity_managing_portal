@@ -37,6 +37,13 @@ button{
 
 }
 
+button.close{
+    position: absolute;
+    top:-25px;
+    left:80%;
+}
+
+
 i{
     background-color:rgba(255, 117, 168, 0.4);;
     border-radius: 5px 5px;
@@ -60,6 +67,39 @@ input{
 
 select{
     .custome();
+}
+
+#loading{
+    position: absolute;
+    transform: translate(50%,-50%);
+    top: 50%;
+    margin: 0 auto;
+    width: 100px;
+    height: 100px;
+    background: black;
+    opacity: 0.5 !important;
+    padding: 10px;
+ 
+}
+#loading > p {
+    position: absolute;
+    transform: translate(10%,-50%);
+    top: 25%;
+    font-size: 12px;
+    margin: 0 auto;
+    opacity: 0.8 !important;
+    color: white;
+}
+
+#spinner{
+    position: relative;
+    left: 33%;
+    top:50%;
+    bottom: 33%;
+    right: 33%;
+    // transform: translate(50%, 50%);
+    opacity: 1 !important;
+    margin: 0 auto;
 }
 
 @media only screen and (max-width: @small){

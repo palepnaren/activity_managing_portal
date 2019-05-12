@@ -1,7 +1,9 @@
+import { Observable } from 'rxjs-compat/Observable';
 import { LoginService } from './login.service';
 import { Router } from '@angular/router';
 import { FormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+
 
 
 @Component({
@@ -12,6 +14,8 @@ import { Component, OnInit } from '@angular/core';
 export class HomeComponent implements OnInit {
 
   formGroup: FormGroup;
+  isLoading = false;
+  isLoggedIn = true;
 
   constructor(private formBuilder: FormBuilder, private service: LoginService) { }
 
@@ -26,8 +30,12 @@ export class HomeComponent implements OnInit {
 
   }
 
-   auth(email, pwd): boolean {
-    return this.service.isAuth(email, pwd);
+   auth(email, pwd) {
+     setInterval(() => {
+      this.isLoading = this.service.isLoading;
+      this.isLoggedIn = this.service.isfailed;
+     }, 200);
+     this.service.isAuth(email, pwd);
   }
 
   get f() {

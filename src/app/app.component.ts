@@ -14,19 +14,23 @@ export class AppComponent implements OnInit {
   title = 'team-project';
   test: any;
   isLoggedIn;
+  name;
 
   constructor(private http: HttpClient, private router: Router, private login: LoginService) {
 
   }
 
   ngOnInit() {
-    this.isLoggedIn = localStorage.getItem('flag');
-    // if (this.isLoggedIn) {
-    //   this.ngOnInit();
-    // } else {
-    //   this.ngOnInit();
-    // }
-    this.j_Query();
+      setInterval(() => {
+        this.isLoggedIn = this.login.isLoggedIn;
+        if (this.isLoggedIn) {
+          this.name = sessionStorage.getItem('name');
+          // console.log(this.name);
+          this.isLoggedIn = this.login.isLoggedIn;
+        }
+      }, 200);
+
+      this.j_Query();
 }
 
 
@@ -68,7 +72,7 @@ j_Query() {
 logout() {
 // localStorage.removeItem('email');
 // localStorage.removeItem('pwd');
-localStorage.removeItem('flag');
+// localStorage.removeItem('flag');
 this.login.isLoggedIn = false;
 this.router.navigateByUrl('/');
 
