@@ -41,7 +41,7 @@ import { PaginationComponent } from './pagination/pagination.component';
       {
         path: 'profile',
         component: ProfileComponent,
-        canActivate: [CanActivateRouterGuard]
+        // canActivate: [CanActivateRouterGuard]
       },
       {
         path: 'register',
