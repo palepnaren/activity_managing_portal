@@ -42,6 +42,8 @@ export class LoginService {
         this.isLoading = false;
         this.isLoggedIn = true;
         sessionStorage.setItem('name', this.authUser.user.fullName);
+        sessionStorage.setItem('role', this.authUser.user.role);
+        sessionStorage.setItem('email', this.userLogin.email);
         sessionStorage.setItem('isAuth', '' + this.isLoggedIn);
         this.router.navigateByUrl('/dashboard');
       } else {

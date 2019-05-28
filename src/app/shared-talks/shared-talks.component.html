@@ -7,12 +7,12 @@
           formControlName="file" 
           type="file"
           name="file"
-          class="custom-file-input" placeholder="choose a file" #file (change)="getFile($event)">
+          class="custom-file-input form-control-file" placeholder="choose a file" #file (change)="getFile($event)">
           <label class="custom-file-label" for="customFile">Choose file</label>
       </div>
       <br>
         <button id="upload" class="btn btn-success" type="submit" (click)="fileUpload()">Upload</button>&nbsp;&nbsp;
-        <button id="upload" class="btn btn-success" type="submit" (click)="fileDownload()">View</button>
+        <!-- <button id="upload" class="btn btn-success" type="submit" (click)="fileDownload()">View</button> -->
     </div>
 </div>
 <br>

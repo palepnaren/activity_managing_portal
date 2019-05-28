@@ -120,6 +120,17 @@ routing.route('/auth').post((req, res) => {
         res.send({loggedIn:isValid, user: loggedInUser});
     }, 3000);
     
-})
+});
+
+routing.route('/process').post((req, res)=>{
+
+    var data = req.body.data;
+    var email = req.body.user;
+
+    var message = db.updateUserProcess(data,email);
+
+    res.send({msg:message});
+
+});
 
 module.exports = routing;

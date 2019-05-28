@@ -1,4 +1,9 @@
 
+@phone: 576px;
+@tablet: 768px;
+@laptop: 1200px;
+@small: 350px;
+
 #indexing{
     margin-top: 20px;
     position: absolute;
@@ -36,3 +41,58 @@
 .mp3{
     padding: 20px;
 }
+
+
+@media only screen and (max-width: @small){
+
+      audio{
+          width: 177px;
+          height: 30px;
+          margin-bottom: 5px;
+      }
+
+      .mp3 > span {
+        position: relative;
+        top:10px;
+        font-size: 12px;
+    }
+      
+  }
+
+  @media only screen and (min-width:@small) and (max-width: 380px){
+    audio{
+        width: 205px !important;
+    }
+}
+  
+  @media only screen and (min-width:@small) and (max-width: @phone){
+      
+    audio{
+        width: 220px;
+        height: 30px;
+        margin-bottom: 5px;
+    }
+
+    .mp3 > span {
+      position: relative;
+      top:10px;
+      font-size: 12px;
+  }
+  
+    
+  }
+  
+  @media only screen and (min-width: @phone) and (max-width: @tablet) {
+  
+    audio{
+        width: 250px;
+    }
+
+    .mp3 > span {
+        font-size: 14px;
+    }
+  
+      
+  }
+  
+  

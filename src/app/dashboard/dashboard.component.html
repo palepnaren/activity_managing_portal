@@ -7,31 +7,50 @@
   </div>
 </div>
 
-<div id="content" class="row">
+<div id="content" class="container-fuild row">
 
-  <div #graph id="graph" class="col-4">
-    
+
+  <div class=" col-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <ul class="list-group">
+          <li class="list-group-item">These Boots Are Made For Walking</li>
+          <li class="list-group-item">Eleanor, Put Your Boots On</li>
+          <li class="list-group-item">Puss 'n' Boots</li>
+          <li class="list-group-item">Die With Your Boots On</li>
+          <li class="list-group-item">Fairies Wear Boots</li>
+      </ul>
   </div>
 
-  <div id="weather" class="col-6">
-    <div class="card">
-      <div class="card-body">
-        {{date | date}}  <span>{{date | date:'hh:mm:ss'}}</span>
-      </div>
-    </div>
-    <!-- <hr> -->
-    <div class="card">
-      <div class="card-body">
-        <span>Current Temp:{{temp}}&#8457;</span>
-        <span>Maximum Temp:{{maxTemp}}&#8457;</span>
-        <span>Minimum Temp:{{minTemp}}&#8457;</span>
-        <span>Weather: {{description}}</span>
-        <span>Speed: {{windSpeed}} meter/sec</span>
-        <span>Humidity: {{humidity}}&#37; <img src="https://img.icons8.com/color/48/000000/dew-point.png"></span>
-        <img [src]="imgSrc">
-        {{result | json}}
-      </div>
-    </div>
+  <div #graph id="graph" class="col-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 canvas">
+      <svg width="100%" height="500px"></svg>
   </div>
+
+  <div id='form' class="col-10 col-lg-10 col-md-10 col-sm-10 col-xs-10">
+      <div class="alert alert-success alert-dismissible" *ngIf="message">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          {{message.msg}}
+      </div>
+      <form [formGroup]='fGroup' id="processForm">
+        <div class="form-group">
+          <label for="date">Date:</label>
+          <input type="date" 
+          formControlName="date"
+          class="form-control" id="date" #date>
+        </div>
+        <div class="form-group">
+          <label for="text">Appointments:</label>
+          <input type="text" 
+          formControlName="appointment"
+          placeholder="Enter your appointments"
+          class="form-control" id="text" #process>
+        </div>
+        <button type="submit" class="btn btn-primary" (click)= "numOfappointments(date.value, process.value)">Submit</button>
+      </form>
+
+      <p class="text-danger" id="warning">
+        Warning Please enter the number of appointments only once per day.
+      </p>
+
+  </div>
+
 
 </div>

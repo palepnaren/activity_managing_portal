@@ -1,4 +1,8 @@
 // @import "/Users/narenpalep/Desktop/Angular:AngularJS/Angular2/team-project/src/app/home/home.component.less";
+@phone: 576px;
+@tablet: 768px;
+@laptop: 1200px;
+@small: 350px;
 
 i#icon-search{
     position: relative;
@@ -8,6 +12,15 @@ i#icon-search{
     color: black;
     border-radius: 5px 5px;
     
+}
+
+#warning{
+  font-size: 12px;
+  margin-top: 10px;
+}
+#warning::before{
+  content: "*";
+  color: red;
 }
 
 div#search{
@@ -32,3 +45,82 @@ div#search{
     margin-top: 20px;
     margin-left: 80px;
   }
+
+  #graph{
+    position: relative;
+    left: -50px;
+    margin-bottom: 20px;
+  }
+
+div#form{
+  position: relative;
+  top: 30px;
+  transform: translate(10%,-20%);
+  background-color: bisque;
+  height: 325px;
+  padding: 20px;
+  margin-bottom: 50px;
+}
+
+
+
+
+@media only screen and (max-width: @small){
+
+  div#form{
+    background-color: bisque;
+    position: relative;
+    top: 0px;
+    left: 10%;
+    margin-bottom: 40px;
+    padding: 10px;
+    transform: translate(0%,-20%);
+  }
+
+  #warning{
+    font-size: 8px;
+    margin-top: 10px;
+  }
+    
+    
+}
+
+@media only screen and (min-width:@small) and (max-width: @phone){
+    
+  div#form{
+    background-color: bisque;
+    position: relative;
+    top: 0px;
+    left: 10%;
+    margin-bottom: 40px;
+    padding: 10px;
+    transform: translate(0%,-20%);
+  }
+
+  #warning{
+    font-size: 8px;
+    margin-top: 10px;
+  }
+
+  
+}
+
+@media only screen and (min-width: @phone) and (max-width: @tablet) {
+
+  div#form{
+    background-color: bisque;
+    position: relative;
+    right: 1%;
+  }
+  #warning{
+    font-size: 10px;
+    margin-top: 10px;
+  }
+
+    
+}
+
+@media only screen and (min-width: @tablet) and (max-width: @laptop) {
+
+    
+}

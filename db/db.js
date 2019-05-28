@@ -63,4 +63,20 @@ exports.authUser = (user, cb) => {
     });
 }
 
+exports.updateUserProcess = (obj, email) => {
+    var key;
+    var msg;
+    db.child('/'+email.split('@')[0]).on('value', (snapshot) => {
+        key = Object.keys(snapshot.val());   
+    });
+
+    setTimeout(() => {
+        db.child('/'+email.split('@')[0]+'/'+key).child('process').push().set(obj);
+    }, 200);
+    msg = "Saved";
+            
+
+   return msg;
+}
+
 

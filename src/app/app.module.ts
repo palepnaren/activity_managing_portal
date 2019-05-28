@@ -1,3 +1,5 @@
+import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { AngularFireModule } from '@angular/fire';
 import { UserService } from './service/user.service';
 import { AudioService } from './service/audio.service';
 import { LoginService } from './home/login.service';
@@ -17,6 +19,7 @@ import { WeatherService } from './service/weather.service';
 import { SharedTalksComponent } from './shared-talks/shared-talks.component';
 import { CanActivateRouterGuard } from './guard-routing/CanActivateRouterGuard';
 import { PaginationComponent } from './pagination/pagination.component';
+import { firebaseConfig } from 'src/environments/environment.prod';
 
 @NgModule({
   declarations: [
@@ -33,6 +36,8 @@ import { PaginationComponent } from './pagination/pagination.component';
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireDatabaseModule,
     RouterModule.forRoot([
       {
         path: '',
@@ -41,7 +46,7 @@ import { PaginationComponent } from './pagination/pagination.component';
       {
         path: 'profile',
         component: ProfileComponent,
-        // canActivate: [CanActivateRouterGuard]
+        canActivate: [CanActivateRouterGuard]
       },
       {
         path: 'register',

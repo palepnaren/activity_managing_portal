@@ -17,4 +17,12 @@ export class UserService {
     return this.http.post(url, user).map(res => res);
   }
 
+  updateProcess(processData, email) {
+
+    const url = 'http://localhost:9500/process';
+
+    return this.http.post(url, {data: processData, user: email}).map(res => res);
+
+  }
+
 }
