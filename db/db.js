@@ -1,6 +1,8 @@
 var firebase = require('firebase-admin');
 var chalk = require('chalk');
-var serviceAccount = require('/Users/narenpalep/Desktop/Angular:AngularJS/Angular2/team-project/firebase.json');
+var fs = require('fs');
+const rawdata = fs.readFileSync('firebase.json');
+const serviceAccount = JSON.parse(rawdata);
 
 firebase.initializeApp({
     credential: firebase.credential.cert(serviceAccount),
