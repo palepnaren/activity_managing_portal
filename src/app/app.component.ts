@@ -75,6 +75,10 @@ logout() {
 // localStorage.removeItem('flag');
 this.login.isLoggedIn = false;
 sessionStorage.setItem('isAuth', '' + this.login.isLoggedIn);
+sessionStorage.removeItem('name');
+sessionStorage.removeItem('role');
+sessionStorage.removeItem('email');
+sessionStorage.removeItem('isAuth');
 this.router.navigateByUrl('/');
 
 
