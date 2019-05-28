@@ -19,7 +19,10 @@ export class SharedTalksComponent implements OnInit, AfterViewInit {
   fileData;
   unit8Array: Uint8Array;
   listOfTalks = [];
-  uploadResponse = {};
+  uploadResponse = {
+    status: '',
+    upload: 0
+  };
   i;
   constructor(private builder: FormBuilder, private service: AudioService) {
     this.talksGroup = this.builder.group({
@@ -71,7 +74,8 @@ export class SharedTalksComponent implements OnInit, AfterViewInit {
 
       this.service.fileUpload(this.file, this.unit8Array).subscribe(res => {
         // console.log(res.message);
-        this.uploadResponse = res;
+        this.uploadResponse.status = res.status;
+        this.uploadResponse.upload = res.upload;
       }, err => {
         console.log(err);
       });
