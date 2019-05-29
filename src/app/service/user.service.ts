@@ -13,13 +13,13 @@ export class UserService {
 
   regUser(user) {
 
-    const url = 'http://localhost:9500/save';
+    const url = window.location.origin + '/save';
     return this.http.post(url, user).map(res => res);
   }
 
   updateProcess(processData, email) {
 
-    const url = 'http://localhost:9500/process';
+    const url = window.location.origin + '/process';
 
     return this.http.post(url, {data: processData, user: email}).map(res => res);
 

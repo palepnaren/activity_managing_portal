@@ -19,7 +19,7 @@ export class AudioService {
     // console.log(formData);
     this.data.file = file.name;
     this.data.content = data;
-    const url = 'http://localhost:9500/file';
+    const url = window.location.origin + '/file';
     return this.http.post(url, this.data, {
       reportProgress: true,
       observe: 'events'
@@ -38,7 +38,7 @@ export class AudioService {
   }
 
   fileDownload() {
-    const url = 'http://localhost:9500/download';
+    const url = window.location.origin +  '/download';
 
     // tslint:disable-next-line:no-shadowed-variable
     return this.http.get(url).map(file => file);

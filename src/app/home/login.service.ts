@@ -28,7 +28,7 @@ export class LoginService {
 
     this.isLoading = true;
 
-    const url = 'http://localhost:9500/auth';
+    const url = window.location.origin + '/auth';
     this.userLogin.email = email;
     this.userLogin.pwd = pwd;
 
@@ -57,11 +57,4 @@ export class LoginService {
 
   }
 
-  // loggedUser() {
-
-  //   return {
-  //     user: localStorage.getItem('user'),
-  //     flag: localStorage.getItem('flag')
-  //   };
-  // }
 }
