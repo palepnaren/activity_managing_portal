@@ -55,8 +55,6 @@ export class RegisterComponent implements OnInit {
 
     this.isLoading = true;
 
-    console.log(fname + '~' + '~' + lname + '~' + email + '~' + username + '~' + pwd + '~' + role + '~' + upline);
-
     this.user.firstName = fname;
     this.user.lastName = lname;
     this.user.email = email;
