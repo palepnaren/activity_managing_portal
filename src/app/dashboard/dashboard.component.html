@@ -21,6 +21,29 @@
   </div>
 
   <div #graph id="graph" class="col-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 canvas">
+      <div class="form-group" class="filter" [formGroup]='fGroup'>
+          <label for="category" class="label">Filter:</label>
+          <select
+          id="filter"
+          name="fliter"
+          formControlName="filter"
+          [(ngModel)]="filter.value"
+          class="form-control input-group-text" #filter (change)="updateGraph(filter.value)">
+            <option value="conversations" selected aria-selected="true">conversations</option>
+            <option value="mg1">mg1</option>
+            <option value="mg2">mg2</option>
+            <option value="mg3">mg3</option>
+            <option value="bp1">bp1</option>
+            <option value="ft1">ft1</option>
+            <option value="bp2">bp2</option>
+            <option value="ft2">ft3</option>
+            <option value="bp3">bp3</option>
+            <option value="pre-launch">pre-launch</option>
+            <option value="launch">launch</option>
+          </select>
+       </div>
+
+
       <svg width="100%" height="500px"></svg>
   </div>
 
@@ -43,7 +66,29 @@
           placeholder="Enter your appointments"
           class="form-control" id="text" #process>
         </div>
-        <button type="submit" class="btn btn-primary" (click)= "numOfappointments(date.value, process.value)">Submit</button>
+        <div class="form-group">
+            <label for="category">Category:</label>
+            <select
+            id="category"
+            name="category"
+            formControlName="category"
+            [(ngModel)]="category.value"
+            class="form-control input-group-text" #category>
+              <option value="default" selected aria-selected="true">----Select one----</option>
+              <option value="conversations">conversations</option>
+              <option value="mg1">mg1</option>
+              <option value="mg2">mg2</option>
+              <option value="mg3">mg3</option>
+              <option value="bp1">bp1</option>
+              <option value="ft1">ft1</option>
+              <option value="bp2">bp2</option>
+              <option value="ft2">ft3</option>
+              <option value="bp3">bp3</option>
+              <option value="pre-launch">pre-launch</option>
+              <option value="launch">launch</option>
+            </select>
+         </div>
+        <button type="submit" class="btn btn-primary" (click)= "numOfappointments(date.value, process.value, category.value)">Submit</button>
       </form>
 
       <p class="text-danger" id="warning">

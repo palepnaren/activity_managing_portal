@@ -43,7 +43,6 @@ export class RegisterComponent implements OnInit {
   comparePwd(pwd, cmpPwd) {
 
     if (pwd === cmpPwd) {
-      console.log('Password matches');
       return false;
     } else {
       return true;

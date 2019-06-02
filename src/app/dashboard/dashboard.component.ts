@@ -12,8 +12,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./dashboard.component.less']
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
-  // dataset = [80, 100, 90, 56, 120, 200, 45, 150, 75, 189];
   dataset = [];
+  mg1 = []; mg2 = []; conv = []; mg3 = []; bp1 = []; ft1 = []; bp2 = []; ft2 = []; bp3 = []; preLaunch = []; launch = [];
   padding = 3;
   translate;
   message;
@@ -44,19 +44,22 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   Width;
   Heigth;
 
-constructor(private service: WeatherService, private route: Router,
+constructor(private route: Router,
             private fbuilder: FormBuilder, private userService: UserService, private db: AngularFireDatabase) {
   }
 
 ngOnInit() {
     this.fGroup = this.fbuilder.group({
       date: ['', [Validators.required]],
-      appointment: ['', [Validators.required]]
+      appointment: ['', [Validators.required]],
+      category: ['', [Validators.required]],
+      filter: ['conversations']
     });
 
 
     this.svg = d3.select('svg');
     this.database = this.db.database.ref('/users');
+
 
   }
 
@@ -66,27 +69,122 @@ ngAfterViewInit() {
   this.createGraph();
   window.addEventListener('resize', this.createGraph);
 
-  this.database.child('/' + sessionStorage.getItem('email').split('@')[0]).on('value', (snapshot) => {
+  this.getData('conversations');
+  // this.updateGraph('conversations');
+
+}
+
+getData(value?: string) {
+    this.database.child('/' + sessionStorage.getItem('email').split('@')[0]).on('value', (snapshot) => {
       this.key = Object.keys(snapshot.val());
     });
 
-  setTimeout(() => {
+    setTimeout(() => {
       for (this.i = 0; this.i < this.events.length; this.i++) {
         this.database.child('/' + sessionStorage.getItem('email').split('@')[0] + '/' + this.key)
-      .child('/process').on(this.events[this.i], (snapshot) => {
-        this.key = Object.keys(snapshot.val());
-        for (this.i = 0; this.i < this.key.length; this.i++) {
-          // tslint:disable-next-line:radix
-          this.dataset.push(snapshot.val()[this.key[this.i]]);
-        }
-        // console.log(this.dataset);
-        this.updateGraphData(this.dataset);
-      });
+            .child('/process').on(this.events[this.i], (snapshot) => {
+            console.log(snapshot.val());
+            if (snapshot.val() !== null) {
+                console.log('Inside:' + snapshot.val());
+                this.key = Object.keys(snapshot.val());
+                for (this.i = 0; this.i < this.key.length; this.i++) {
+                  this.dataset.push(snapshot.val()[this.key[this.i]]);
+                  // tslint:disable-next-line:radix
+                  if (value === snapshot.val()[this.key[this.i]].type && snapshot.val()[this.key[this.i]].type === 'conversations') {
+
+                    this.conv = this.dataset.filter((process) => {
+                      return process.type === 'conversations';
+                    });
+
+                    this.updateGraphData(this.conv);
+                  } else if (value === snapshot.val()[this.key[this.i]].type && snapshot.val()[this.key[this.i]].type === 'mg1') {
+
+                    this.mg1 = this.dataset.filter((process) => {
+                      return process.type === 'mg1';
+                    });
+
+                    this.updateGraphData(this.mg1);
+                  } else if (value === snapshot.val()[this.key[this.i]].type && snapshot.val()[this.key[this.i]].type === 'mg2') {
+
+                    this.mg2 = this.dataset.filter((process) => {
+                      return process.type === 'mg2';
+                    });
+
+                    this.updateGraphData(this.mg2);
+                  } else if (value === snapshot.val()[this.key[this.i]].type && snapshot.val()[this.key[this.i]].type === 'mg3') {
+
+                    this.mg3 = this.dataset.filter((process) => {
+                      return process.type === 'mg3';
+                    });
+
+                    this.updateGraphData(this.mg3);
+                  } else if (value === snapshot.val()[this.key[this.i]].type && snapshot.val()[this.key[this.i]].type === 'bp1') {
+
+                    this.bp1 = this.dataset.filter((process) => {
+                      return process.type === 'bp1';
+                    });
+
+                    this.updateGraphData(this.bp1);
+                  } else if (value === snapshot.val()[this.key[this.i]].type && snapshot.val()[this.key[this.i]].type === 'ft1') {
+
+                    this.ft1 = this.dataset.filter((process) => {
+                      return process.type === 'ft1';
+                    });
+
+                    this.updateGraphData(this.ft1);
+                  } else if (value === snapshot.val()[this.key[this.i]].type && snapshot.val()[this.key[this.i]].type === 'bp2') {
+
+                    this.bp2 = this.dataset.filter((process) => {
+                      return process.type === 'bp2';
+                    });
+
+                    this.updateGraphData(this.bp2);
+                  } else if (value === snapshot.val()[this.key[this.i]].type && snapshot.val()[this.key[this.i]].type === 'ft2') {
+
+                    this.ft2 = this.dataset.filter((process) => {
+                      return process.type === 'ft2';
+                    });
+
+                    this.updateGraphData(this.ft2);
+                  } else if (value === snapshot.val()[this.key[this.i]].type && snapshot.val()[this.key[this.i]].type === 'bp3') {
+
+                    this.bp3 = this.dataset.filter((process) => {
+                      return process.type === 'bp3';
+                    });
+
+                    this.updateGraphData(this.bp3);
+                  } else if (value === snapshot.val()[this.key[this.i]].type && snapshot.val()[this.key[this.i]].type === 'pre-launch') {
+
+                    this.preLaunch = this.dataset.filter((process) => {
+                      return process.type === 'pre-launch';
+                    });
+
+                    this.updateGraphData(this.preLaunch);
+                  } else if (value === snapshot.val()[this.key[this.i]].type && snapshot.val()[this.key[this.i]].type === 'launch') {
+
+                    this.launch = this.dataset.filter((process) => {
+                      return process.type === 'launch';
+                    });
+
+                    this.updateGraphData(this.launch);
+                  } else {
+                    // this.dataset = [];
+                    // this.updateGraphData(this.dataset);
+                  }
+                }
+            } else {
+              this.dataset = [];
+              this.updateGraphData(this.dataset);
+            }
+        });
       }
-      // console.log(this.dataset);
-      // this.updateGraphData(this.dataset);
-    }, 2000);
-  }
+  }, 2000);
+}
+
+
+updateGraph(value) {
+    this.getData(value);
+}
 
   // weather() {
   //   navigator.geolocation.getCurrentPosition(data => {
@@ -108,11 +206,12 @@ ngAfterViewInit() {
 
   // }
 
-numOfappointments(date, numOfProcess) {
+numOfappointments(date, numOfProcess, category) {
 
     const obj = {
       todayDate: date,
-      num: numOfProcess
+      num: numOfProcess,
+      type: category
     };
 
     this.userService.updateProcess(obj, sessionStorage.getItem('email')).subscribe(res => {
@@ -172,8 +271,7 @@ numOfappointments(date, numOfProcess) {
 
   updateGraphData(data) {
 
-
-      // console.log(data);
+      console.log(data);
 
       // tslint:disable-next-line:radix
       const min = d3.min(data.map(d => Number.parseInt(d.num)));
@@ -211,7 +309,7 @@ numOfappointments(date, numOfProcess) {
                     .attr('y', d => this.yScale(d.num))
                     .attr('height', d => this.Heigth - this.yScale(d.num));
 
-    // updatin any deleted data
+    // updating any deleted data
       barchart.exit().remove();
 
       this.xAxisGroup.call(this.xAxis);

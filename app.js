@@ -21,9 +21,6 @@ app.get("/*", function(req, res){
     res.sendFile(path.join(__dirname,'/dist/team-project/index.html'));
 
 });
-// app.get('/', (req, res) => {
-//     res.send('Hi');
-// });
 
 var port = process.env.PORT || 9500;
 
