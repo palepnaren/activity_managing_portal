@@ -19,6 +19,8 @@ export class SharedTalksComponent implements OnInit, AfterViewInit {
   fileData;
   unit8Array: Uint8Array;
   listOfTalks = [];
+  audios;
+  len;
   uploadResponse = {
     status: '',
     upload: 0
@@ -38,14 +40,25 @@ export class SharedTalksComponent implements OnInit, AfterViewInit {
   }
 
 
-   ngAfterViewInit() {
+  ngAfterViewInit() {
      setTimeout(() => {
       this.fileDownload();
      }, 500);
 
+     setTimeout(() => {
+      document.addEventListener('play', (e) => {
+        this.audios = document.getElementsByTagName('audio');
+        for (this.i = 0, this.len = this.audios.length; this.i < this.len; this.i++) {
+            if (this.audios[this.i] !== e.target) {
+                this.audios[this.i].pause();
+            }
+        }
+      }, true);
+
+     }, 1501);
   }
 
-   getFile(e) {
+getFile(e) {
 
     e.preventDefault();
 
@@ -70,27 +83,24 @@ export class SharedTalksComponent implements OnInit, AfterViewInit {
 
    fileUpload() {
 
-    if (this.fileType === '.mp3' || this.fileType === '.ogg' || this.fileType === '.wav') {
+    // if (this.fileType === '.mp3' || this.fileType === '.ogg' || this.fileType === '.wav' || this.fileType === '.m4a') {
 
       this.service.fileUpload(this.file, this.unit8Array).subscribe(res => {
-        // console.log(res.message);
+
         this.uploadResponse.status = res.status;
         this.uploadResponse.upload = res.upload;
       }, err => {
         console.log(err);
       });
 
-    } else {
-      alert('Please choose mp3/ogg/wav file type only');
-    }
 
-    setTimeout(() => {
+      setTimeout(() => {
         $('#progress-bar').hide().fadeOut();
     }, 10000);
 
   }
 
-   fileDownload() {
+fileDownload() {
    this.service.fileDownload().subscribe(file => {
      // tslint:disable-next-line:prefer-for-of
      for (this.i = 0; this.i < Object.keys(file).length; this.i++) {
@@ -100,7 +110,7 @@ export class SharedTalksComponent implements OnInit, AfterViewInit {
    });
   }
 
-   get f() {
+get f() {
     return this.talksGroup.controls;
   }
 

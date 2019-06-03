@@ -36,7 +36,7 @@ routing.route('/file').post((req, res) => {
 routing.route('/download').get((req, res) => {
     db.downloadFiles().then(file =>{
         count = file[0].length;
-        console.log(count);
+        // console.log(count);
         if(count > max_count){
             max_count = count;
             file[0].forEach(file => {
