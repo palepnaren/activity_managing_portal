@@ -20,6 +20,8 @@ var user = {
     upline: '',
     date: ''
 }
+var isAdd;
+var deleted = [];
 var salt = 15;
 var isSaved = null;
 var hashed = null;
@@ -39,18 +41,48 @@ routing.route('/download').get((req, res) => {
         console.log(count);
         if(count > max_count){
             max_count = count;
+            isAdd = true;
             file[0].forEach(file => {
                 file.getSignedUrl({action: 'read', expires: '02-03-2491'}).then(url => {
-                    // console.log(url[0]);
+                
                     setTimeout(()=>{
-                        // console.log(url[0]);
-                        files.push({name: file.name, _url: url[0]}); 
+                
+                        if(files.findIndex(f => f.name == file.name) >= 0){
+
+                        } else {
+                            console.log(file.name);
+                            files.push({name: file.name, _url: url[0]}); 
+                        }
                     },100)
                 });
             });   
-        } 
+        } else if(count < max_count) {
+            max_count = count;
+            isAdd = false;
+            file[0].forEach(file => {
+                file.getSignedUrl({action: 'read', expires: '02-03-2491'}).then(url => {
+                    
+                    setTimeout(()=>{
+                        
+                        if(deleted.findIndex(f => f.name == file.name) >= 0){
+
+                        } else {
+                            
+                            deleted.push({name: file.name, _url: url[0]}); 
+                        }
+                    },100)
+                });
+            });
+        }
         setTimeout(()=>{
-            res.json(files);
+            if(isAdd){
+                console.log("res " + files.length);
+                res.json(files);
+            } else {
+                console.log("res " + deleted.length);
+                res.json(deleted);
+            }
+            
         }, 300);
     });  
 });
@@ -77,7 +109,6 @@ routing.route('/save').post((req, res) => {
     user.date = Date.now().toString();
 
     setTimeout(() =>{
-        // console.log(user);
         isSaved = db.saveUser(user);
         res.send(isSaved);
     }, 13000);
@@ -106,7 +137,6 @@ routing.route('/auth').post((req, res) => {
         if((req.body.email === isUser.email || req.body.email === isUser.username)){
             crypt.compare(req.body.pwd, isUser.pwd, (err,  match) => {
                 isValid = match;
-                // console.log(isValid);
             });
         } else {
             isValid = false;
