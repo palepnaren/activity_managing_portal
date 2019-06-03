@@ -96,7 +96,11 @@ getFile(e) {
 
       setTimeout(() => {
         $('#progress-bar').hide().fadeOut();
-    }, 10000);
+      }, 10000);
+
+      setTimeout(() => {
+        this.fileDownload();
+      }, 10002);
 
   }
 
