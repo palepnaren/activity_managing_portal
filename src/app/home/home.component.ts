@@ -3,6 +3,7 @@ import { LoginService } from './login.service';
 import { Router } from '@angular/router';
 import { FormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+import { EmailValidator } from '../validators/email.validator';
 
 
 
@@ -23,7 +24,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
 
     this.formGroup = this.formBuilder.group({
-         email: ['', Validators.required],
+         email: ['', [Validators.required, Validators.email, EmailValidator.emailValidate]],
          password: ['', Validators.required],
          rememberMe: ['']
     });

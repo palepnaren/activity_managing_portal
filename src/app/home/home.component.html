@@ -13,6 +13,11 @@
          formControlName="email"
          class="form-control input-group-text" type="text" placeholder="Username/Email" #email>
     </div>
+    <div class="alert alert-danger" *ngIf='f.email.touched && f.email.invalid'>
+      <div *ngIf='f.email.errors.required || f.email.errors?.email || f.email.errors?.emailError'>
+        Enter Proper email id.
+      </div>
+    </div>
     <div class="input-group">
         <i class=" fas fa-lock input-group-addon"></i>
         <input 
