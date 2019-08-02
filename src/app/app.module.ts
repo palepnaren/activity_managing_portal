@@ -20,6 +20,7 @@ import { SharedTalksComponent } from './shared-talks/shared-talks.component';
 import { CanActivateRouterGuard } from './guard-routing/CanActivateRouterGuard';
 import { PaginationComponent } from './pagination/pagination.component';
 import { firebaseConfig } from 'src/environments/environment.prod';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,14 @@ import { firebaseConfig } from 'src/environments/environment.prod';
       }
   ])
   ],
-  providers: [WeatherService, LoginService, CanActivateRouterGuard, AudioService, UserService],
+  providers: [
+    WeatherService,
+    LoginService,
+    CanActivateRouterGuard,
+    AudioService,
+    UserService,
+    CookieService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

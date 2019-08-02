@@ -28,7 +28,9 @@
     <div class="input-group">
         <input type="checkbox"
         name="rememberMe"
-        formControlName="rememberMe" #remember><span id="remember">Remember Me</span>
+        formControlName="rememberMe"
+        (change)='isChecked($event)' #remember><span id="remember"
+        >Remember Me</span>
     </div>
     <button id="login" class="btn btn-success text-center" (click)="auth(email.value, password.value)" type="submit"
     [disabled]='f.email.invalid'>login</button>

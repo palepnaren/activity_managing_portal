@@ -1,3 +1,4 @@
+import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs-compat/Observable';
 import { LoginService } from './login.service';
 import { Router } from '@angular/router';
@@ -18,16 +19,23 @@ export class HomeComponent implements OnInit {
   isLoading = false;
   isLoggedIn = true;
 
-  constructor(private formBuilder: FormBuilder, private service: LoginService) { }
+  constructor(private formBuilder: FormBuilder, private service: LoginService,
+              private router: Router, private cookie: CookieService) { }
 
 
   ngOnInit() {
 
     this.formGroup = this.formBuilder.group({
-         email: ['', [Validators.required, Validators.email, EmailValidator.emailValidate]],
-         password: ['', Validators.required],
-         rememberMe: ['']
+         email: [this.cookie.get('email'), [Validators.required, Validators.email, EmailValidator.emailValidate]],
+         password: [this.cookie.get('password'), Validators.required],
+         rememberMe: [this.cookie.get('isChecked')]
     });
+
+    if (this.cookie.get('email') !== null || this.cookie.get('email') !== undefined) {
+        this.router.navigateByUrl('/dashboard');
+     } else {
+      this.router.navigateByUrl('');
+     }
 
   }
 
@@ -37,6 +45,14 @@ export class HomeComponent implements OnInit {
       this.isLoading = this.service.isLoading;
       this.isLoggedIn = this.service.isfailed;
      }, 200);
+  }
+
+  isChecked(value: any) {
+    if (value.target.checked) {
+      this.cookie.set('email', this.formGroup.controls.email.value, new Date().getDate() + 7, '/auth', window.location.origin, true);
+      this.cookie.set('password', this.formGroup.controls.password.value, new Date().getDate() + 7, '/auth', window.location.origin, true);
+      this.cookie.set('isChecked', value.target.checked);
+     }
   }
 
   get f() {
