@@ -140,7 +140,6 @@ routing.route('/auth').post((req, res) => {
             if((req.body.email === isUser.email || req.body.email === isUser.username)){
                 crypt.compare(req.body.pwd, isUser.pwd, (err,  match) => {
                     isValid = match;
-                    console.log(isValid);
                 });
             } else {
                 isValid = false;
@@ -151,15 +150,16 @@ routing.route('/auth').post((req, res) => {
         
     });
 
-    if(isUser != null || isUser != undefined){
+    
         setTimeout(() => {
-            loggedInUser.fullName = isUser.fname+ ' ' + isUser.lname;
-            loggedInUser.username = isUser.username;
-            loggedInUser.role = isUser.role;
-            loggedInUser.upline = isUser.upline;
-            res.send({loggedIn:isValid, user: loggedInUser});
+            if(isUser != null || isUser != undefined){
+                loggedInUser.fullName = isUser.fname+ ' ' + isUser.lname;
+                loggedInUser.username = isUser.username;
+                loggedInUser.role = isUser.role;
+                loggedInUser.upline = isUser.upline;
+                res.send({loggedIn:isValid, user: loggedInUser});
+            }
         }, 3000);
-    }
     
     
 });
