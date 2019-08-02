@@ -14,5 +14,17 @@ export class EmailValidator {
         }
     }
 
+    static userNameValidate(control: AbstractControl): {[key: string]: any} | null {
+
+        const username: string = control.value;
+
+        if (username.match('^[a-zA-Z0-9]+$')) {
+            console.log('Good username');
+        } else {
+            console.log('Enter correct Username');
+            return {userNameError: true};
+        }
+    }
+
 
 }

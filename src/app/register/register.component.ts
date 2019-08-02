@@ -1,6 +1,7 @@
 import { UserService } from './../service/user.service';
 import { FormBuilder, FormGroup, Validators, FormsModule } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+import { EmailValidator } from '../validators/email.validator';
 
 @Component({
   selector: 'app-register',
@@ -30,8 +31,8 @@ export class RegisterComponent implements OnInit {
    this.registerGroup = this.formBuilder.group({
       first_name: ['', [Validators.required]],
       last_name: ['', [Validators.required]],
-      email : ['', [Validators.email, Validators.required]],
-      username: ['', [Validators.required, Validators.maxLength(15), Validators.minLength(4)]],
+      email : ['', [Validators.email, Validators.required, EmailValidator.emailValidate]],
+      username: ['', [Validators.required, Validators.maxLength(15), Validators.minLength(6), EmailValidator.userNameValidate]],
       password : ['', [Validators.required, Validators.minLength(6)]],
       cmp_password : ['', [Validators.required, Validators.minLength(6)]],
       role: ['', [Validators.required]],

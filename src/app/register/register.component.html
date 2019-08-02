@@ -67,10 +67,54 @@
       formControlName="upline"
       class="form-control input-group-text" type="text" placeholder="Upline name" #upline>
    </div>
-   <div id="error" *ngIf="comparePwd(password.value, cmp_password.value)" class="alert alert-danger">
-     Passwords not match!
+   <div *ngIf='registerGroup.invalid'>
+      <div class="alert alert-danger" id="error" *ngIf="comparePwd(password.value, cmp_password.value)">
+        Passwords not match!
+      </div>
+      <div class="alert alert-danger" *ngIf='reg.first_name.invalid && reg.first_name.touched'>
+        <div id='fname' *ngIf='reg.first_name.errors.required'>
+          First Name is Required
+        </div>
+      </div>
+      
+      <div class="alert alert-danger" *ngIf='reg.last_name.invalid && reg.last_name.touched'>
+        <div id='lname' *ngIf='reg.last_name.errors.required'>
+          Last Name is Required
+        </div>
+      </div>
+
+      <div class="alert alert-danger" *ngIf='reg.email.invalid && reg.email.touched'>
+        <div id='email' *ngIf='reg.email.errors.required || reg.email.errors?.email ||  reg.email.errors?.emailError'>
+          Enter Proper Email ID.
+        </div>
+      </div>
+
+      <div class="alert alert-danger" *ngIf='reg.username.invalid && reg.username.touched'>
+        <div id='username' *ngIf='reg.username.errors.required || reg.username.errors?.minlength ||  reg.email.errors?.maxlength || reg.username.errors?.userNameError'>
+          Username must be btw 6-15 chars length and alphanumeric.
+        </div>
+      </div>
+
+      <div class="alert alert-danger" *ngIf='(reg.password.invalid && reg.password.touched) || (reg.cmp_password.invalid && reg.cmp_password.touched)'>
+        <div id='password' *ngIf='reg.password.errors.required || reg.password.errors.minlength || reg.cmp_password.errors.required || reg.cmp_password.errors.minlength'>
+          Password is required and min 6
+        </div>
+      </div>
+
+      <div class="alert alert-danger" *ngIf='reg.role.invalid && reg.role.touched'>
+        <div id='role' *ngIf='reg.role.errors.required'>
+          Role is Required
+        </div>
+      </div>
+
+      <div class="alert alert-danger" *ngIf='reg.upline.invalid && reg.upline.touched'>
+        <div id='upline' *ngIf='reg.upline.errors.required'>
+          Upline is Required
+        </div>
+      </div>
    </div>
-    <button id="register" class="btn btn-success" (click)="register(first_name.value, last_name.value, email.value, username.value, password.value, role.value, upline.value)" type="submit">Register</button>
+    <button id="register" class="btn btn-success" (click)="register(first_name.value, last_name.value, email.value, username.value, password.value, role.value, upline.value)" 
+    [disabled]='registerGroup.invalid' type="submit">Register</button>
     <p>Have an account already?<a routerLink="/"> login here.</a></p>
   </form>
   <div *ngIf="isLoading" id="loading">
