@@ -31,7 +31,8 @@
               "./node_modules/bootstrap-less-port/less/bootstrap.less"
             ],
             "scripts": [
-              "./node_modules/jquery/dist/jquery.min.js"
+              "./node_modules/jquery/dist/jquery.min.js",
+              "./node_modules/crypto-js/crypto-js.js"
   
             
             ],

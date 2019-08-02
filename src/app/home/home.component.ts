@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { FormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { EmailValidator } from '../validators/email.validator';
+import { EncdecryptService } from '../service/encdecrypt.service';
 
 
 
@@ -20,18 +21,18 @@ export class HomeComponent implements OnInit {
   isLoggedIn = true;
 
   constructor(private formBuilder: FormBuilder, private service: LoginService,
-              private router: Router, private cookie: CookieService) { }
+              private router: Router, private cookie: CookieService, private encrypt: EncdecryptService) { }
 
 
   ngOnInit() {
 
     this.formGroup = this.formBuilder.group({
-         email: [this.cookie.get('email'), [Validators.required, Validators.email, EmailValidator.emailValidate]],
-         password: [this.cookie.get('password'), Validators.required],
+         email: [this.encrypt.decrypt(this.cookie.get('email')), [Validators.required, Validators.email, EmailValidator.emailValidate]],
+         password: [this.encrypt.decrypt(this.cookie.get('password')), Validators.required],
          rememberMe: [this.cookie.get('isChecked')]
     });
 
-    if (this.cookie.get('email') !== null || this.cookie.get('email') !== undefined) {
+    if (this.cookie.get('email') !== null && this.cookie.get('password') !== null) {
         this.router.navigateByUrl('/dashboard');
      } else {
       this.router.navigateByUrl('');
@@ -49,8 +50,8 @@ export class HomeComponent implements OnInit {
 
   isChecked(value: any) {
     if (value.target.checked) {
-      this.cookie.set('email', this.formGroup.controls.email.value, new Date().getDate() + 7, '/auth', window.location.origin, true);
-      this.cookie.set('password', this.formGroup.controls.password.value, new Date().getDate() + 7, '/auth', window.location.origin, true);
+      this.cookie.set('email', this.encrypt.encrypt(this.formGroup.controls.email.value));
+      this.cookie.set('password', this.encrypt.encrypt(this.formGroup.controls.password.value));
       this.cookie.set('isChecked', value.target.checked);
      }
   }

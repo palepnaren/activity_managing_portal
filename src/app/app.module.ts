@@ -21,6 +21,7 @@ import { CanActivateRouterGuard } from './guard-routing/CanActivateRouterGuard';
 import { PaginationComponent } from './pagination/pagination.component';
 import { firebaseConfig } from 'src/environments/environment.prod';
 import { CookieService } from 'ngx-cookie-service';
+import { EncdecryptService } from './service/encdecrypt.service';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,8 @@ import { CookieService } from 'ngx-cookie-service';
     CanActivateRouterGuard,
     AudioService,
     UserService,
-    CookieService
+    CookieService,
+    EncdecryptService
   ],
   bootstrap: [AppComponent]
 })
