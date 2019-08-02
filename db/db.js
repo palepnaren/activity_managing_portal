@@ -21,9 +21,10 @@ firebase.initializeApp({
 
 exports.saveFile = (name, data) => {
   
-    const index = name.lastIndexOf('\\');
-    name = name.substr(index + 1);
-    
+    // const index = name.lastIndexOf('\\');
+    // name = name.substr(index + 1);
+
+    console.log(name);
    data = Object.values(data);
    var buffer = Buffer.from(data);
    //console.log(buffer);

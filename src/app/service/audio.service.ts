@@ -10,14 +10,14 @@ import { map } from 'rxjs/operators';
 export class AudioService {
 
   data = {
-    file: undefined,
+    name: undefined,
     content: undefined
   };
   constructor(private http: HttpClient) { }
 
-  fileUpload(file, data) {
+  fileUpload(name, data) {
     // console.log(formData);
-    this.data.file = file.name;
+    this.data.name = name;
     this.data.content = data;
     const url = window.location.origin + '/file';
     return this.http.post(url, this.data, {
@@ -30,7 +30,7 @@ export class AudioService {
               const progress = Math.round(100 * event.loaded / event.total);
               return {status: 'progress', upload: progress};
         case HttpEventType.Response:
-              return {status: 'progress', upload: progress};
+              return {status: 'complete', upload: progress};
         default:
             return {status: '', upload: null};
       }
@@ -42,5 +42,9 @@ export class AudioService {
 
     // tslint:disable-next-line:no-shadowed-variable
     return this.http.get(url).map(file => file);
+  }
+
+  audioPromotion(data) {
+    const url = window.location.origin +  '/promote';
   }
 }

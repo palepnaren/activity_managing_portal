@@ -28,6 +28,7 @@ export class SharedTalksComponent implements OnInit, AfterViewInit {
   i;
   constructor(private builder: FormBuilder, private service: AudioService) {
     this.talksGroup = this.builder.group({
+      file_name: ['', [Validators.required, Validators.maxLength(30)]],
       file: ['', Validators.required]
     });
   }
@@ -81,11 +82,11 @@ getFile(e) {
 
   }
 
-   fileUpload() {
+   fileUpload(name) {
 
     // if (this.fileType === '.mp3' || this.fileType === '.ogg' || this.fileType === '.wav' || this.fileType === '.m4a') {
 
-      this.service.fileUpload(this.file, this.unit8Array).subscribe(res => {
+      this.service.fileUpload(name, this.unit8Array).subscribe(res => {
 
         this.uploadResponse.status = res.status;
         this.uploadResponse.upload = res.upload;
@@ -93,14 +94,16 @@ getFile(e) {
         console.log(err);
       });
 
-
       setTimeout(() => {
-        $('#progress-bar').hide().fadeOut();
+        if (this.uploadResponse.upload === 100) {
+          $('#progress-bar').hide().fadeOut();
+          setTimeout(() => {
+            this.fileDownload();
+            window.location.reload();
+          }, 50);
+        }
       }, 10000);
 
-      setTimeout(() => {
-        this.fileDownload();
-      }, 10002);
 
   }
 
@@ -112,6 +115,7 @@ fileDownload() {
      }
      this.lengthOfItems = this.listOfTalks.length;
    });
+
   }
 
 get f() {

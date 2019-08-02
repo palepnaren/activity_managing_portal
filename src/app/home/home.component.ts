@@ -32,11 +32,6 @@ export class HomeComponent implements OnInit {
          rememberMe: [this.cookie.get('isChecked')]
     });
 
-    if (this.cookie.get('email') !== null && this.cookie.get('password') !== null) {
-        this.router.navigateByUrl('/dashboard');
-     } else {
-      this.router.navigateByUrl('');
-     }
 
   }
 

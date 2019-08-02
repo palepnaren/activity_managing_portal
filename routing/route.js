@@ -29,7 +29,7 @@ var key = null;
 var isValid;
 var isUser;
 routing.route('/file').post((req, res) => {
-    file = req.body.file;
+    file = req.body.name;
     data = req.body.content;
     console.log(file);
     db.saveFile(file, data);

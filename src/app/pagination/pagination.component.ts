@@ -63,6 +63,16 @@ export class PaginationComponent implements OnInit, AfterViewInit {
 
   }
 
+  promote(item) {
+
+    const role = sessionStorage.getItem('role');
+    if (role.toLowerCase() === 'ibo' || role.toLowerCase() === 'silver' || role.toLowerCase() === 'eagle') {
+
+    } else {
+
+    }
+  }
+
   showSetIn(e, set) {
 
     e.preventDefault();
