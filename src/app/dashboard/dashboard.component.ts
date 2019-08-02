@@ -259,12 +259,12 @@ numOfappointments(date, numOfProcess, category) {
                     .tickFormat(d => d + '');
 
     this.yAxisGroup.selectAll('text')
-              .attr('fill', 'blue');
+              .attr('fill', 'red');
 
     this.xAxisGroup.selectAll('text')
               .attr('transform', `rotate(${-40})`)
               .attr('text-anchor', 'end')
-              .attr('fill', 'blue');
+              .attr('fill', 'red');
 
 
   }

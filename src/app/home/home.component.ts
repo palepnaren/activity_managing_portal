@@ -32,11 +32,11 @@ export class HomeComponent implements OnInit {
   }
 
    auth(email, pwd) {
+     this.service.isAuth(email, pwd);
      setInterval(() => {
       this.isLoading = this.service.isLoading;
       this.isLoggedIn = this.service.isfailed;
      }, 200);
-     this.service.isAuth(email, pwd);
   }
 
   get f() {

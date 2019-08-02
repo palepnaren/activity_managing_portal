@@ -132,24 +132,35 @@ routing.route('/auth').post((req, res) => {
     
     db.authUser(user, (authUser) => {
         
-        key = Object.keys(authUser);
-        isUser = authUser[key[0]];
-        if((req.body.email === isUser.email || req.body.email === isUser.username)){
-            crypt.compare(req.body.pwd, isUser.pwd, (err,  match) => {
-                isValid = match;
-            });
+        if(authUser === null || authUser === undefined){
+
         } else {
-            isValid = false;
+            key = Object.keys(authUser);
+            isUser = authUser[key[0]];
+            if((req.body.email === isUser.email || req.body.email === isUser.username)){
+                crypt.compare(req.body.pwd, isUser.pwd, (err,  match) => {
+                    isValid = match;
+                    console.log(isValid);
+                });
+            } else {
+                isValid = false;
+                console.log('Password did not match');
+            }
         }
+        
+        
     });
 
-    setTimeout(() => {
-        loggedInUser.fullName = isUser.fname+ ' ' + isUser.lname;
-        loggedInUser.username = isUser.username;
-        loggedInUser.role = isUser.role;
-        loggedInUser.upline = isUser.upline;
-        res.send({loggedIn:isValid, user: loggedInUser});
-    }, 3000);
+    if(isUser != null || isUser != undefined){
+        setTimeout(() => {
+            loggedInUser.fullName = isUser.fname+ ' ' + isUser.lname;
+            loggedInUser.username = isUser.username;
+            loggedInUser.role = isUser.role;
+            loggedInUser.upline = isUser.upline;
+            res.send({loggedIn:isValid, user: loggedInUser});
+        }, 3000);
+    }
+    
     
 });
 
