@@ -57,4 +57,10 @@ export class LoginService {
 
   }
 
+  userLogout() {
+    const url = window.location.origin + '/destroy';
+
+    return this.http.get(url);
+  }
+
 }

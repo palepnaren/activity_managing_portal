@@ -29,7 +29,7 @@ var key = null;
 var isValid;
 var isUser;
 
-routing.route('/promote').post((req, res) =>{
+routing.route('/promote').put((req, res) =>{
     var isPromoted;
     db.promotedFiles(req.body, (flag) =>{
         isPromoted = flag;
@@ -41,6 +41,7 @@ routing.route('/promote').post((req, res) =>{
 });
 
 routing.route('/getPromoted').get((req, res) => {
+    console.log(req.session.loggedIn);
     var files = {
         keys: [],
         values: []
@@ -53,7 +54,12 @@ routing.route('/getPromoted').get((req, res) => {
     });
 
     setTimeout(() => {
-        res.json(files);
+        if(req.session.loggedIn == true){
+            res.json(files);
+        } else {
+            res.json({message:'Session is destroyed'})
+        }
+        
     },500);
 })
 
@@ -65,6 +71,7 @@ routing.route('/file').post((req, res) => {
 });
 
 routing.route('/download').get((req, res) => {
+    console.log(req.session.loggedIn);
     db.downloadFiles().then(file =>{
         count = file[0].length;
         console.log(count);
@@ -106,10 +113,19 @@ routing.route('/download').get((req, res) => {
         setTimeout(()=>{
             if(isAdd){
                 console.log("res " + files.length);
-                res.json(files);
+                if(req.session.loggedIn == true){
+                    res.json(files);
+                } else {
+                    res.json({message:'Session is destroyed'});
+                }
             } else {
                 console.log("res " + deleted.length);
-                res.json(deleted);
+                if(req.session.loggedIn == true){
+                    res.json(deleted);
+                } else {
+                    res.json({message:'Session is destroyed'})
+                }
+                
             }
             
         }, 300);
@@ -168,10 +184,12 @@ routing.route('/auth').post((req, res) => {
             isUser = authUser[key[0]];
             if((req.body.email === isUser.email || req.body.email === isUser.username)){
                 crypt.compare(req.body.pwd, isUser.pwd, (err,  match) => {
+                    req.session.loggedIn = match;
                     isValid = match;
                 });
             } else {
                 isValid = false;
+                req.session.loggedIn = false;
                 console.log('Password did not match');
             }
         }
@@ -195,6 +213,7 @@ routing.route('/auth').post((req, res) => {
 
 routing.route('/process').post((req, res)=>{
 
+    console.log(req.session.loggedIn);
     var data = req.body.data;
     var email = req.body.user;
 
@@ -203,5 +222,21 @@ routing.route('/process').post((req, res)=>{
     res.send({msg:message});
 
 });
+
+routing.route('/destroy').get((req,res) =>{
+    req.session.loggedIn = false;
+    req.session.destroy((err) => {
+        if(err) {
+            return console.log(err);
+        }
+        res.redirect('/');
+    });
+    setTimeout(()=>{
+        console.log(req.session);
+    },200);
+});
+
+
+
 
 module.exports = routing;

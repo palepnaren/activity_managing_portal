@@ -64,6 +64,10 @@ import { EncdecryptService } from './service/encdecrypt.service';
         component: SharedTalksComponent,
         canActivate: [CanActivateRouterGuard]
 
+      },
+      {
+        path: 'logout',
+        component: HomeComponent
       }
   ])
   ],

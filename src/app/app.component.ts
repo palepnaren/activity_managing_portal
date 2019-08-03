@@ -107,7 +107,10 @@ sessionStorage.removeItem('name');
 sessionStorage.removeItem('role');
 sessionStorage.removeItem('email');
 sessionStorage.removeItem('isAuth');
-this.router.navigateByUrl('/');
+this.login.userLogout().subscribe(() => {
+  console.log('User Logged out');
+  // window.location.reload();
+});
 
 
 }

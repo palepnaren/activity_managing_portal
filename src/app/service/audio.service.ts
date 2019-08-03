@@ -45,7 +45,7 @@ export class AudioService {
 
   audioPromotion(data) {
     const url = window.location.origin +  '/promote';
-    return this.http.post(url, data).map(promotedFile => promotedFile);
+    return this.http.put(url, data).map(promotedFile => promotedFile);
   }
 
   getPromotedFiles() {
