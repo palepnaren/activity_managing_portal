@@ -30,7 +30,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         }
       }, 200);
 
-      this.j_Query();
+      // this.j_Query();
 }
 
 ngAfterViewInit(): void {
@@ -94,11 +94,11 @@ j_Query() {
         $('#main-menu').hide();
       }
 
-      if (window.orientation !== undefined || window.navigator.userAgent.indexOf('IEMobile') !== -1) {
-        $('#nav-menu').hide();
-        $('#main-body').addClass('col-sm-12 col-md-12 col-12');
-        $('#main-menu').show();
-       }
+      // if (window.orientation !== undefined || window.navigator.userAgent.indexOf('IEMobile') !== -1) {
+      //   $('#nav-menu').hide();
+      //   $('#main-body').addClass('col-sm-12 col-md-12 col-12');
+      //   $('#main-menu').show();
+      //  }
     });
 
     if (window.outerWidth < 770) {
