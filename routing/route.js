@@ -28,6 +28,35 @@ var hashed = null;
 var key = null;
 var isValid;
 var isUser;
+
+routing.route('/promote').post((req, res) =>{
+    var isPromoted;
+    db.promotedFiles(req.body, (flag) =>{
+        isPromoted = flag;
+    });
+
+    setTimeout(()=>{
+        res.json(isPromoted);
+    }, 200);
+});
+
+routing.route('/getPromoted').get((req, res) => {
+    var files = {
+        keys: [],
+        values: []
+    }
+    db.getPromoted((data) => {
+        for(var i=0; i<=data.values.length-1; i++){
+            files.keys[i] = Object.keys(data.values[i]);
+            files.values[i] = Object.values(data.values[i]);
+        }
+    });
+
+    setTimeout(() => {
+        res.json(files);
+    },500);
+})
+
 routing.route('/file').post((req, res) => {
     file = req.body.name;
     data = req.body.content;

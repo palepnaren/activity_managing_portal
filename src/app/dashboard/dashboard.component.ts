@@ -6,6 +6,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import * as d3 from 'd3';
 import { WeatherService } from '../service/weather.service';
 import { Router } from '@angular/router';
+import { AudioService } from '../service/audio.service';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -13,6 +14,8 @@ import { Router } from '@angular/router';
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
   dataset = [];
+  promotedTalkes = [];
+  length;
   mg1 = []; mg2 = []; conv = []; mg3 = []; bp1 = []; ft1 = []; bp2 = []; ft2 = []; bp3 = []; preLaunch = []; launch = [];
   padding = 3;
   translate;
@@ -45,7 +48,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   Heigth;
 
 constructor(private route: Router,
-            private fbuilder: FormBuilder, private userService: UserService, private db: AngularFireDatabase) {
+            private fbuilder: FormBuilder, private userService: UserService,
+            private db: AngularFireDatabase, private audioService: AudioService) {
   }
 
 ngOnInit() {
@@ -70,6 +74,9 @@ ngAfterViewInit() {
   window.addEventListener('resize', this.createGraph);
 
   this.getData('conversations');
+  setTimeout(() => {
+    this.talksPromoted();
+   }, 101);
   // this.updateGraph('conversations');
 
 }
@@ -267,6 +274,21 @@ numOfappointments(date, numOfProcess, category) {
               .attr('fill', 'red');
 
 
+  }
+
+  talksPromoted() {
+    this.audioService.getPromotedFiles().subscribe(files => {
+      console.log('@@@@@@@@@@@');
+      Object.values(files)[1].forEach(file => {
+        this.promotedTalkes.push(file[0].data);
+      });
+      this.length = this.promotedTalkes.length;
+    });
+
+    setTimeout(() => {
+      console.log('##############');
+      console.log(this.promotedTalkes);
+    }, 100);
   }
 
   updateGraphData(data) {

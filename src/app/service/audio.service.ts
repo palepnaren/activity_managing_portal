@@ -16,7 +16,6 @@ export class AudioService {
   constructor(private http: HttpClient) { }
 
   fileUpload(name, data) {
-    // console.log(formData);
     this.data.name = name;
     this.data.content = data;
     const url = window.location.origin + '/file';
@@ -46,5 +45,11 @@ export class AudioService {
 
   audioPromotion(data) {
     const url = window.location.origin +  '/promote';
+    return this.http.post(url, data).map(promotedFile => promotedFile);
+  }
+
+  getPromotedFiles() {
+    const url = window.location.origin + '/getPromoted';
+    return this.http.get(url).map(data => data);
   }
 }

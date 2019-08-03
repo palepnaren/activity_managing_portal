@@ -35,6 +35,38 @@ exports.saveFile = (name, data) => {
   
 };
 
+exports.promotedFiles = (fileData, cb) =>{
+    var data;
+    var key;
+    var flag = false;
+    firebase.database().ref('/promotedTalks').child(fileData.data.name).on('value', (snapshot) => {
+
+        if(snapshot.exists()){
+            
+        } else{
+            console.log('Adding new child')
+            flag = true;
+            key = firebase.database().ref('/promotedTalks').child(fileData.data.name).push(fileData);
+            cb(flag); 
+        }
+
+    });
+      
+}
+
+exports.getPromoted = (cb) => {
+    var files = {
+        keys: [],
+        values: []
+    }
+    firebase.database().ref('/promotedTalks').on('value', (snapshot) => {
+        files.keys = Object.keys(snapshot.val());
+        files.values = Object.values(snapshot.val());
+        // console.log(files);
+        cb(files);
+    })
+}
+
 exports.downloadFiles = () =>{
     return bucket.getFiles();
 };

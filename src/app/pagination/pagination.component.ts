@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
+import { AudioService } from '../service/audio.service';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -12,17 +13,21 @@ export class PaginationComponent implements OnInit, AfterViewInit {
   @Input('items') listOfItems;
   // tslint:disable-next-line:no-input-rename
   @Input('size') lengthOfList: number;
-  // tslint:disable-next-line:no-input-rename
-  @Input('viewType') viewType: string;
+
+
 
   currentList = [];
   itemList = [];
   currentSetIn;
 
-  constructor() { }
+  constructor(private audioService: AudioService) { }
 
   ngOnInit() {
-
+    setTimeout(() => {
+      console.log(this.listOfItems);
+      console.log(this.lengthOfList);
+    }, 1100);
+    console.log(this.listOfItems);
   }
 
   ngAfterViewInit() {
@@ -30,7 +35,7 @@ export class PaginationComponent implements OnInit, AfterViewInit {
       this.paginate(this.lengthOfList);
       this.itemList = this.listOfItems.slice(0, 10);
       this.currentSetIn = '1 - ' + this.itemList.length + ' of ' + this.listOfItems.length;
-    }, 1500);
+    }, 2200);
   }
 
   paginate(size) {
@@ -65,11 +70,29 @@ export class PaginationComponent implements OnInit, AfterViewInit {
 
   promote(item) {
 
+    console.log(item);
     const role = sessionStorage.getItem('role');
+    console.log(role);
+    const details = {
+        data: null,
+        user: '',
+        role: ''
+    };
     if (role.toLowerCase() === 'ibo' || role.toLowerCase() === 'silver' || role.toLowerCase() === 'eagle') {
 
     } else {
+      details.data = item;
+      details.user = sessionStorage.getItem('email');
+      details.role = role;
+      this.audioService.audioPromotion(details).subscribe(file => {
+        console.log(file);
+        if (file) {
+          alert('file promoted');
+        } else {
+          alert('Already promoted');
+        }
 
+      });
     }
   }
 
