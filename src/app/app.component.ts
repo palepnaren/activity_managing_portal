@@ -91,9 +91,9 @@ j_Query() {
       }
 
       if (window.orientation !== undefined || window.navigator.userAgent.indexOf('IEMobile') !== -1) {
-        $('#nav-menu').toggle();
-        $('#main-body').toggleClass('col-sm-12 col-md-12 col-12');
-        $('#main-menu').toggle();
+        $('#nav-menu').hide();
+        $('#main-body').addClass('col-sm-12 col-md-12 col-12');
+        $('#main-menu').show();
        }
     });
 
