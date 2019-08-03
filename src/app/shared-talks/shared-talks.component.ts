@@ -69,16 +69,16 @@ getFile(e) {
     this.fileType = this.fileName.substr(index);
     console.log(this.file.size);
 
-    if (this.fileType === '.mp3' || this.fileType === '.ogg' || this.fileType === '.wav') {
-      const reader = new FileReader();
-      reader.addEventListener('load', () => {
+    // if (this.fileType === '.mp3' || this.fileType === '.ogg' || this.fileType === '.wav') {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => {
       this.fileData = reader.result;
       this.unit8Array = new Uint8Array(this.fileData);
       console.log(this.unit8Array);
     });
 
-      reader.readAsArrayBuffer(this.file);
-    }
+    reader.readAsArrayBuffer(this.file);
+    // }
 
   }
 
