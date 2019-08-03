@@ -1,6 +1,6 @@
 import { LoginService } from './home/login.service';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import * as $ from 'jquery';
 import { Router } from '@angular/router';
 
@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.less']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
 
   title = 'team-project';
   test: any;
@@ -31,6 +31,10 @@ export class AppComponent implements OnInit {
       }, 200);
 
       this.j_Query();
+}
+
+ngAfterViewInit(): void {
+  this.j_Query();
 }
 
 
