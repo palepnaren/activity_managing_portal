@@ -79,6 +79,18 @@ j_Query() {
       }
     });
 
+    window.addEventListener('load', (e) => {
+      if (window.outerWidth < 770) {
+        $('#nav-menu').hide();
+        $('#main-body').addClass('col-sm-12 col-md-12 col-12');
+        $('#main-menu').show();
+      } else {
+        $('#main-body').removeClass('col-sm-12 col-md-12 col-12');
+        $('#nav-menu').show();
+        $('#main-menu').hide();
+      }
+    });
+
     if (window.outerWidth < 770) {
       $('#main-menu').click(() => {
         $('#nav-menu').animate({
