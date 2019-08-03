@@ -71,7 +71,7 @@ j_Query() {
       e.preventDefault();
     });
 
-    window.addEventListener('resize', (e) => {
+    window.addEventListener('load', (e) => {
       if (window.outerWidth < 770) {
         $('#nav-menu').hide();
         $('#main-body').addClass('col-sm-12 col-md-12 col-12');
