@@ -15,6 +15,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   test: any;
   isLoggedIn;
   name;
+  events = ['load', 'resize'];
 
   constructor(private http: HttpClient, private router: Router, private login: LoginService) {
 
@@ -71,27 +72,30 @@ j_Query() {
       e.preventDefault();
     });
 
-    window.addEventListener('load', (e) => {
-      if (window.outerWidth < 770) {
-        $('#nav-menu').hide();
-        $('#main-body').addClass('col-sm-12 col-md-12 col-12');
-        $('#main-menu').show();
-        $('#main-menu').click(() => {
-          $('#nav-menu').animate({
-            zIndex: 20,
-            transition: 0.5
-          }, 500, 'linear', () => {
-            console.log('Inside window resize');
-            $('#main-body').toggleClass('col-sm-12 col-md-12 col-12');
-            $('#nav-menu').toggle();
+    this.events.forEach(event => {
+      window.addEventListener(event, (e) => {
+        if (window.outerWidth < 770) {
+          $('#nav-menu').hide();
+          $('#main-body').addClass('col-sm-12 col-md-12 col-12');
+          $('#main-menu').show();
+          $('#main-menu').click(() => {
+            $('#nav-menu').animate({
+              zIndex: 20,
+              transition: 0.5
+            }, 500, 'linear', () => {
+              console.log('Inside window resize');
+              $('#main-body').toggleClass('col-sm-12 col-md-12 col-12');
+              $('#nav-menu').toggle();
+            });
           });
-        });
-      } else {
-        $('#main-body').removeClass('col-sm-12 col-md-12 col-12');
-        $('#nav-menu').show();
-        $('#main-menu').hide();
-      }
+        } else {
+          $('#main-body').removeClass('col-sm-12 col-md-12 col-12');
+          $('#nav-menu').show();
+          $('#main-menu').hide();
+        }
+      });
     });
+
 
 
   });
