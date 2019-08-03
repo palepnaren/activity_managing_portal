@@ -89,6 +89,12 @@ j_Query() {
         $('#nav-menu').show();
         $('#main-menu').hide();
       }
+
+      if (window.orientation !== undefined || window.navigator.userAgent.indexOf('IEMobile') !== -1) {
+        $('#nav-menu').toggle();
+        $('#main-body').toggleClass('col-sm-12 col-md-12 col-12');
+        $('#main-menu').toggle();
+       }
     });
 
     if (window.outerWidth < 770) {
