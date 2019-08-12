@@ -23,7 +23,8 @@
           <label class="custom-file-label" for="customFile">Choose file</label>
       </div>
       <br>
-        <button id="upload" class="btn btn-success" type="submit" (click)="fileUpload(file_name.value)">Upload</button>&nbsp;&nbsp;
+        <button id="upload" class="btn btn-success" type="submit" 
+        [disabled]='f.file_name.invalid' (click)="fileUpload(file_name.value)">Upload</button>&nbsp;&nbsp;
         
     </div>
 </div>
