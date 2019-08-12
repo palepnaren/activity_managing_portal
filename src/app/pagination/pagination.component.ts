@@ -79,7 +79,7 @@ export class PaginationComponent implements OnInit, AfterViewInit {
         role: ''
     };
     if (role.toLowerCase() === 'ibo' || role.toLowerCase() === 'silver' || role.toLowerCase() === 'eagle') {
-
+      alert('Your account is not eligible to promote talks.');
     } else {
       details.data = item;
       details.user = sessionStorage.getItem('email');
