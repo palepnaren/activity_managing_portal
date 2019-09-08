@@ -54,10 +54,10 @@ div#search{
 
 div#form{
   position: relative;
-  top: 30px;
+  top: 100px;
   transform: translate(10%,-20%);
   background-color: bisque;
-  height: 430px;
+  height: 450px;
   padding: 20px;
   margin-bottom: 50px;
 }
@@ -72,6 +72,10 @@ div#form{
   margin-left: 50px;
 }
 
+.table{
+  margin-left: 50px;
+}
+
 
 
 
@@ -80,7 +84,7 @@ div#form{
   div#form{
     background-color: bisque;
     position: relative;
-    top: 0px;
+    top: 100px;
     left: 10%;
     margin-bottom: 40px;
     padding: 10px;
@@ -91,16 +95,26 @@ div#form{
     font-size: 8px;
     margin-top: 10px;
   }
+
+
     
     
 }
 
+@media only screen and (max-width: @phone){
+  input:not([type="date"]) {
+
+    width: 50px;
+  }
+}
+
 @media only screen and (min-width:@small) and (max-width: @phone){
+
     
   div#form{
     background-color: bisque;
     position: relative;
-    top: 0px;
+    top: 100px;
     left: 10%;
     margin-bottom: 40px;
     padding: 10px;

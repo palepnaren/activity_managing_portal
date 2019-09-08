@@ -57,12 +57,12 @@ import { EncdecryptService } from './service/encdecrypt.service';
       {
         path: 'dashboard',
         component: DashboardComponent,
-        canActivate: [CanActivateRouterGuard]
+        // canActivate: [CanActivateRouterGuard]
       },
       {
         path: 'sharedTalks',
         component: SharedTalksComponent,
-        canActivate: [CanActivateRouterGuard]
+        // canActivate: [CanActivateRouterGuard]
 
       },
       {

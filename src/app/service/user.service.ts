@@ -9,6 +9,7 @@ export class UserService {
 
   isSaved;
   savedUser;
+
   constructor(private http: HttpClient) { }
 
   regUser(user) {
@@ -23,6 +24,14 @@ export class UserService {
 
     return this.http.post(url, {data: processData, user: email}).map(res => res);
 
+  }
+
+  getProcess(email) {
+
+    console.log(email);
+    const url = window.location.origin + '/processList/'+email;
+
+    return this.http.get(url).map(res => res);
   }
 
 }

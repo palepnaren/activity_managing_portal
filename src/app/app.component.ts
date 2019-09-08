@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import * as $ from 'jquery';
 import { Router } from '@angular/router';
+import { UserService } from './service/user.service';
+import * as copy from 'copy-to-clipboard'
 
 @Component({
   selector: 'app-root',
@@ -16,9 +18,25 @@ export class AppComponent implements OnInit, AfterViewInit {
   isLoggedIn;
   name;
   events = ['load', 'resize'];
+  obj= {
+      todayDate: '2019-10-10',
+      conversations: '1',
+      dtm: '1',
+      mg1: '1',
+      mg2: '1',
+      mg3: '1',
+      bp1: '1',
+      bp2: '1',
+      fp1: '1',
+      fp2: '1',
+      preLaunch: '1',
+      launch: '1',
+      others: '1'
+  };
+  tempArray;
 
-  constructor(private http: HttpClient, private router: Router, private login: LoginService) {
-
+  constructor(private http: HttpClient, private router: Router, private login: LoginService, private userService: UserService) {
+    
   }
 
   ngOnInit() {
@@ -29,6 +47,26 @@ export class AppComponent implements OnInit, AfterViewInit {
           // console.log(this.name);
           this.isLoggedIn = this.login.isLoggedIn;
         }
+        if(localStorage.getItem('todayEntry') === '' || localStorage.getItem('todayEntry') === null || localStorage.getItem('todayEntry') === undefined){
+          
+        } else {
+          console.log('_________');
+          console.log(this.obj);
+          this.obj.todayDate = localStorage.getItem('todayEntry').split('~')[0];
+          this.obj.conversations = localStorage.getItem('todayEntry').split('~')[1];
+          this.obj.dtm = localStorage.getItem('todayEntry').split('~')[2];
+          this.obj.mg1 = localStorage.getItem('todayEntry').split('~')[3];
+          this.obj.mg2 = localStorage.getItem('todayEntry').split('~')[4];
+          this.obj.mg3 = localStorage.getItem('todayEntry').split('~')[5];
+          this.obj.bp1 = localStorage.getItem('todayEntry').split('~')[6];
+          this.obj.bp2 = localStorage.getItem('todayEntry').split('~')[7];
+          this.obj.fp1 = localStorage.getItem('todayEntry').split('~')[8];
+          this.obj.fp2 = localStorage.getItem('todayEntry').split('~')[9];
+          this.obj.preLaunch = localStorage.getItem('todayEntry').split('~')[10];
+          this.obj.launch = localStorage.getItem('todayEntry').split('~')[11];
+          this.obj.others = localStorage.getItem('todayEntry').split('~')[12];
+        }
+        
       }, 200);
 
       // this.j_Query();
@@ -99,6 +137,11 @@ j_Query() {
 
 
   });
+}
+
+copy(){
+  
+  copy(localStorage.getItem('todayEntry'));
 }
 
 logout() {

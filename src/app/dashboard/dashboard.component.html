@@ -9,11 +9,6 @@
 
 <div id="content" class="container-fuild row">
 
-    
-  <div class=" col-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-      <pagination [items]="promotedTalkes" [size]="length"></pagination>
-  </div>
-
   <div #graph id="graph" class="col-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 canvas">
       <div class="form-group" class="filter" [formGroup]='fGroup'>
           <label for="category" class="label">Filter:</label>
@@ -38,7 +33,43 @@
        </div>
 
 
-      <svg width="100%" height="500px"></svg>
+       <table class="table table-dark table-bordered table-hover table-responsive">
+        <thead>
+          <tr>
+            <th>conver</th>
+            <th>DTM</th>
+            <th>MG1</th>
+            <th>MG2</th>
+            <th>MG3</th>
+            <th>BP1</th>
+            <th>BP2</th>
+            <th>FP1</th>
+            <th>FP2</th>
+            <th>PreL</th>
+            <th>Launch</th>
+            <th>Others</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor = "let list of processList">
+            <td>{{list.conversations}}</td>
+            <td>{{list.dtm}}</td>
+            <td>{{list.mg1}}</td>
+            <td>{{list.mg2}}</td>
+            <td>{{list.mg3}}</td>
+            <td>{{list.bp1}}</td>
+            <td>{{list.bp2}}</td>
+            <td>{{list.fp1}}</td>
+            <td>{{list.fp2}}</td>
+            <td>{{list.preLaunch}}</td>
+            <td>{{list.launch}}</td>
+            <td>{{list.others}}</td>
+            <td>{{list.todayDate}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- <svg width="100%" height="500px"></svg> -->
   </div>
 
   <div id='form' class="col-10 col-lg-10 col-md-10 col-sm-10 col-xs-10">
@@ -53,7 +84,88 @@
           formControlName="date"
           class="form-control" id="date" #date>
         </div>
+
+
         <div class="form-group">
+          <div class="row">
+            <div class='col-sm-3 col-xs-3 col-3'>
+                <label for="conv">conver:</label>
+                <input type="text" 
+                formControlName="conversations"
+                class="form-control" id="conv" #conv>
+            </div>
+            <div class='col-sm-3 col-xs-3 col-3' id="div-dtm">
+                <label for="dtm">DTM:</label>
+                <input type="text" 
+                formControlName="dtm"
+                class="form-control" id="dtm" #dtm>
+            </div>
+            <div class='col-sm-3 col-xs-3 col-3' id="div-mg1">
+                <label for="mg1">MG1:</label>
+                <input type="text" 
+                formControlName="mg1"
+                class="form-control" id="mg1" #mg1>
+            </div>
+            <div class='col-sm-3 col-xs-3 col-3' id="div-mg2">
+                <label for="mg2">MG2:</label>
+                <input type="text" 
+                formControlName="mg2"
+                class="form-control" id="mg2" #mg2>
+            </div>
+            <div class='col-sm-3 col-xs-3 col-3' id="div-mg3">
+                <label for="mg3">MG3:</label>
+                <input type="text" 
+                formControlName="mg3"
+                class="form-control" id="mg3" #mg3>
+            </div>
+            <div class='col-sm-3 col-xs-3 col-3' id="div-bp1">
+                <label for="bp1">BP1:</label>
+                <input type="text" 
+                formControlName="bp1"
+                class="form-control" id="bp1" #bp1>
+            </div>
+            <div class='col-sm-3 col-xs-3 col-3' id="div-bp2">
+                <label for="bp2">BP2:</label>
+                <input type="text" 
+                formControlName="bp2"
+                class="form-control" id="bp2" #bp2>
+            </div>
+            <div class='col-sm-3 col-xs-3 col-3' id="div-fp1">
+                <label for="fp1">FP1:</label>
+                <input type="text" 
+                formControlName="fp1"
+                class="form-control" id="fp1" #fp1>
+            </div>
+            <div class='col-sm-3 col-xs-3 col-3' id="div-fp2">
+                <label for="fp2">FP2:</label>
+                <input type="text" 
+                formControlName="fp2"
+                class="form-control" id="fp2" #fp2>
+            </div>
+            <div class='col-sm-3 col-xs-3 col-3' id="div-pre">
+                <label for="prel">PreL:</label>
+                <input type="text" 
+                formControlName="preLaunch"
+                class="form-control" id="prel" #preLaunch>
+            </div>
+            <div class='col-sm-3 col-xs-3 col-3' id="div-launch">
+                <label for="launch">Launch:</label>
+                <input type="text" 
+                formControlName="launch"
+                class="form-control" id="launch" #launch>
+            </div>
+            <div class='col-sm-3 col-xs-3 col-3' id="div-others">
+                <label for="others">others:</label>
+                <input type="text" 
+                formControlName="others"
+                class="form-control" id="others" #others>
+            </div>
+          </div>
+          
+        </div>
+
+
+        <!-- <div class="form-group">
           <label for="text">Appointments:</label>
           <input type="text" 
           formControlName="appointment"
@@ -81,15 +193,19 @@
               <option value="pre-launch">pre-launch</option>
               <option value="launch">launch</option>
             </select>
-         </div>
-        <button type="submit" class="btn btn-primary" (click)= "numOfappointments(date.value, process.value, category.value)">Submit</button>
+         </div> -->
+        <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" (click)= "numOfappointments(date.value, conv.value, dtm.value, mg1.value, mg2.value, mg3.value, bp1.value, bp2.value, fp1.value, fp2.value, preLaunch.value, launch.value, others.value)" >Submit</button>
       </form>
 
-      <p class="text-danger" id="warning">
+      
+
+      <!-- <p class="text-danger" id="warning">
         Warning Please enter the number of appointments only once per day.
-      </p>
+      </p> -->
 
   </div>
 
-
+  <div class=" col-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <pagination [items]="promotedTalkes" [size]="length"></pagination>
+  </div>
 </div>

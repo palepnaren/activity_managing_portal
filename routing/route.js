@@ -223,6 +223,39 @@ routing.route('/process').post((req, res)=>{
 
 });
 
+routing.route('/processList/:email').get((req, res) => {
+
+    var email = req.params.email;
+    var key;
+    var values;
+    console.log(email + 'inside routing');
+
+    db.getProcess(email, (list) => {
+
+    if(list === null || list === undefined){
+
+    } else {
+        key = Object.keys(list);
+
+        if(list[key].process === null || list[key].process === undefined){
+
+        } else {
+            values = Object.values(list[key].process);
+        }  
+    }    
+    });
+
+    setTimeout(() => {
+        if(req.session.loggedIn == true){
+            res.send(values);
+        } else {
+            res.send({message: "Session is destroyed"});
+        }
+        
+    }, 200);
+
+});
+
 routing.route('/destroy').get((req,res) =>{
     req.session.loggedIn = false;
     req.session.destroy((err) => {

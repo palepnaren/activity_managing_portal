@@ -9,6 +9,7 @@ var db = require('./db/db.js');
 var route = require('./routing/route.js');
 const path = require('path');
 
+
 app.use(express.static(__dirname+'/dist/team-project'));
 app.use(bodyParser.json({limit:'100mb', extended:true}));
 app.use(bodyParser.urlencoded({limit:'100mb',extended:true}));
@@ -26,6 +27,7 @@ var port = process.env.PORT || 9500;
 
 app.listen(port, (req, res) => {
 
+    
     console.log("Server started on http://localhost:" +port);
 
 });

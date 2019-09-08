@@ -4,6 +4,7 @@ var fs = require('fs');
 const rawdata = fs.readFileSync('firebase.json');
 const serviceAccount = JSON.parse(rawdata);
 
+
 firebase.initializeApp({
     credential: firebase.credential.cert(serviceAccount),
     databaseURL:'https://team-portal-dd915.firebaseio.com',
@@ -81,8 +82,7 @@ exports.saveUser = (user) =>{
         flag = false ;
     }
 
-    return flag;
-    
+    return flag; 
 };
 
 
@@ -101,6 +101,7 @@ exports.authUser = (user, cb) => {
 exports.updateUserProcess = (obj, email) => {
     var key;
     var msg;
+
     db.child('/'+email.split('@')[0]).on('value', (snapshot) => {
         key = Object.keys(snapshot.val());   
     });
@@ -112,6 +113,19 @@ exports.updateUserProcess = (obj, email) => {
             
 
    return msg;
+}
+
+exports.getProcess = (email, cb) => {
+
+    console.log(email + 'inside db');
+    var key;
+
+    db.child('/'+email.split('@')[0]).on('value', (snapshot) => {
+        key = Object.keys(snapshot.val());
+        cb(snapshot.val());
+    }, (err) => {
+        cb(null);
+    });
 }
 
 
