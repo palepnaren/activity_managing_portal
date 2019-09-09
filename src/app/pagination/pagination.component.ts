@@ -9,6 +9,7 @@ import { AudioService } from '../service/audio.service';
 })
 export class PaginationComponent implements OnInit, AfterViewInit {
 
+  
   // tslint:disable-next-line:no-input-rename
   @Input('items') listOfItems;
   // tslint:disable-next-line:no-input-rename
@@ -34,7 +35,12 @@ export class PaginationComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.paginate(this.lengthOfList);
       this.itemList = this.listOfItems.slice(0, 10);
-      this.currentSetIn = '1 - ' + this.itemList.length + ' of ' + this.listOfItems.length;
+      if(this.itemList.length == 0){
+        this.currentSetIn = '0 - ' + this.itemList.length + ' of ' + this.listOfItems.length;
+      } else {
+        this.currentSetIn = '1 - ' + this.itemList.length + ' of ' + this.listOfItems.length;
+      }
+      
     }, 2200);
   }
 

@@ -5,6 +5,7 @@
 
 .footer{
     padding: 15px;
+    z-index: 105;
 }
 
 #nav-profile{
@@ -81,7 +82,40 @@ img{
     }
 }
 
+#main-menu{
+    display: none;
+}
 
+#nav-menu{
+    width: 30%;
+}
+
+#main-body{
+    padding: 15px;
+    width: 70%;
+}
+
+
+
+
+@media only screen and (max-width: 770px){
+
+    #nav-menu{
+        display: none;
+    }
+
+
+    #main-menu{
+        display: initial;
+    }
+
+    #main-body{
+        width: 100%;
+        z-index: 1 !important;
+
+    }
+
+}
 
 @media only screen and (max-width: @small){
 
@@ -95,9 +129,9 @@ img{
     }
 
     #nav-profile{
-        display: inline;
         width: 50px;
         height: 50px;
+        display: inline; 
     }
 
     #collapsibleNavbar{

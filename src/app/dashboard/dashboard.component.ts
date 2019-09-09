@@ -1,12 +1,13 @@
 import { AngularFireDatabase } from '@angular/fire/database';
 import { UserService } from './../service/user.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 // import '../js/histogram.js';
 import * as d3 from 'd3';
 import { WeatherService } from '../service/weather.service';
 import { Router } from '@angular/router';
 import { AudioService } from '../service/audio.service';
+import { PaginationComponent } from '../pagination/pagination.component';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -49,9 +50,12 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   // Width;
   // Heigth;
 
+  // @ViewChild('pagination')
+  // pagination: PaginationComponent;
+
 constructor(private route: Router,
             private fbuilder: FormBuilder, private userService: UserService,
-            private db: AngularFireDatabase, private audioService: AudioService) {
+            private db: AngularFireDatabase, private audioService: AudioService, private pagination: PaginationComponent) {
   }
 
 ngOnInit() {
@@ -98,6 +102,19 @@ ngAfterViewInit() {
    
   // this.updateGraph('conversations');
 
+}
+
+searching(keyword){
+  this.promotedTalkes = this.promotedTalkes.filter(talk => talk.name === keyword);
+  console.log(this.promotedTalkes);
+  this.length = this.promotedTalkes.length;
+  setTimeout(() => {
+    this.pagination.listOfItems = this.promotedTalkes;
+    this.pagination.lengthOfList = this.length;
+    this.pagination.ngOnInit();
+    this.pagination.ngAfterViewInit();
+  }, 200);
+  
 }
 
 // getData(value?: string) {

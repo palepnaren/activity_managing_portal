@@ -23,7 +23,7 @@
       </ul>
     </div> 
     <div id="main-menu">
-      <i class="fas fa-ellipsis-v"></i>
+      <i class="fas fa-ellipsis-v" *ngIf="isLoggedIn"></i>
     </div> 
   </nav>
 
@@ -89,15 +89,15 @@
   </div>
 
 <div class="container-fluid" id="side-nav">
-
+    <!-- col-3 col-sm-3 col-md-3 col-lg-3 col-xl-3 -->
     <div class="row">
-        <nav class="nav-color navbar col-3 col-sm-3 col-md-3 col-lg-3 col-xl-3" id="nav-menu">
+        <nav class="nav-color navbar" id="nav-menu">
                 <ul class="nav nav-pills row" id="loop">
                     <li id="exclude" class=" col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" *ngIf="isLoggedIn">
-                        <a class=" nav-link " routerLink="profile"><img src="https://i.imgur.com/vt1Bu3m.jpg" class=" img-fluid rounded-circle" id="sidenav-img"></a>
+                        <a class=" nav-link "  routerLink="profile"><img src="https://i.imgur.com/vt1Bu3m.jpg" class=" img-fluid rounded-circle" id="sidenav-img"></a>
                     </li>
                     <li class=" col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                        <a class=" nav-link " routerLink="dashboard"><i class="fas fa-tachometer-alt"></i><span> DashBoard</span></a>
+                        <a class=" nav-link " (click)="adjustHeight()"  routerLink="dashboard"><i class="fas fa-tachometer-alt"></i><span> DashBoard</span></a>
                     </li>
                     <!-- <li class=" col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                         <a class=" nav-link " routerLink=""><i class="fas fa-calendar-check"></i><span> Check-in</span></a>
@@ -112,12 +112,13 @@
                       <a class=" nav-link " routerLink=""><i class="fas fa-chart-area"></i><span> Progress</span></a>
                   </li> -->
                   <li class=" col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                    <a class=" nav-link " routerLink="sharedTalks"><i class="fas fa-file-audio"></i><span> Training</span></a>
+                    <a class=" nav-link " (click)="adjustHeight()" routerLink="sharedTalks"><i class="fas fa-file-audio"></i><span> Training</span></a>
                 </li>
                 </ul>
         </nav>
 
-        <div id="main-body" class="col-9 col-sm-9 col-md-9 col-lg-9 col-xl-9">
+        <!-- class="col-9 col-sm-9 col-md-9 col-lg-9 col-xl-9" -->
+        <div id="main-body">
             <router-outlet></router-outlet>
 
         </div>

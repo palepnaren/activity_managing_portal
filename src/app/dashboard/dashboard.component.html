@@ -1,8 +1,9 @@
 <div id="search" class="container-fuild">
   <div class="form-group container">
     <div class="input-group">
-      <a routerLink="/search"><i id="icon-search" class="fas fa-search input-group-addon"></i></a>
-      <input type="search" class="form-control input-group-text" placeholder="search">
+      <a (click)="searching(search.value)" ><i id="icon-search" class="fas fa-search input-group-addon"></i></a>
+      <input (value)="searching(search.value)"
+       type="search" class="form-control input-group-text" placeholder="search" #search>
    </div>
   </div>
 </div>

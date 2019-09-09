@@ -22,6 +22,7 @@ import { PaginationComponent } from './pagination/pagination.component';
 import { firebaseConfig } from 'src/environments/environment.prod';
 import { CookieService } from 'ngx-cookie-service';
 import { EncdecryptService } from './service/encdecrypt.service';
+import { PasswordResetComponent } from './password-reset/password-reset.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { EncdecryptService } from './service/encdecrypt.service';
     RegisterComponent,
     DashboardComponent,
     SharedTalksComponent,
-    PaginationComponent
+    PaginationComponent,
+    PasswordResetComponent
   ],
   imports: [
     BrowserModule,
@@ -68,6 +70,14 @@ import { EncdecryptService } from './service/encdecrypt.service';
       {
         path: 'logout',
         component: HomeComponent
+      },
+      {
+        path: 'passwordReset',
+        component: PasswordResetComponent
+      },
+      {
+        path: 'refresh',
+        component: PaginationComponent
       }
   ])
   ],
@@ -78,7 +88,8 @@ import { EncdecryptService } from './service/encdecrypt.service';
     AudioService,
     UserService,
     CookieService,
-    EncdecryptService
+    EncdecryptService,
+    PaginationComponent
   ],
   bootstrap: [AppComponent]
 })
