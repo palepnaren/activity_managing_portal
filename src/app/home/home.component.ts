@@ -6,6 +6,7 @@ import { FormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { EmailValidator } from '../validators/email.validator';
 import { EncdecryptService } from '../service/encdecrypt.service';
+import * as $ from 'jquery';
 
 
 

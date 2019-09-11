@@ -32,50 +32,50 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <h5 class="modal-title" id="exampleModalLabel">{{name}}</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
             <div class="row">
-                <div class="col-sm-3 col-xs-3 col-3">
+                <div class="col-sm-3 col-xs-3 col-3" *ngIf="obj.todayDate!=''">
                   <p>Date: {{obj.todayDate}}</p>
                 </div>
-                <div class="col-sm-3 col-xs-3 col-3">
+                <div class="col-sm-3 col-xs-3 col-3" *ngIf="obj.conversations!=''">
                     <p>Conv: {{obj.conversations}}</p>
                 </div>
-                <div class="col-sm-3 col-xs-3 col-3">
+                <div class="col-sm-3 col-xs-3 col-3" *ngIf="obj.dtm!=''">
                     <p>DTM: {{obj.dtm}}</p>
                 </div>
-                <div class="col-sm-3 col-xs-3 col-3">
+                <div class="col-sm-3 col-xs-3 col-3" *ngIf="obj.mg1!=''">
                     <p>MG1: {{obj.mg1}}</p>
                 </div>
-                <div class="col-sm-3 col-xs-3 col-3">
+                <div class="col-sm-3 col-xs-3 col-3" *ngIf="obj.mg2!=''">
                     <p>MG2: {{obj.mg2}}</p>
                 </div>
-                <div class="col-sm-3 col-xs-3 col-3">
+                <div class="col-sm-3 col-xs-3 col-3" *ngIf="obj.mg3!=''">
                     <p>MG3: {{obj.mg3}}</p>
                 </div>
-                <div class="col-sm-3 col-xs-3 col-3">
+                <div class="col-sm-3 col-xs-3 col-3" *ngIf="obj.bp1!=''">
                     <p>BP1: {{obj.bp1}}</p>
                 </div>
-                <div class="col-sm-3 col-xs-3 col-3">
+                <div class="col-sm-3 col-xs-3 col-3" *ngIf="obj.bp2!=''">
                     <p>Bp2: {{obj.bp2}}</p>
                 </div>
-                <div class="col-sm-3 col-xs-3 col-3">
+                <div class="col-sm-3 col-xs-3 col-3" *ngIf="obj.fp1!=''">
                     <p>FP1: {{obj.fp1}}</p>
                 </div>
-                <div class="col-sm-3 col-xs-3 col-3">
+                <div class="col-sm-3 col-xs-3 col-3" *ngIf="obj.fp2!=''">
                     <p>FP2: {{obj.fp2}}</p>
                 </div>
-                <div class="col-sm-3 col-xs-3 col-3">
+                <div class="col-sm-3 col-xs-3 col-3" *ngIf="obj.preLaunch!=''">
                     <p>PreL: {{obj.preLaunch}}</p>
                 </div>
-                <div class="col-sm-3 col-xs-3 col-3">
+                <div class="col-sm-3 col-xs-3 col-3" *ngIf="obj.launch!=''">
                     <p>Launch: {{obj.launch}}</p>
                 </div>
-                <div class="col-sm-3 col-xs-3 col-3">
+                <div class="col-sm-3 col-xs-3 col-3" *ngIf="obj.others!=''">
                     <p>Others: {{obj.others}}</p>
                 </div>
               </div>
