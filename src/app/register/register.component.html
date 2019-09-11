@@ -96,7 +96,7 @@
       </div>
 
       <div class="alert alert-danger" *ngIf='(reg.password.invalid && reg.password.touched) || (reg.cmp_password.invalid && reg.cmp_password.touched)'>
-        <div id='password' *ngIf='reg.password.errors.required || reg.password.errors.minlength || reg.cmp_password.errors.required || reg.cmp_password.errors.minlength'>
+        <div id='password' *ngIf='reg.password.errors?.required || reg.password.errors?.minlength || reg.cmp_password.errors?.required || reg.cmp_password.errors?.minlength'>
           Password is required and min 6
         </div>
       </div>
@@ -117,8 +117,5 @@
     [disabled]='registerGroup.invalid' type="submit">Register</button>
     <p>Have an account already?<a routerLink="/"> login here.</a></p>
   </form>
-  <div *ngIf="isLoading" id="loading">
-    <p class="text-center">Saving...</p>
-    <div class="spinner-border text-primary" id="spinner"></div>
-  </div>
 </div>
+<loader [isLoading]='isLoading' [message]="'Saving'"></loader>

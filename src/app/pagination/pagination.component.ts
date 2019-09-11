@@ -14,16 +14,19 @@ export class PaginationComponent implements OnInit, AfterViewInit {
   @Input('items') listOfItems;
   // tslint:disable-next-line:no-input-rename
   @Input('size') lengthOfList: number;
+  @Input('isDashboard') isDashboard: boolean;
 
 
 
   currentList = [];
   itemList = [];
   currentSetIn;
+  isLoading = false;
 
   constructor(private audioService: AudioService) { }
 
   ngOnInit() {
+    this.isLoading = true;
     setTimeout(() => {
       console.log(this.listOfItems);
       console.log(this.lengthOfList);
@@ -40,7 +43,7 @@ export class PaginationComponent implements OnInit, AfterViewInit {
       } else {
         this.currentSetIn = '1 - ' + this.itemList.length + ' of ' + this.listOfItems.length;
       }
-      
+      this.isLoading = false;
     }, 2200);
   }
 
@@ -76,6 +79,7 @@ export class PaginationComponent implements OnInit, AfterViewInit {
 
   promote(item) {
 
+    this.isLoading = true;
     console.log(item);
     const role = sessionStorage.getItem('role');
     console.log(role);
@@ -98,6 +102,7 @@ export class PaginationComponent implements OnInit, AfterViewInit {
           alert('Already promoted');
         }
 
+        this.isLoading = false;
       });
     }
   }

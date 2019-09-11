@@ -17,6 +17,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   dataset = [];
   promotedTalkes = [];
   length;
+  refresh = false;
   // mg1 = []; mg2 = []; conv = []; mg3 = []; bp1 = []; ft1 = []; bp2 = []; ft2 = []; bp3 = []; preLaunch = []; launch = [];
   padding = 3;
   translate;
@@ -24,6 +25,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   key;
   database;
   obj;
+  isLoading = false;
   // barwidth;
   // svg;
   // xAxisGroup;
@@ -59,6 +61,8 @@ constructor(private route: Router,
   }
 
 ngOnInit() {
+
+  this.isLoading = true;
     this.fGroup = this.fbuilder.group({
       date: ['', [Validators.required]],
       appointment: ['', [Validators.required]],
@@ -87,6 +91,7 @@ ngOnInit() {
 
 ngAfterViewInit() {
 
+  this.refresh = true;
 
   // this.createGraph();
   // window.addEventListener('resize', this.createGraph);
@@ -102,18 +107,30 @@ ngAfterViewInit() {
    
   // this.updateGraph('conversations');
 
+  // this.isLoading = false;
 }
 
 searching(keyword){
-  this.promotedTalkes = this.promotedTalkes.filter(talk => talk.name === keyword);
-  console.log(this.promotedTalkes);
-  this.length = this.promotedTalkes.length;
-  setTimeout(() => {
-    this.pagination.listOfItems = this.promotedTalkes;
-    this.pagination.lengthOfList = this.length;
-    this.pagination.ngOnInit();
-    this.pagination.ngAfterViewInit();
-  }, 200);
+  this.refresh = false;
+  if(keyword === null || keyword === undefined || keyword === ''){
+
+    this.promotedTalkes = [];
+    this.talksPromoted();
+
+  } else{
+
+    this.promotedTalkes = this.promotedTalkes.filter(talk => talk.name === keyword);
+    console.log(this.promotedTalkes);
+    this.length = this.promotedTalkes.length;
+    setTimeout(() => {
+      this.pagination.listOfItems = this.promotedTalkes;
+      this.pagination.lengthOfList = this.length;
+      this.pagination.ngOnInit();
+      this.pagination.ngAfterViewInit();
+      this.refresh = true;
+    }, 200);
+  }
+  
   
 }
 
@@ -251,6 +268,8 @@ updateGraph(value) {
 
 numOfappointments(date, conv, dtm, mg1, mg2, mg3, bp1, bp2, fp1, fp2, pre, launch, others) {
 
+  this.isLoading = true;
+
     const obj = {
       todayDate: date,
       conversations: conv,
@@ -273,18 +292,23 @@ numOfappointments(date, conv, dtm, mg1, mg2, mg3, bp1, bp2, fp1, fp2, pre, launc
 
     this.userService.updateProcess(obj, sessionStorage.getItem('email')).subscribe(res => {
        this.message = res;
+       this.isLoading = false;
     });
   }
 
 
   populateProcess(email){
 
+    this.isLoading = true;
+
     console.log(email);
     this.userService.getProcess(email).subscribe(list => {
       this.processList = list;
       console.log(list);
+      this.isLoading = false;
     }, err => {
       console.log(err + 'inside process error');
+      this.isLoading = false;
     });
 
   }
@@ -340,12 +364,15 @@ numOfappointments(date, conv, dtm, mg1, mg2, mg3, bp1, bp2, fp1, fp2, pre, launc
   // }
 
   talksPromoted() {
+    this.isLoading = true;
     this.audioService.getPromotedFiles().subscribe(files => {
       console.log('@@@@@@@@@@@');
       Object.values(files)[1].forEach(file => {
         this.promotedTalkes.push(file[0].data);
       });
       this.length = this.promotedTalkes.length;
+      this.isLoading = false;
+      this.refresh = true;
     });
 
     setTimeout(() => {

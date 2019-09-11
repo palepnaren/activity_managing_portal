@@ -3,7 +3,7 @@ import { Observable } from 'rxjs-compat/Observable';
 import { LoginService } from './login.service';
 import { Router } from '@angular/router';
 import { FormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { EmailValidator } from '../validators/email.validator';
 import { EncdecryptService } from '../service/encdecrypt.service';
 
@@ -14,7 +14,7 @@ import { EncdecryptService } from '../service/encdecrypt.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.less']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit {
 
   formGroup: FormGroup;
   isLoading = false;
@@ -26,6 +26,8 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
 
+    this.isLoading = true;
+
     this.formGroup = this.formBuilder.group({
          email: [this.encrypt.decrypt(this.cookie.get('email')), [Validators.required, Validators.email, EmailValidator.emailValidate]],
          password: [this.encrypt.decrypt(this.cookie.get('password')), Validators.required],
@@ -33,6 +35,10 @@ export class HomeComponent implements OnInit {
     });
 
 
+  }
+
+  ngAfterViewInit() {
+    this.isLoading = false;
   }
 
    auth(email, pwd) {

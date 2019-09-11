@@ -21,6 +21,7 @@ export class SharedTalksComponent implements OnInit, AfterViewInit {
   listOfTalks = [];
   audios;
   len;
+  isLoading = false;
   uploadResponse = {
     status: '',
     upload: 0
@@ -34,6 +35,7 @@ export class SharedTalksComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    this.isLoading = true;
     // this.uploadResponse[message] = 0;
   //  window.onload = () => {
   //    this.fileDownload();
@@ -57,6 +59,8 @@ export class SharedTalksComponent implements OnInit, AfterViewInit {
       }, true);
 
      }, 1501);
+
+     this.isLoading = false;
   }
 
 getFile(e) {
@@ -84,14 +88,18 @@ getFile(e) {
 
    fileUpload(name) {
 
+    this.isLoading = true;
+
     // if (this.fileType === '.mp3' || this.fileType === '.ogg' || this.fileType === '.wav' || this.fileType === '.m4a') {
 
       this.service.fileUpload(name, this.unit8Array).subscribe(res => {
 
         this.uploadResponse.status = res.status;
         this.uploadResponse.upload = res.upload;
+        this.isLoading = false;
       }, err => {
         console.log(err);
+        this.isLoading = false;
       });
 
       setTimeout(() => {
@@ -108,12 +116,15 @@ getFile(e) {
   }
 
 fileDownload() {
+
+  this.isLoading = true;
    this.service.fileDownload().subscribe(file => {
      // tslint:disable-next-line:prefer-for-of
      for (this.i = 0; this.i < Object.keys(file).length; this.i++) {
         this.listOfTalks.push({name: file[this.i].name.split('/')[1], url: file[this.i]._url});
      }
      this.lengthOfItems = this.listOfTalks.length;
+     this.isLoading = false;
    });
 
   }

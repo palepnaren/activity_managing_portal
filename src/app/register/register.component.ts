@@ -1,6 +1,6 @@
 import { UserService } from './../service/user.service';
 import { FormBuilder, FormGroup, Validators, FormsModule } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { EmailValidator } from '../validators/email.validator';
 
 @Component({
@@ -8,7 +8,7 @@ import { EmailValidator } from '../validators/email.validator';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.less']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, AfterViewInit {
 
   registerGroup: FormGroup;
 
@@ -28,6 +28,8 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
 
+    this.isLoading = true;
+
    this.registerGroup = this.formBuilder.group({
       first_name: ['', [Validators.required]],
       last_name: ['', [Validators.required]],
@@ -39,6 +41,10 @@ export class RegisterComponent implements OnInit {
       upline: ['', [Validators.required]]
 
    });
+  }
+
+  ngAfterViewInit() {
+    this.isLoading = false;
   }
 
   comparePwd(pwd, cmpPwd) {

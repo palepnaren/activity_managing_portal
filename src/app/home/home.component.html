@@ -37,8 +37,6 @@
     <p>Are you new user?<a routerLink="/register"> signup here.</a></p>
     <p>Forgot your password?<a routerLink="/passwordReset"> click here.</a></p>
   </form>
-  <div *ngIf="isLoading" id="loading">
-      <p class="text-center">Checking Credentials...</p>
-      <div class="spinner-border text-primary" id="spinner"></div>
-  </div>
 </div>
+
+<loader [isLoading]='isLoading' [message]="'user Authentication'"></loader>

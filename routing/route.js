@@ -256,6 +256,35 @@ routing.route('/processList/:email').get((req, res) => {
 
 });
 
+routing.route('/updatePassword').post((req, res) => {
+    var email = req.body.email;
+    var isSet;
+    var pwd;
+
+    crypt.genSalt(salt, (err, salt) => {
+        crypt.hash(req.body.pwd, salt, (err, hash) => {
+            hashed = hash;
+        });
+    });
+
+    setTimeout(() => {
+        pwd = hashed;
+    },10000);
+
+   setTimeout(() => {
+    db.forgotPwd(email, pwd, (flag) => {
+        isSet = flag;
+        console.log(isSet);
+    });
+   },10500)
+
+    setTimeout(() =>{
+        console.log(isSet);
+        res.send(isSet);
+    }, 11000);
+    
+});
+
 routing.route('/destroy').get((req,res) =>{
     req.session.loggedIn = false;
     req.session.destroy((err) => {
@@ -265,7 +294,7 @@ routing.route('/destroy').get((req,res) =>{
         res.redirect('/');
     });
     setTimeout(()=>{
-        console.log(req.session);
+        console.log("Session has been destroyed");
     },200);
 });
 

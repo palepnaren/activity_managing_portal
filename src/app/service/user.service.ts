@@ -28,10 +28,22 @@ export class UserService {
 
   getProcess(email) {
 
-    console.log(email);
     const url = window.location.origin + '/processList/'+email;
 
     return this.http.get(url).map(res => res);
+  }
+
+
+  updatePwd(email, new_pwd){
+
+    const data = {
+      email: email,
+      pwd: new_pwd
+    }
+
+    const url = window.location.origin + '/updatePassword';
+
+    return this.http.post(url, data).map(res => res);
   }
 
 }

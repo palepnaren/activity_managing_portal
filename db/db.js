@@ -128,4 +128,19 @@ exports.getProcess = (email, cb) => {
     });
 }
 
+exports.forgotPwd = (email, newPwd, cb) => {
+    var key;
+    var flag;
+    db.child('/'+email.split('@')[0]).on('value', (snapshot) => {
+        key = Object.keys(snapshot.val());
+    });
+
+    setTimeout(() => {
+        db.child('/'+email.split('@')[0]+'/'+key).update({pwd:newPwd}, (success) => {
+            cb(true);
+        }); 
+    },200); 
+    
+}
+
 

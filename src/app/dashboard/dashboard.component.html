@@ -207,6 +207,8 @@
   </div>
 
   <div class=" col-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <pagination [items]="promotedTalkes" [size]="length"></pagination>
+    <pagination [items]="promotedTalkes" [size]="length" [isDashboard]="true" *ngIf="refresh"></pagination>
   </div>
 </div>
+
+<loader [isLoading]='isLoading' [message]="'Loading'"></loader>

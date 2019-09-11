@@ -23,6 +23,7 @@ import { firebaseConfig } from 'src/environments/environment.prod';
 import { CookieService } from 'ngx-cookie-service';
 import { EncdecryptService } from './service/encdecrypt.service';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
+import { LoaderComponent } from './loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { PasswordResetComponent } from './password-reset/password-reset.componen
     DashboardComponent,
     SharedTalksComponent,
     PaginationComponent,
-    PasswordResetComponent
+    PasswordResetComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,
@@ -78,6 +80,10 @@ import { PasswordResetComponent } from './password-reset/password-reset.componen
       {
         path: 'refresh',
         component: PaginationComponent
+      },
+      {
+        path: 'login',
+        component: HomeComponent
       }
   ])
   ],
