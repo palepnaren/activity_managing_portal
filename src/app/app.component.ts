@@ -120,26 +120,31 @@ adjustHeight(){
   this.events.forEach((event) => {
     window.addEventListener(event, () => {
       console.log(event);
-      if(window.outerHeight <= 770){
+      if(window.innerWidth <= 770){
         $('#main-menu').click(() => {
-          console.log('Im Here@@@@@@');
-          console.log(document.getElementById('nav-menu').style.display);
-          if(document.getElementById('nav-menu').style.display === '' || document.getElementById('nav-menu').style.display === 'none'){
-            console.log('Im Here!!!');
-            document.getElementById('nav-menu').style.display = 'inline';
-            document.getElementById('nav-menu').style.zIndex = '100';
-            document.getElementById('nav-menu').style.width = '30%';
-            document.getElementById('main-body').style.width = '100%';
-            document.getElementById('nav-menu').style.height = $('body').height()+'px';
-            document.getElementById('nav-menu').style.position = 'absolute';
-            document.getElementById('nav-menu').style.top = '125px';
-            document.getElementById('nav-menu').style.left = '0px';
-            document.getElementById('nav-menu').style.backgroundColor = 'white';
-            
-          } else {
-            document.getElementById('nav-menu').style.display = 'none';
-            document.getElementById('main-body').style.width = '100%';
-          }
+          if(this.isLoggedIn){
+            console.log('Im Here@@@@@@');
+            console.log(document.getElementById('nav-menu').style.display);
+            if(document.getElementById('nav-menu').style.display === '' || document.getElementById('nav-menu').style.display === 'none'){
+              console.log('Im Here!!!');
+              document.getElementById('nav-menu').style.display = 'inline';
+              document.getElementById('nav-menu').style.zIndex = '100';
+              document.getElementById('nav-menu').style.width = '30%';
+              document.getElementById('main-body').style.width = '100%';
+              document.getElementById('nav-menu').style.height = $('body').height()+'px';
+              document.getElementById('nav-menu').style.position = 'absolute';
+              document.getElementById('nav-menu').style.top = '125px';
+              document.getElementById('nav-menu').style.left = '0px';
+              document.getElementById('nav-menu').style.backgroundColor = 'white';
+              
+            } else {
+              document.getElementById('nav-menu').style.display = 'none';
+              document.getElementById('main-body').style.width = '100%';
+            }
+            } else{
+              
+            }
+          
         });
       } else {
         // document.getElementById('nav-menu').style.top = '50px';
