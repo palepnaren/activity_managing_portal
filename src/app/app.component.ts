@@ -122,7 +122,6 @@ adjustHeight(){
       console.log(event);
       if(window.innerWidth <= 770){
         $('#main-menu').click(() => {
-          if(this.isLoggedIn){
             console.log('Im Here@@@@@@');
             console.log(document.getElementById('nav-menu').style.display);
             if(document.getElementById('nav-menu').style.display === '' || document.getElementById('nav-menu').style.display === 'none'){
@@ -141,10 +140,6 @@ adjustHeight(){
               document.getElementById('nav-menu').style.display = 'none';
               document.getElementById('main-body').style.width = '100%';
             }
-            } else{
-              
-            }
-          
         });
       } else {
         // document.getElementById('nav-menu').style.top = '50px';
