@@ -24,6 +24,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { EncdecryptService } from './service/encdecrypt.service';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
 import { LoaderComponent } from './loader/loader.component';
+import { PushNotificationsModule} from 'ng-push';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { LoaderComponent } from './loader/loader.component';
     HttpClientModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
+    PushNotificationsModule,
     RouterModule.forRoot([
       {
         path: '',

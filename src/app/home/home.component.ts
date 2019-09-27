@@ -18,7 +18,7 @@ import * as $ from 'jquery';
 export class HomeComponent implements OnInit, AfterViewInit {
 
   formGroup: FormGroup;
-  isLoading = false;
+  // isLoading = false;
   isLoggedIn = true;
 
   constructor(private formBuilder: FormBuilder, private service: LoginService,
@@ -26,9 +26,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
 
   ngOnInit() {
-
-    this.isLoading = true;
-
     this.formGroup = this.formBuilder.group({
          email: [this.encrypt.decrypt(this.cookie.get('email')), [Validators.required, Validators.email, EmailValidator.emailValidate]],
          password: [this.encrypt.decrypt(this.cookie.get('password')), Validators.required],
@@ -39,14 +36,21 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.isLoading = false;
+      $('loader').css({'display':'none'});
   }
 
    auth(email, pwd) {
      this.service.isAuth(email, pwd);
      setInterval(() => {
-      this.isLoading = this.service.isLoading;
+       if(this.service.isLoading){
+        $('loader').css({'display':'block'});
+       } else {
+        $('loader').css({'display':'none'});
+       }
       this.isLoggedIn = this.service.isfailed;
+      // if(!this.isLoggedIn){
+      //   this.formGroup.reset({ email: '', password: ''});
+      // }
      }, 200);
   }
 

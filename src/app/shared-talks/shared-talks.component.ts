@@ -2,6 +2,7 @@ import { AudioService } from './../service/audio.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit, AfterViewInit, AfterContentInit, AfterContentChecked, AfterViewChecked } from '@angular/core';
 import * as $ from 'jquery';
+import { PushNotificationsService } from 'ng-push';
 
 @Component({
   selector: 'app-shared-talks',
@@ -21,21 +22,22 @@ export class SharedTalksComponent implements OnInit, AfterViewInit {
   listOfTalks = [];
   audios;
   len;
-  isLoading = false;
   uploadResponse = {
     status: '',
     upload: 0
   };
   i;
-  constructor(private builder: FormBuilder, private service: AudioService) {
+  constructor(private builder: FormBuilder, private service: AudioService, private notification: PushNotificationsService) {
     this.talksGroup = this.builder.group({
       file_name: ['', [Validators.required, Validators.maxLength(30)]],
       file: ['', Validators.required]
     });
+
   }
 
   ngOnInit() {
-    this.isLoading = true;
+
+    // $('loader').css({'display':'none'});
     // this.uploadResponse[message] = 0;
   //  window.onload = () => {
   //    this.fileDownload();
@@ -60,7 +62,7 @@ export class SharedTalksComponent implements OnInit, AfterViewInit {
 
      }, 1501);
 
-     this.isLoading = false;
+     $('loader').css({'display':'none'});
   }
 
 getFile(e) {
@@ -88,7 +90,12 @@ getFile(e) {
 
    fileUpload(name) {
 
-    this.isLoading = true;
+    let options = {
+      body: "File:"+name+" Uploaded by "+sessionStorage.getItem('name'),
+      icon: "https://i.imgur.com/vt1Bu3m.jpg"
+    }
+
+    // $('loader').css({'display':'block'});
 
     // if (this.fileType === '.mp3' || this.fileType === '.ogg' || this.fileType === '.wav' || this.fileType === '.m4a') {
 
@@ -96,18 +103,23 @@ getFile(e) {
 
         this.uploadResponse.status = res.status;
         this.uploadResponse.upload = res.upload;
-        this.isLoading = false;
+        $('loader').css({'display':'none'});
+
       }, err => {
         console.log(err);
-        this.isLoading = false;
+        $('loader').css({'display':'none'});
       });
 
       setTimeout(() => {
         if (this.uploadResponse.upload === 100) {
           $('#progress-bar').hide().fadeOut();
+          this.notification.create("File Upload", options).subscribe(res => {
+
+          }, err => {
+            console.log(err);
+          });
           setTimeout(() => {
             this.fileDownload();
-            window.location.reload();
           }, 50);
         }
       }, 10000);
@@ -117,14 +129,19 @@ getFile(e) {
 
 fileDownload() {
 
-  this.isLoading = true;
+  $('pagination').css({'display':'none'});
+
+  // $('loader').css({'display':'block'});
    this.service.fileDownload().subscribe(file => {
      // tslint:disable-next-line:prefer-for-of
      for (this.i = 0; this.i < Object.keys(file).length; this.i++) {
         this.listOfTalks.push({name: file[this.i].name.split('/')[1], url: file[this.i]._url});
      }
      this.lengthOfItems = this.listOfTalks.length;
-     this.isLoading = false;
+     $('loader').css({'display':'none'});
+     setTimeout(() => {
+      $('pagination').css({'display':'block'});
+     },200)
    });
 
   }

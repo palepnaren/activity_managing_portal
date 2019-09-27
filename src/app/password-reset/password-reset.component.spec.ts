@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PasswordResetComponent } from './password-reset.component';
+import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
+import { LoaderComponent } from '../loader/loader.component';
 
 describe('PasswordResetComponent', () => {
   let component: PasswordResetComponent;
@@ -8,7 +11,8 @@ describe('PasswordResetComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PasswordResetComponent ]
+      declarations: [ PasswordResetComponent, LoaderComponent ],
+      imports:[HttpClientModule, ReactiveFormsModule]
     })
     .compileComponents();
   }));

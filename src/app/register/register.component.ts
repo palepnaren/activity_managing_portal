@@ -2,6 +2,7 @@ import { UserService } from './../service/user.service';
 import { FormBuilder, FormGroup, Validators, FormsModule } from '@angular/forms';
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { EmailValidator } from '../validators/email.validator';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-register',
@@ -22,13 +23,10 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     upline: ''
   };
   saved;
-  isLoading = false;
 
   constructor(private formBuilder: FormBuilder, private service: UserService) { }
 
   ngOnInit() {
-
-    this.isLoading = true;
 
    this.registerGroup = this.formBuilder.group({
       first_name: ['', [Validators.required]],
@@ -44,7 +42,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.isLoading = false;
+    $('loader').css({'display':'none'});
   }
 
   comparePwd(pwd, cmpPwd) {
@@ -59,7 +57,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
   register(fname, lname, email, username, pwd, role, upline) {
 
-    this.isLoading = true;
+    $('loader').css({'display':'block'});
 
     this.user.firstName = fname;
     this.user.lastName = lname;
@@ -76,18 +74,27 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       console.log(this.saved);
       if (this.saved) {
-        this.isLoading = false;
+        $('loader').css({'display':'none'});
         setTimeout(() => {
           alert('User registered successfully');
         }, 200);
       } else {
-        this.isLoading = false;
+        $('loader').css({'display':'none'});
         setTimeout(() => {
           alert('Error saving user');
         }, 200);
       }
     }, 16000);
-    this.registerGroup.reset();
+    this.registerGroup.reset({
+      first_name: '',
+      last_name: '',
+      email: '',
+      username: '',
+      password: '',
+      cmp_password: '',
+      role: '',
+      upline: ''
+    });
   }
 
   get reg() {

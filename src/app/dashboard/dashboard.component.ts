@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 // import '../js/histogram.js';
 import * as d3 from 'd3';
+import * as $ from 'jquery';
 import { WeatherService } from '../service/weather.service';
 import { Router } from '@angular/router';
 import { AudioService } from '../service/audio.service';
@@ -17,7 +18,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   dataset = [];
   promotedTalkes = [];
   length;
-  refresh = false;
+  refresh = true;
   // mg1 = []; mg2 = []; conv = []; mg3 = []; bp1 = []; ft1 = []; bp2 = []; ft2 = []; bp3 = []; preLaunch = []; launch = [];
   padding = 3;
   translate;
@@ -25,7 +26,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   key;
   database;
   obj;
-  isLoading = false;
   // barwidth;
   // svg;
   // xAxisGroup;
@@ -55,14 +55,14 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   // @ViewChild('pagination')
   // pagination: PaginationComponent;
 
-constructor(private route: Router,
+constructor(private router: Router,
             private fbuilder: FormBuilder, private userService: UserService,
             private db: AngularFireDatabase, private audioService: AudioService, private pagination: PaginationComponent) {
   }
 
 ngOnInit() {
 
-  this.isLoading = true;
+  // this.isLoading = true;
     this.fGroup = this.fbuilder.group({
       date: ['', [Validators.required]],
       appointment: ['', [Validators.required]],
@@ -91,7 +91,7 @@ ngOnInit() {
 
 ngAfterViewInit() {
 
-  this.refresh = true;
+  // this.refresh = true;
 
   // this.createGraph();
   // window.addEventListener('resize', this.createGraph);
@@ -107,7 +107,7 @@ ngAfterViewInit() {
    
   // this.updateGraph('conversations');
 
-  // this.isLoading = false;
+  $('loader').css({'display':'none'});
 }
 
 searching(keyword){
@@ -268,7 +268,7 @@ updateGraph(value) {
 
 numOfappointments(date, conv, dtm, mg1, mg2, mg3, bp1, bp2, fp1, fp2, pre, launch, others) {
 
-  this.isLoading = true;
+  $('loader').css({'display':'block'});
 
     const obj = {
       todayDate: date,
@@ -292,23 +292,23 @@ numOfappointments(date, conv, dtm, mg1, mg2, mg3, bp1, bp2, fp1, fp2, pre, launc
 
     this.userService.updateProcess(obj, sessionStorage.getItem('email')).subscribe(res => {
        this.message = res;
-       this.isLoading = false;
+       $('loader').css({'display':'none'});
     });
   }
 
 
   populateProcess(email){
 
-    this.isLoading = true;
+    $('loader').css({'display':'block'});
 
     console.log(email);
     this.userService.getProcess(email).subscribe(list => {
       this.processList = list;
       console.log(list);
-      this.isLoading = false;
+      $('loader').css({'display':'none'});
     }, err => {
       console.log(err + 'inside process error');
-      this.isLoading = false;
+      $('loader').css({'display':'none'});
     });
 
   }
@@ -364,14 +364,14 @@ numOfappointments(date, conv, dtm, mg1, mg2, mg3, bp1, bp2, fp1, fp2, pre, launc
   // }
 
   talksPromoted() {
-    this.isLoading = true;
+    $('loader').css({'display':'block'});
     this.audioService.getPromotedFiles().subscribe(files => {
       console.log('@@@@@@@@@@@');
       Object.values(files)[1].forEach(file => {
         this.promotedTalkes.push(file[0].data);
       });
       this.length = this.promotedTalkes.length;
-      this.isLoading = false;
+      $('loader').css({'display':'none'});
       this.refresh = true;
     });
 

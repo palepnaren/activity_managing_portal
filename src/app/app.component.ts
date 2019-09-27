@@ -4,7 +4,8 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import * as $ from 'jquery';
 import { Router } from '@angular/router';
 import { UserService } from './service/user.service';
-import * as copy from 'copy-to-clipboard'
+import * as copy from 'copy-to-clipboard';
+import { PushNotificationsService } from 'ng-push';
 
 @Component({
   selector: 'app-root',
@@ -34,12 +35,17 @@ export class AppComponent implements OnInit, AfterViewInit {
       others: '1'
   };
   tempArray;
+  messaging;
 
-  constructor(private http: HttpClient, private router: Router, private login: LoginService, private userService: UserService) {
+  constructor(private http: HttpClient, private router: Router, private login: LoginService, 
+    private userService: UserService, private notification: PushNotificationsService) {
+
+      this.notification.requestPermission();
     
   }
 
   ngOnInit() {
+
       setInterval(() => {
         this.isLoggedIn = this.login.isLoggedIn;
         if (this.isLoggedIn) {
