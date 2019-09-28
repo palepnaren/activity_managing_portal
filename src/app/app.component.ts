@@ -123,8 +123,8 @@ j_Query() {
 }
 
 adjustHeight(){
-  this.events.forEach((event) => {
-    window.addEventListener(event, () => {
+  // this.events.forEach((event) => {
+    window.addEventListener('resize', () => {
       console.log(event);
       if(window.innerWidth <= 770){
         $('#main-menu').click(() => {
@@ -151,7 +151,7 @@ adjustHeight(){
         // document.getElementById('nav-menu').style.top = '50px';
       }
     });
-  });
+  // });
 }
 
 copy(){
