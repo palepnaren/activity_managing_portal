@@ -22,6 +22,7 @@ export class SharedTalksComponent implements OnInit, AfterViewInit {
   listOfTalks = [];
   audios;
   len;
+  refresh: boolean = true;
   uploadResponse = {
     status: '',
     upload: 0
@@ -37,11 +38,7 @@ export class SharedTalksComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
 
-    // $('loader').css({'display':'none'});
-    // this.uploadResponse[message] = 0;
-  //  window.onload = () => {
-  //    this.fileDownload();
-  //  };
+   
   }
 
 
@@ -59,10 +56,9 @@ export class SharedTalksComponent implements OnInit, AfterViewInit {
             }
         }
       }, true);
-
+      $('loader').css({'display':'none'});
      }, 1501);
-
-     $('loader').css({'display':'none'});
+ 
   }
 
 getFile(e) {
@@ -89,21 +85,23 @@ getFile(e) {
   }
 
    fileUpload(name) {
+ 
+    $('loader').css({'display':'block'});
 
     let options = {
       body: "File:"+name+" Uploaded by "+sessionStorage.getItem('name'),
       icon: "https://i.imgur.com/vt1Bu3m.jpg"
     }
 
-    // $('loader').css({'display':'block'});
-
     // if (this.fileType === '.mp3' || this.fileType === '.ogg' || this.fileType === '.wav' || this.fileType === '.m4a') {
 
       this.service.fileUpload(name, this.unit8Array).subscribe(res => {
 
+        this.refresh = false;
+
         this.uploadResponse.status = res.status;
         this.uploadResponse.upload = res.upload;
-        $('loader').css({'display':'none'});
+        // $('loader').css({'display':'none'});
 
       }, err => {
         console.log(err);
@@ -120,31 +118,34 @@ getFile(e) {
           });
           setTimeout(() => {
             this.fileDownload();
+            
           }, 50);
         }
       }, 10000);
-
 
   }
 
 fileDownload() {
 
-  $('pagination').css({'display':'none'});
 
-  // $('loader').css({'display':'block'});
+  $('loader').css({'display':'block'});
    this.service.fileDownload().subscribe(file => {
      // tslint:disable-next-line:prefer-for-of
      for (this.i = 0; this.i < Object.keys(file).length; this.i++) {
-        this.listOfTalks.push({name: file[this.i].name.split('/')[1], url: file[this.i]._url});
+        if(this.listOfTalks.findIndex(fileDetails => fileDetails.name == file[this.i].name.split('/')[1]) >=0){
+          console.log("File Details matched");
+          console.log(this.listOfTalks);
+        } else {
+          this.listOfTalks.push({name: file[this.i].name.split('/')[1], url: file[this.i]._url});
+        }
+        
      }
      this.lengthOfItems = this.listOfTalks.length;
      $('loader').css({'display':'none'});
-     setTimeout(() => {
-      $('pagination').css({'display':'block'});
-     },200)
+     this.refresh = true;
    });
 
-  }
+}
 
 get f() {
     return this.talksGroup.controls;

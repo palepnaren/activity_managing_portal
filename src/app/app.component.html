@@ -2,7 +2,7 @@
 
 
 <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top sticky-top">
-    <a class="navbar-brand" routerLink="" *ngIf="isLoggedIn"><img src="https://i.imgur.com/vt1Bu3m.jpg" class=" img-fluid rounded-circle" id="nav-profile"> Welcome {{name}}</a>
+    <a class="navbar-brand" routerLink="/dashboard" *ngIf="isLoggedIn"><img src="https://i.imgur.com/vt1Bu3m.jpg" class=" img-fluid rounded-circle" id="nav-profile"> Welcome {{name}}</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar" id="toggle">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -97,7 +97,7 @@
                         <a class=" nav-link "  routerLink="profile"><img src="https://i.imgur.com/vt1Bu3m.jpg" class=" img-fluid rounded-circle" id="sidenav-img"></a>
                     </li>
                     <li class=" col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                        <a class=" nav-link " (click)="adjustHeight()"  routerLink="dashboard"><i class="fas fa-tachometer-alt"></i><span> DashBoard</span></a>
+                        <a class=" nav-link " routerLink="dashboard"><i class="fas fa-tachometer-alt"></i><span> DashBoard</span></a>
                     </li>
                     <!-- <li class=" col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                         <a class=" nav-link " routerLink=""><i class="fas fa-calendar-check"></i><span> Check-in</span></a>
@@ -112,7 +112,7 @@
                       <a class=" nav-link " routerLink=""><i class="fas fa-chart-area"></i><span> Progress</span></a>
                   </li> -->
                   <li class=" col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                    <a class=" nav-link " (click)="adjustHeight()" routerLink="sharedTalks"><i class="fas fa-file-audio"></i><span> Training</span></a>
+                    <a class=" nav-link " routerLink="sharedTalks"><i class="fas fa-file-audio"></i><span> Training</span></a>
                 </li>
                 </ul>
         </nav>
