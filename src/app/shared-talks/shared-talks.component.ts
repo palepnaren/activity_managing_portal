@@ -104,13 +104,7 @@ getFile(e) {
         // $('loader').css({'display':'none'});
         console.log(res);
 
-      }, err => {
-        console.log(err);
-        $('loader').css({'display':'none'});
-      });
-
-      setTimeout(() => {
-        if (this.uploadResponse.upload === 100) {
+        if (this.uploadResponse.status === 'complete' || this.uploadResponse.upload === 100) {
           $('#progress-bar').hide().fadeOut();
           console.log("File Upload is done");
           this.notification.create("File Upload", options).subscribe(res => {
@@ -119,7 +113,11 @@ getFile(e) {
             console.log(err);
           });
         }
-      }, 10000);
+
+      }, err => {
+        console.log(err);
+        $('loader').css({'display':'none'});
+      });
 
   }
 
