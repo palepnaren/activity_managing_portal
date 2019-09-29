@@ -20,7 +20,7 @@ firebase.initializeApp({
 
 //creating a file and saving some date to it.
 
-exports.saveFile = (name, data) => {
+exports.saveFile = (name, data,cb) => {
   
     // const index = name.lastIndexOf('\\');
     // name = name.substr(index + 1);
@@ -32,6 +32,9 @@ exports.saveFile = (name, data) => {
    
     bucket.file('/audio/'+name).save(buffer,{contentType:'audio/mp3'}).then(() => {
         console.log("File pushed onto server ");
+        cb(true);
+    }).catch(err => {
+        cb(false);
     });
   
 };

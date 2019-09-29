@@ -102,6 +102,7 @@ getFile(e) {
         this.uploadResponse.status = res.status;
         this.uploadResponse.upload = res.upload;
         // $('loader').css({'display':'none'});
+        console.log(res);
 
       }, err => {
         console.log(err);
