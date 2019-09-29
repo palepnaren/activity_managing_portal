@@ -82,7 +82,7 @@ getFile(e) {
     reader.readAsArrayBuffer(this.file);
     // }
 
-  }
+}
 
    fileUpload(name) {
  

@@ -296,7 +296,7 @@ routing.route('/destroy').get((req,res) =>{
         if(err) {
             return console.log(err);
         }
-        res.redirect('/');
+        res.status(200).send();
     });
     setTimeout(()=>{
         console.log("Session has been destroyed");

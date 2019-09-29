@@ -9,16 +9,16 @@
     <div class="collapse navbar-collapse right" id="collapsibleNavbar">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a id="modal" class="nav-link" routerLink=""><i class="fas fa-bell"></i><i class="fas fa-circle dot"></i></a>
+          <a *ngIf="isLoggedIn" id="modal" class="nav-link" routerLink=""><i class="fas fa-bell"></i><i class="fas fa-circle dot"></i></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink=""><i class="fas fa-tasks"></i><span></span></a>
+          <a *ngIf="isLoggedIn" class="nav-link" routerLink=""><i class="fas fa-tasks"></i><span></span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink=""><i class="fas fa-tools"></i><span></span></a>
+          <a *ngIf="isLoggedIn" class="nav-link" routerLink=""><i class="fas fa-tools"></i><span></span></a>
         </li> 
         <li class="nav-item">
-          <a class="nav-link" (click)="logout()" routerLink="/"><i class="fas fa-sign-out-alt"></i><span></span></a>
+          <a *ngIf="isLoggedIn" class="nav-link" (click)="logout()" routerLink="/"><i class="fas fa-sign-out-alt"></i><span></span></a>
         </li>    
       </ul>
     </div> 
@@ -96,7 +96,7 @@
                     <li id="exclude" class=" col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" *ngIf="isLoggedIn">
                         <a class=" nav-link "  routerLink="profile"><img src="https://i.imgur.com/vt1Bu3m.jpg" class=" img-fluid rounded-circle" id="sidenav-img"></a>
                     </li>
-                    <li class=" col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                    <li class=" col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" id="dashboard">
                         <a class=" nav-link " routerLink="dashboard"><i class="fas fa-tachometer-alt"></i><span> DashBoard</span></a>
                     </li>
                     <!-- <li class=" col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
@@ -111,7 +111,7 @@
                     <li class=" col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                       <a class=" nav-link " routerLink=""><i class="fas fa-chart-area"></i><span> Progress</span></a>
                   </li> -->
-                  <li class=" col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                  <li class=" col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" id="training">
                     <a class=" nav-link " routerLink="sharedTalks"><i class="fas fa-file-audio"></i><span> Training</span></a>
                 </li>
                 </ul>

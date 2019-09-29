@@ -1,8 +1,10 @@
 import { Observable } from 'rxjs-compat/Observable';
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import 'rxjs/operator/map';
+import { AppComponent } from '../app.component';
+import * as $ from 'jquery';
 
 
 @Injectable({
@@ -45,6 +47,7 @@ export class LoginService {
         sessionStorage.setItem('role', this.authUser.user.role);
         sessionStorage.setItem('email', this.userLogin.email);
         sessionStorage.setItem('isAuth', '' + this.isLoggedIn);
+        $('#loop > li#dashboard >a').addClass('active');
         this.router.navigateByUrl('/dashboard');
       } else {
         this.isLoading = false;

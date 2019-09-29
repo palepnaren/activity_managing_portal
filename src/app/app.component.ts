@@ -72,15 +72,16 @@ export class AppComponent implements OnInit, AfterViewInit {
         }
         
       }, 200);
-
-      
+  
 
       // this.j_Query();
 }
 
 ngAfterViewInit(): void {
   this.j_Query();
+  
 }
+
 
 
 j_Query() {
@@ -160,17 +161,18 @@ copy(){
 }
 
 logout() {
-
-this.login.isLoggedIn = false;
-sessionStorage.setItem('isAuth', '' + this.login.isLoggedIn);
-sessionStorage.removeItem('name');
-sessionStorage.removeItem('role');
-sessionStorage.removeItem('email');
-sessionStorage.removeItem('isAuth');
-this.login.userLogout().subscribe(() => {
-  console.log('User Logged out');
-  // window.location.reload();
-});
+  $('#loop > li#dashboard >a').removeClass('active');
+  $('#loop > li#training >a').removeClass('active');
+  this.login.isLoggedIn = false;
+  sessionStorage.setItem('isAuth', '' + this.login.isLoggedIn);
+  sessionStorage.removeItem('name');
+  sessionStorage.removeItem('role');
+  sessionStorage.removeItem('email');
+  sessionStorage.removeItem('isAuth');
+  this.login.userLogout().subscribe(() => {
+    console.log('User Logged out');
+    // window.location.reload();
+  });
 
 
 }
