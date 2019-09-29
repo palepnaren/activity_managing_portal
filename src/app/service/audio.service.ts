@@ -29,7 +29,7 @@ export class AudioService {
               const progress = Math.round(100 * event.loaded / event.total);
               return {status: 'progress', upload: progress};
         case HttpEventType.Response:
-              return {status: 'complete', upload: progress};
+              return {status: 'complete', upload: 100};
         default:
             return {status: '', upload: null};
       }
