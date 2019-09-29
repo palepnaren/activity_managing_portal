@@ -9,6 +9,12 @@ import { map } from 'rxjs/operators';
 })
 export class AudioService {
 
+  isNewAudio = {
+    audioName: '',
+    personName: '',
+    profilePic: ''
+  }
+
   data = {
     name: undefined,
     content: undefined
