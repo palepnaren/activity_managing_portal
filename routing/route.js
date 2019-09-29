@@ -68,7 +68,7 @@ routing.route('/file').post((req, res) => {
     data = req.body.content;
     console.log(file);
     db.saveFile(file, data, flag => {
-        if(falg){
+        if(flag){
             res.status(200).send();
         }
     });
