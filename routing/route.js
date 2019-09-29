@@ -68,6 +68,7 @@ routing.route('/file').post((req, res) => {
     data = req.body.content;
     console.log(file);
     db.saveFile(file, data);
+    res.status(200).send();
 });
 
 routing.route('/download').get((req, res) => {
