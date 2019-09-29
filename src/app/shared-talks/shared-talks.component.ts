@@ -111,15 +111,12 @@ getFile(e) {
       setTimeout(() => {
         if (this.uploadResponse.upload === 100) {
           $('#progress-bar').hide().fadeOut();
-          // this.notification.create("File Upload", options).subscribe(res => {
-
-          // }, err => {
-          //   console.log(err);
-          // });
-          setTimeout(() => {
+          console.log("File Upload is done");
+          this.notification.create("File Upload", options).subscribe(res => {
             this.fileDownload();
-            
-          }, 50);
+          }, err => {
+            console.log(err);
+          });
         }
       }, 10000);
 
