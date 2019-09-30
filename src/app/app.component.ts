@@ -7,6 +7,7 @@ import { UserService } from './service/user.service';
 import * as copy from 'copy-to-clipboard';
 import { PushNotificationsService } from 'ng-push';
 
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -28,8 +29,8 @@ export class AppComponent implements OnInit, AfterViewInit {
       mg3: '1',
       bp1: '1',
       bp2: '1',
-      fp1: '1',
-      fp2: '1',
+      ft1: '1',
+      ft2: '1',
       preLaunch: '1',
       launch: '1',
       others: '1'
@@ -64,8 +65,8 @@ export class AppComponent implements OnInit, AfterViewInit {
           this.obj.mg3 = localStorage.getItem('todayEntry').split('~')[5];
           this.obj.bp1 = localStorage.getItem('todayEntry').split('~')[6];
           this.obj.bp2 = localStorage.getItem('todayEntry').split('~')[7];
-          this.obj.fp1 = localStorage.getItem('todayEntry').split('~')[8];
-          this.obj.fp2 = localStorage.getItem('todayEntry').split('~')[9];
+          this.obj.ft1 = localStorage.getItem('todayEntry').split('~')[8];
+          this.obj.ft2 = localStorage.getItem('todayEntry').split('~')[9];
           this.obj.preLaunch = localStorage.getItem('todayEntry').split('~')[10];
           this.obj.launch = localStorage.getItem('todayEntry').split('~')[11];
           this.obj.others = localStorage.getItem('todayEntry').split('~')[12];
@@ -157,7 +158,36 @@ adjustHeight(){
 
 copy(){
   
-  copy(localStorage.getItem('todayEntry'));
+  let copyString = "";
+  if(this.obj.todayDate != '2019-10-10'){
+    copyString = "Date: "+this.obj.todayDate+"\n";
+  } if(this.obj.conversations != ''){
+    copyString += "conversations: "+this.obj.conversations+"\n";
+  }  if(this.obj.dtm !=''){
+    copyString += "Dtm: "+this.obj.dtm+"\n"
+  }  if(this.obj.mg1 != ''){
+    copyString += "MG1: "+this.obj.mg1+"\n";
+  }  if(this.obj.mg2 != ''){
+    copyString += "MG2: "+this.obj.mg2+"\n";
+  }  if(this.obj.mg3 != ''){
+    copyString += "MG3: "+this.obj.mg3+"\n";
+  }  if(this.obj.bp1 != ''){
+    copyString += "BP1: "+this.obj.bp1+"\n";
+  }  if(this.obj.bp2 != ''){
+    copyString += "BP2: "+this.obj.bp2+"\n";
+  }  if(this.obj.ft1 != ''){
+    copyString += "FT1: "+this.obj.ft1+"\n";
+  }  if(this.obj.ft2 != ''){
+    copyString += "FT2: "+this.obj.ft2+"\n";
+  }  if(this.obj.preLaunch != ''){
+    copyString += "PreLaunch: "+this.obj.preLaunch+"\n";
+  }  if(this.obj.launch != ''){
+    copyString += "Launch: "+this.obj.launch+"\n";
+  }  if(this.obj.others != ''){
+    copyString += "Others: "+this.obj.others;
+  }
+  copy(copyString, {message:"Copied!"});
+
 }
 
 logout() {

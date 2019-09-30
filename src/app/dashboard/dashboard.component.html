@@ -18,18 +18,10 @@
           name="fliter"
           formControlName="filter"
           [(ngModel)]="filter.value"
-          class="form-control input-group-text" #filter (change)="updateGraph(filter.value)">
-            <option value="conversations" selected aria-selected="true">conversations</option>
-            <option value="mg1">mg1</option>
-            <option value="mg2">mg2</option>
-            <option value="mg3">mg3</option>
-            <option value="bp1">bp1</option>
-            <option value="ft1">ft1</option>
-            <option value="bp2">bp2</option>
-            <option value="ft2">ft3</option>
-            <option value="bp3">bp3</option>
-            <option value="pre-launch">pre-launch</option>
-            <option value="launch">launch</option>
+          class="form-control input-group-text" #filter (change)="updateTable(filter.value)">
+            <option value="10" selected aria-selected="true">10</option>
+            <option value="20">20</option>
+            <option value="20">30</option>
           </select>
        </div>
 
@@ -53,7 +45,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor = "let list of processList">
+          <tr *ngFor = "let list of tableList">
             <td>{{list.conversations}}</td>
             <td>{{list.dtm}}</td>
             <td>{{list.mg1}}</td>
@@ -166,43 +158,8 @@
         </div>
 
 
-        <!-- <div class="form-group">
-          <label for="text">Appointments:</label>
-          <input type="text" 
-          formControlName="appointment"
-          placeholder="Enter your appointments"
-          class="form-control" id="text" #process>
-        </div>
-        <div class="form-group">
-            <label for="category">Category:</label>
-            <select
-            id="category"
-            name="category"
-            formControlName="category"
-            [(ngModel)]="category.value"
-            class="form-control input-group-text" #category>
-              <option value="default" selected aria-selected="true">----Select one----</option>
-              <option value="conversations">conversations</option>
-              <option value="mg1">mg1</option>
-              <option value="mg2">mg2</option>
-              <option value="mg3">mg3</option>
-              <option value="bp1">bp1</option>
-              <option value="ft1">ft1</option>
-              <option value="bp2">bp2</option>
-              <option value="ft2">ft3</option>
-              <option value="bp3">bp3</option>
-              <option value="pre-launch">pre-launch</option>
-              <option value="launch">launch</option>
-            </select>
-         </div> -->
         <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" (click)= "numOfappointments(date.value, conv.value, dtm.value, mg1.value, mg2.value, mg3.value, bp1.value, bp2.value, fp1.value, fp2.value, preLaunch.value, launch.value, others.value)" >Submit</button>
       </form>
-
-      
-
-      <!-- <p class="text-danger" id="warning">
-        Warning Please enter the number of appointments only once per day.
-      </p> -->
 
   </div>
 

@@ -40,6 +40,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   // t;
   // chart;
   processList;
+  tableList;
   i = 0;
   // events = ['value', 'child_added', 'child_removed', 'child_moved', 'child_changed'];
   // result;
@@ -79,7 +80,7 @@ ngOnInit() {
       preLaunch:[''],
       launch:[''],
       others:[''],
-      filter: ['conversations']
+      filter: ['10']
     });
 
 
@@ -108,6 +109,38 @@ ngAfterViewInit() {
   // this.updateGraph('conversations');
 
   $('loader').css({'display':'none'});
+}
+
+updateTable(value:string){
+  console.log(value);
+  if(value === "10"){
+    $('table').hide();
+    this.processList.sort((a,b) => {
+      a = new Date(a.todayDate);
+      b = new Date(b.todayDate);
+      return b - a;
+    });
+    this.tableList = this.processList.slice(0,10);
+    $('table').show();
+  } else if(value === "20"){
+    $('table').hide();
+    this.processList.sort((a,b) => {
+      a = new Date(a.todayDate);
+      b = new Date(b.todayDate);
+      return b - a;
+    });
+    this.tableList = this.processList.slice(0,20);
+    $('table').show();
+  } else if(value === "30"){
+    $('table').hide();
+    this.tableList = this.processList.slice(0,30);
+    this.tableList.sort((a,b) => {
+      a = new Date(a.todayDate);
+      b = new Date(b.todayDate);
+      return b - a;
+    });
+    $('table').show();
+  }
 }
 
 searching(keyword){
@@ -293,6 +326,7 @@ numOfappointments(date, conv, dtm, mg1, mg2, mg3, bp1, bp2, fp1, fp2, pre, launc
     this.userService.updateProcess(obj, sessionStorage.getItem('email')).subscribe(res => {
        this.message = res;
        $('loader').css({'display':'none'});
+       this.populateProcess(sessionStorage.getItem('email'));
     });
   }
 
@@ -300,12 +334,12 @@ numOfappointments(date, conv, dtm, mg1, mg2, mg3, bp1, bp2, fp1, fp2, pre, launc
   populateProcess(email){
 
     $('loader').css({'display':'block'});
-
     console.log(email);
     this.userService.getProcess(email).subscribe(list => {
       this.processList = list;
       console.log(list);
       $('loader').css({'display':'none'});
+      this.updateTable("10");
     }, err => {
       console.log(err + 'inside process error');
       $('loader').css({'display':'none'});
