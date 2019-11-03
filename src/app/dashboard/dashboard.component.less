@@ -4,15 +4,15 @@
 @laptop: 1200px;
 @small: 350px;
 
-i#icon-search{
-    position: relative;
-    padding: 11px;
-    left: 4px;
-    background-color:rgb(9, 90, 240);
-    color: black;
-    border-radius: 5px 5px;
+// i#icon-search{
+//     position: relative;
+//     padding: 11px;
+//     left: 4px;
+//     background-color:rgb(9, 90, 240);
+//     color: black;
+//     border-radius: 5px 5px;
     
-}
+// }
 
 #warning{
   font-size: 12px;
@@ -23,9 +23,9 @@ i#icon-search{
   color: red;
 }
 
-div#search{
-    margin-top: 20px;
-}
+// div#search{
+//     margin-top: 20px;
+// }
 
 .bar rect {
     shape-rendering: crispEdges;
@@ -67,16 +67,34 @@ div#form{
   margin-bottom: 20px;
   margin-left: 50px;
 }
+
+.date-range{
+  margin-left: 50px;
+}
 .label{
   margin-top: 20px;
   margin-left: 50px;
 }
 
+input[type="button"]{
+  position: relative;
+  top: 32px;
+  margin-bottom: 10px !important;
+}
+
 .table{
   margin-left: 50px;
+  overflow-y: scroll;
+  height: 345px;
 }
 
 
+@media only screen and (max-width: 770px){
+  input[type="button"]{
+    top: 20px;
+    width: 80px !important;
+  }
+}
 
 
 @media only screen and (max-width: @small){

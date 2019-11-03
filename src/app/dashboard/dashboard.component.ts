@@ -26,6 +26,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   key;
   database;
   obj;
+  fromDate;
+  toDate;
+  map = new Map();
   // barwidth;
   // svg;
   // xAxisGroup;
@@ -80,7 +83,7 @@ ngOnInit() {
       preLaunch:[''],
       launch:[''],
       others:[''],
-      filter: ['10']
+      filter: ['5']
     });
 
 
@@ -113,59 +116,211 @@ ngAfterViewInit() {
 
 updateTable(value:string){
   console.log(value);
-  if(value === "10"){
+  if(value === "5"){
     $('table').hide();
     this.processList.sort((a,b) => {
       a = new Date(a.todayDate);
       b = new Date(b.todayDate);
       return b - a;
     });
-    this.tableList = this.processList.slice(0,10);
+    this.tableList = this.processList.slice(0,5);
+    this.aggregateCalculatort(this.tableList);
     $('table').show();
-  } else if(value === "20"){
-    $('table').hide();
-    this.processList.sort((a,b) => {
-      a = new Date(a.todayDate);
-      b = new Date(b.todayDate);
-      return b - a;
-    });
-    this.tableList = this.processList.slice(0,20);
-    $('table').show();
+  } else if(value === "date"){
+    if((this.fromDate != undefined || this.fromDate != null) && (this.toDate != undefined || this.toDate != null)){
+      $('table').hide();
+      this.processList.sort((a,b) => {
+        a = new Date(a.todayDate);
+        b = new Date(b.todayDate);
+        return b - a;
+      });
+      this.tableList = this.processList.filter((item: any) => {
+        return new Date(item.todayDate) >= new Date(this.fromDate) && new Date(item.todayDate) <= new Date(this.toDate);
+      })
+      this.aggregateCalculatort(this.tableList);
+      $('table').show();
+    }
   } else if(value === "30"){
     $('table').hide();
-    this.tableList = this.processList.slice(0,30);
-    this.tableList.sort((a,b) => {
+    this.processList.sort((a,b) => {
       a = new Date(a.todayDate);
       b = new Date(b.todayDate);
       return b - a;
     });
+    this.tableList = this.processList.slice(0,30);
+    this.aggregateCalculatort(this.tableList);
     $('table').show();
   }
 }
 
-searching(keyword){
-  this.refresh = false;
-  if(keyword === null || keyword === undefined || keyword === ''){
+dateFilter(fromDate, toDate){
 
-    this.promotedTalkes = [];
-    this.talksPromoted();
+  this.fromDate = fromDate;
+  this.toDate = toDate;
 
-  } else{
-
-    this.promotedTalkes = this.promotedTalkes.filter(talk => talk.name === keyword);
-    console.log(this.promotedTalkes);
-    this.length = this.promotedTalkes.length;
-    setTimeout(() => {
-      this.pagination.listOfItems = this.promotedTalkes;
-      this.pagination.lengthOfList = this.length;
-      this.pagination.ngOnInit();
-      this.pagination.ngAfterViewInit();
-      this.refresh = true;
-    }, 200);
-  }
-  
+  this.updateTable("date");
   
 }
+
+aggregateCalculatort(list,length?: string){
+
+  var sum = 0;
+  list.forEach(item => {
+    if(item.conversations == null || item.conversations == undefined || item.conversations == ''){
+
+    } else{
+      sum += parseInt(item.conversations);
+    }
+    
+  });
+  console.log("conv-aggregate "+sum);
+  this.map.set('conv-aggregate', sum);
+  sum = 0;
+
+  list.forEach(item => {
+    if(item.dtm == null || item.dtm == undefined || item.dtm == ''){
+
+    } else{
+      sum += parseInt(item.dtm);
+    }
+    
+  });
+  console.log("dtm-aggregate "+sum);
+  this.map.set('dtm-aggregate', sum);
+  sum = 0;
+
+  list.forEach(item => {
+    if(item.mg1 == null || item.mg1 == undefined || item.mg1 == ''){
+
+    } else{
+      sum += parseInt(item.mg1);
+    }
+    
+  });
+  console.log("mg1-aggregate "+sum);
+  this.map.set('mg1-aggregate', sum);
+  sum = 0;
+
+  list.forEach(item => {
+    if(item.mg2 == null || item.mg2 == undefined || item.mg2 == ''){
+
+    } else{
+      sum += parseInt(item.mg2);
+    }
+    
+  });
+  console.log("mg2-aggregate "+sum);
+  this.map.set('mg2-aggregate', sum);
+  sum = 0;
+
+  list.forEach(item => {
+    if(item.mg3 == null || item.mg3 == undefined || item.mg3 == ''){
+
+    } else{
+      sum += parseInt(item.mg3);
+    }
+    
+  });
+  console.log("mg3-aggregate "+sum);
+  this.map.set('mg3-aggregate', sum);
+  sum = 0;
+
+  list.forEach(item => {
+    if(item.bp1 == null || item.bp1 == undefined || item.bp1 == ''){
+
+    } else{
+      sum += parseInt(item.bp1);
+    }
+    
+  });
+  console.log("bp1-aggregate "+sum);
+  this.map.set('bp1-aggregate', sum);
+  sum = 0;
+
+  list.forEach(item => {
+    if(item.bp2 == null || item.bp2 == undefined || item.bp2 == ''){
+
+    } else{
+      sum += parseInt(item.bp2);
+    }
+    
+  });
+  console.log("bp2-aggregate "+sum);
+  this.map.set('bp2-aggregate', sum);
+  sum = 0;
+
+  list.forEach(item => {
+    if(item.fp1 == null || item.fp1 == undefined || item.fp1 == ''){
+
+    } else{
+      sum += parseInt(item.fp1);
+    }
+    
+  });
+  console.log("fp1-aggregate "+sum);
+  this.map.set('fp1-aggregate', sum);
+  sum = 0;
+
+  list.forEach(item => {
+    if(item.fp2 == null || item.fp2 == undefined || item.fp2 == ''){
+
+    } else{
+      sum += parseInt(item.fp2);
+    }
+    
+  });
+  console.log("fp2-aggregate "+sum);
+  this.map.set('fp2-aggregate', sum);
+  sum = 0;
+
+  list.forEach(item => {
+    if(item.preLaunch == null || item.preLaunch == undefined || item.preLaunch == ''){
+
+    } else{
+      sum += parseInt(item.preLaunch);
+    }
+    
+  });
+  console.log("preLaunch-aggregate "+sum);
+  this.map.set('preLaunch-aggregate', sum);
+  sum = 0;
+
+  list.forEach(item => {
+    if(item.launch == null || item.launch == undefined || item.launch == ''){
+
+    } else{
+      sum += parseInt(item.launch);
+    }
+    
+  });
+  console.log("launch-aggregate "+sum);
+  this.map.set('launch-aggregate', sum);
+  
+}
+
+// searching(keyword){
+//   this.refresh = false;
+//   if(keyword === null || keyword === undefined || keyword === ''){
+
+//     this.promotedTalkes = [];
+//     this.talksPromoted();
+
+//   } else{
+
+//     this.promotedTalkes = this.promotedTalkes.filter(talk => talk.name === keyword);
+//     console.log(this.promotedTalkes);
+//     this.length = this.promotedTalkes.length;
+//     setTimeout(() => {
+//       this.pagination.listOfItems = this.promotedTalkes;
+//       this.pagination.lengthOfList = this.length;
+//       this.pagination.ngOnInit();
+//       this.pagination.ngAfterViewInit();
+//       this.refresh = true;
+//     }, 200);
+//   }
+  
+  
+// }
 
 // getData(value?: string) {
 //     this.database.child('/' + sessionStorage.getItem('email').split('@')[0]).on('value', (snapshot) => {
@@ -339,7 +494,7 @@ numOfappointments(date, conv, dtm, mg1, mg2, mg3, bp1, bp2, fp1, fp2, pre, launc
       this.processList = list;
       console.log(list);
       $('loader').css({'display':'none'});
-      this.updateTable("10");
+      this.updateTable("5");
     }, err => {
       console.log(err + 'inside process error');
       $('loader').css({'display':'none'});

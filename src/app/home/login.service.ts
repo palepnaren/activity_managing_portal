@@ -47,6 +47,7 @@ export class LoginService {
         sessionStorage.setItem('role', this.authUser.user.role);
         sessionStorage.setItem('email', this.userLogin.email);
         sessionStorage.setItem('isAuth', '' + this.isLoggedIn);
+        sessionStorage.setItem('profileImage', this.authUser.user.profileImage);
         $('#loop > li#dashboard >a').addClass('active');
         this.router.navigateByUrl('/dashboard');
       } else {

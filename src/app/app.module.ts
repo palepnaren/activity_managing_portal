@@ -25,6 +25,7 @@ import { EncdecryptService } from './service/encdecrypt.service';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
 import { LoaderComponent } from './loader/loader.component';
 import { PushNotificationsModule} from 'ng-push';
+import { DateModifyPipe } from './custom-pipes/custom-pipes.pipe';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { PushNotificationsModule} from 'ng-push';
     SharedTalksComponent,
     PaginationComponent,
     PasswordResetComponent,
-    LoaderComponent
+    LoaderComponent,
+    DateModifyPipe
   ],
   imports: [
     BrowserModule,

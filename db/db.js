@@ -68,7 +68,7 @@ exports.getPromoted = (cb) => {
         files.values = Object.values(snapshot.val());
         // console.log(files);
         cb(files);
-    })
+    });
 }
 
 exports.downloadFiles = () =>{
@@ -114,7 +114,6 @@ exports.updateUserProcess = (obj, email) => {
     }, 200);
     msg = "Saved";
             
-
    return msg;
 }
 
@@ -147,3 +146,69 @@ exports.forgotPwd = (email, newPwd, cb) => {
 }
 
 
+exports.getUserDetails = (email, cb) => {
+
+    var obj = {
+        email: '',
+        fname: '',
+        lname: '',
+        role: '',
+        upline: '',
+        username: '',
+        address: '',
+        city: '',
+        state: '',
+        profileImage: ''
+    };
+    var array = [];
+    db.child('/'+email.split('@')[0]).on('value', (snapshot) => {
+        if(snapshot.exists()){
+            array = Object.values(snapshot.val());
+            obj.email = array[0].email;
+            obj.fname = array[0].fname;
+            obj.lname = array[0].lname;
+            obj.role = array[0].role;
+            obj.upline = array[0].upline;
+            obj.username = array[0].username;
+            obj.address = array[0].address;
+            obj.city = array[0].city;
+            obj.state = array[0].state;
+            obj.profileImage = array[0].profileImage;
+            cb(obj);
+            // console.log(obj);
+
+        } else {
+            console.log("User not Found");
+            cb(null);
+        }
+        
+    });
+}
+
+exports.updateUserProfile = (user, cb) => {
+    var key;
+    var msg;
+    // console.log(user);
+    db.child('/'+user.email.split('@')[0]).on('value', (snapshot) => {
+        key = Object.keys(snapshot.val());
+    });
+
+    setTimeout(() => {
+
+        db.child('/'+user.email.split('@')[0]+'/'+key).update({
+            email: user.email,
+            fname: user.fname,
+            lname: user.lname,
+            role: user.role,
+            address: user.address,
+            city: user.city,
+            state: user.state,
+            profileImage: user.profileImage,
+            pwd: user.pwd
+            
+        }, (success) => {
+            cb(true);
+        });
+    },200);
+
+}

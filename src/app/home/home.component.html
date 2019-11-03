@@ -11,7 +11,7 @@
         <input
          name="email" 
          formControlName="email"
-         class="form-control input-group-text" type="text" placeholder="Username/Email" #email>
+         class="form-control input-group-text" type="text" placeholder="Email" #email>
     </div>
     <div class="alert alert-danger" *ngIf='f.email.touched && f.email.invalid'>
       <div *ngIf='f.email.errors.required || f.email.errors?.email || f.email.errors?.emailError'>

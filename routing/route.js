@@ -61,7 +61,7 @@ routing.route('/getPromoted').get((req, res) => {
         }
         
     },500);
-})
+});
 
 routing.route('/file').post((req, res) => {
     file = req.body.name;
@@ -175,7 +175,8 @@ routing.route('/auth').post((req, res) => {
         fullName: '',
         username: '',
         role: '',
-        upline: ''
+        upline: '',
+        profileImage: ''
     }
     
     // console.log(req.session.user);
@@ -209,6 +210,7 @@ routing.route('/auth').post((req, res) => {
                 loggedInUser.username = isUser.username;
                 loggedInUser.role = isUser.role;
                 loggedInUser.upline = isUser.upline;
+                loggedInUser.profileImage = isUser.profileImage;
                 res.send({loggedIn:isValid, user: loggedInUser});
             }
         }, 3000);
@@ -302,6 +304,51 @@ routing.route('/destroy').get((req,res) =>{
         console.log("Session has been destroyed");
     },200);
 });
+
+
+routing.route('/getUserProfile/:email').get((req,res) => {
+
+    const email = req.params.email;
+    var obj = {};
+    
+        db.getUserDetails(email, (user) => {
+            if(user != null){
+                
+                obj = user;
+                
+            } else {
+                console.log("User not found");
+            }
+        });
+
+        setTimeout(() => {
+            if(req.session.loggedIn == true){
+                res.status(200).send(obj);
+            } else {
+                res.status(404).send({message: "Session is destroyed"});
+            }
+        }, 200);
+    
+
+});
+
+routing.route('/updateProfile').post((req, res) => {
+
+    crypt.genSalt(salt, (err, salt) => {
+        crypt.hash(req.body.pwd, salt, (err, hash) => {
+            req.body.pwd = hash;
+        });
+    });
+
+    setTimeout(() => {
+        db.updateUserProfile(req.body, (saved) => {
+            console.log(saved);
+            res.send(saved);
+        });
+    },10000);
+    
+
+})
 
 
 

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit, AfterViewInit, AfterContentInit, AfterContentChecked, AfterViewChecked } from '@angular/core';
 import * as $ from 'jquery';
 import { PushNotificationsService } from 'ng-push';
+import { PaginationComponent } from '../pagination/pagination.component';
 
 @Component({
   selector: 'app-shared-talks',
@@ -16,7 +17,7 @@ export class SharedTalksComponent implements OnInit, AfterViewInit {
   talksGroup: FormGroup;
   fileType;
   file;
-  fileName;
+  fileName: string = "Audio files";
   fileData;
   unit8Array: Uint8Array;
   listOfTalks = [];
@@ -28,10 +29,10 @@ export class SharedTalksComponent implements OnInit, AfterViewInit {
     upload: 0
   };
   i;
-  constructor(private builder: FormBuilder, private service: AudioService, private notification: PushNotificationsService) {
+  constructor(private builder: FormBuilder, private service: AudioService, private notification: PushNotificationsService, private pagination: PaginationComponent) {
     this.talksGroup = this.builder.group({
       file_name: ['', [Validators.required, Validators.maxLength(30)]],
-      file: ['', Validators.required]
+      file: ['', [Validators.required]]
     });
 
   }
@@ -90,7 +91,7 @@ getFile(e) {
 
     let options = {
       body: "File:"+name+" Uploaded by "+sessionStorage.getItem('name'),
-      icon: "https://i.imgur.com/vt1Bu3m.jpg"
+      icon: sessionStorage.getItem("profileImage")
     }
 
     // if (this.fileType === '.mp3' || this.fileType === '.ogg' || this.fileType === '.wav' || this.fileType === '.m4a') {
@@ -141,6 +142,31 @@ fileDownload() {
      this.refresh = true;
    });
 
+}
+
+searching(keyword){
+  this.refresh = false;
+  if(keyword === null || keyword === undefined || keyword === ''){
+
+    this.listOfTalks = [];
+    this.fileDownload();
+
+  } else{
+
+    this.listOfTalks = this.listOfTalks.filter(talk => talk.name.includes(keyword));
+     
+    console.log(this.listOfTalks);
+    this.lengthOfItems = this.listOfTalks.length;
+    setTimeout(() => {
+      this.pagination.listOfItems = this.listOfTalks;
+      this.pagination.lengthOfList = this.lengthOfItems;
+      this.pagination.ngOnInit();
+      this.pagination.ngAfterViewInit();
+      this.refresh = true;
+    }, 200);
+  }
+  
+  
 }
 
 get f() {

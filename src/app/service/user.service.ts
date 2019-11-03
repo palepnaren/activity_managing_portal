@@ -46,4 +46,17 @@ export class UserService {
     return this.http.post(url, data).map(res => res);
   }
 
+
+  getProfile(email){
+    const url = window.location.origin + '/getUserProfile/'+email;
+
+    return this.http.get(url).map(res => res);
+  }
+
+  updateProfile(user){
+    const url = window.location.origin + '/updateProfile';
+
+    return this.http.post(url, user).map(res => res);
+  }
+
 }

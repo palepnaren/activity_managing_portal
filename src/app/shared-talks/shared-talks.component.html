@@ -20,12 +20,23 @@
           type="file"
           name="file"
           class="custom-file-input form-control-file" placeholder="choose a file" #file (change)="getFile($event)">
-          <label class="custom-file-label" for="customFile">Choose file</label>
+          <label class="custom-file-label" for="customFile">{{fileName}}</label>
       </div>
       <br>
         <button id="upload" class="btn btn-success" type="submit" 
-        [disabled]='f.file_name.invalid' (click)="fileUpload(file_name.value)">Upload</button>&nbsp;&nbsp;
+        [disabled]='talksGroup.invalid' (click)="fileUpload(file_name.value)">Upload</button>&nbsp;&nbsp;
         
+    </div>
+</div>
+<br>
+
+<div id="search" class="container-fuild">
+    <div class="form-group container">
+        <div class="input-group">
+            <a (click)="searching(search.value)" ><i id="icon-search" class="fas fa-search input-group-addon"></i></a>
+            <input (value)="searching(search.value)"
+                 type="search" class="form-control input-group-text" placeholder="search for a talk" #search>
+        </div>
     </div>
 </div>
 <br>

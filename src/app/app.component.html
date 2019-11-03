@@ -2,7 +2,7 @@
 
 
 <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top sticky-top">
-    <a class="navbar-brand" routerLink="/dashboard" *ngIf="isLoggedIn"><img src="https://i.imgur.com/vt1Bu3m.jpg" class=" img-fluid rounded-circle" id="nav-profile"> Welcome {{name}}</a>
+    <a class="navbar-brand" routerLink="/profile" *ngIf="isLoggedIn"><img src="{{src}}" class=" img-fluid rounded-circle" id="nav-profile"> Welcome {{name}}</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar" id="toggle">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -37,10 +37,10 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body text-nowrap">
             <div class="row">
                 <div class="col-sm-3 col-xs-3 col-3" *ngIf="obj.todayDate!=''">
-                  <p>Date: {{obj.todayDate}}</p>
+                  <p>Date: {{obj.todayDate | removeYear}}</p>
                 </div>
                 <div class="col-sm-3 col-xs-3 col-3" *ngIf="obj.conversations!=''">
                     <p>Conv: {{obj.conversations}}</p>
@@ -94,7 +94,7 @@
         <nav class="nav-color navbar" id="nav-menu">
                 <ul class="nav nav-pills row" id="loop">
                     <li id="exclude" class=" col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" *ngIf="isLoggedIn">
-                        <a class=" nav-link "  routerLink="profile"><img src="https://i.imgur.com/vt1Bu3m.jpg" class=" img-fluid rounded-circle" id="sidenav-img"></a>
+                        <a class=" nav-link "  routerLink="profile"><img src="{{src}}" class=" img-fluid rounded-circle" id="sidenav-img"></a>
                     </li>
                     <li class=" col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" id="dashboard">
                         <a class=" nav-link " routerLink="dashboard"><i class="fas fa-tachometer-alt"></i><span> DashBoard</span></a>
@@ -106,14 +106,14 @@
                         <a class=" nav-link " routerLink=""><i class="fas fa-stopwatch"></i><span> Reminders</span></a>
                     </li>
                     <li class=" col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                        <a class=" nav-link " routerLink="profile"><i class="fas fa-user"></i><span> Profile</span></a>
-                    </li>
-                    <li class=" col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                       <a class=" nav-link " routerLink=""><i class="fas fa-chart-area"></i><span> Progress</span></a>
                   </li> -->
                   <li class=" col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" id="training">
                     <a class=" nav-link " routerLink="sharedTalks"><i class="fas fa-file-audio"></i><span> Training</span></a>
                 </li>
+                <li class=" col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" id="profile">
+                  <a class=" nav-link " routerLink="profile"><i class="fas fa-user"></i><span> Profile</span></a>
+              </li>
                 </ul>
         </nav>
 

@@ -37,6 +37,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   };
   tempArray;
   messaging;
+  src = "../assets/images/profile-image-default.jpeg"
 
   constructor(private http: HttpClient, private router: Router, private login: LoginService, 
     private userService: UserService, private notification: PushNotificationsService) {
@@ -51,6 +52,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.isLoggedIn = this.login.isLoggedIn;
         if (this.isLoggedIn) {
           this.name = sessionStorage.getItem('name');
+          this.src = sessionStorage.getItem("profileImage");
           // console.log(this.name);
           this.isLoggedIn = this.login.isLoggedIn;
         }
@@ -128,6 +130,7 @@ adjustHeight(){
   // this.events.forEach((event) => {
     // window.addEventListener('resize', () => {
       console.log(event);
+      console.log("Inner width: " +window.innerWidth);
       if(window.innerWidth <= 770){
         $('#main-menu').click(() => {
             console.log('Im Here@@@@@@');
@@ -159,8 +162,11 @@ adjustHeight(){
 copy(){
   
   let copyString = "";
+  if(this.name != null || this.name != undefined){
+    copyString = "Name: "+this.name+"\n";
+  }
   if(this.obj.todayDate != '2019-10-10'){
-    copyString = "Date: "+this.obj.todayDate+"\n";
+    copyString += "Date: "+this.obj.todayDate+"\n";
   } if(this.obj.conversations != ''){
     copyString += "conversations: "+this.obj.conversations+"\n";
   }  if(this.obj.dtm !=''){
@@ -193,6 +199,7 @@ copy(){
 logout() {
   $('#loop > li#dashboard >a').removeClass('active');
   $('#loop > li#training >a').removeClass('active');
+  $('#loop > li#profile >a').removeClass('active');
   this.login.isLoggedIn = false;
   sessionStorage.setItem('isAuth', '' + this.login.isLoggedIn);
   sessionStorage.removeItem('name');

@@ -35,7 +35,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
       username: ['', [Validators.required, Validators.maxLength(15), Validators.minLength(6), EmailValidator.userNameValidate]],
       password : ['', [Validators.required, Validators.minLength(6)]],
       cmp_password : ['', [Validators.required, Validators.minLength(6)]],
-      role: ['', [Validators.required]],
+      role: ['default', [Validators.required]],
       upline: ['', [Validators.required]]
 
    });
