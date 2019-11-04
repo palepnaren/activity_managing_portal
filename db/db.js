@@ -42,19 +42,28 @@ exports.saveFile = (name, data,cb) => {
 exports.promotedFiles = (fileData, cb) =>{
     var data;
     var key;
-    var flag = false;
-    firebase.database().ref('/promotedTalks').child(fileData.data.name).on('value', (snapshot) => {
+    var flag = '';
 
-        if(snapshot.exists()){
-            
-        } else{
-            console.log('Adding new child')
-            flag = true;
-            key = firebase.database().ref('/promotedTalks').child(fileData.data.name).push(fileData);
-            cb(flag); 
+    firebase.database().ref('/promotedTalks').on('value', (snapshot) =>{
+        console.log("promoted talks length: "+Object.keys(snapshot.val()).length);
+
+        if(Object.keys(snapshot.val()).length === 5){
+            cb('maxLimit');
+        } else {
+            firebase.database().ref('/promotedTalks').child(fileData.data.name).on('value', (snapshot) => {
+
+                if(snapshot.exists()){
+                    cb('exists')
+                } else{
+                    console.log('Adding new child')
+                    flag = true;
+                    key = firebase.database().ref('/promotedTalks').child(fileData.data.name).push(fileData);
+                    cb('promoted'); 
+                }
+            }); 
         }
-
     });
+    
       
 }
 

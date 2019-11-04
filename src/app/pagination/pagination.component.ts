@@ -94,12 +94,14 @@ export class PaginationComponent implements OnInit, AfterViewInit {
       details.data = item;
       details.user = sessionStorage.getItem('email');
       details.role = role;
-      this.audioService.audioPromotion(details).subscribe(file => {
-        console.log(file);
-        if (file) {
+      this.audioService.audioPromotion(details).subscribe(promoted => {
+        console.log(promoted);
+        if (promoted == 'promoted') {
           alert('file promoted');
-        } else {
+        } else if(promoted == 'exists') {
           alert('Already promoted');
+        } else {
+          alert('Maximum of 5 files can be promoted');
         }
 
         this.isLoading = false;

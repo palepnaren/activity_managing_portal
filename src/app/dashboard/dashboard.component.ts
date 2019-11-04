@@ -124,7 +124,7 @@ updateTable(value:string){
       return b - a;
     });
     this.tableList = this.processList.slice(0,5);
-    this.aggregateCalculatort(this.tableList);
+    this.aggregateCalculator(this.tableList);
     $('table').show();
   } else if(value === "date"){
     if((this.fromDate != undefined || this.fromDate != null) && (this.toDate != undefined || this.toDate != null)){
@@ -137,7 +137,7 @@ updateTable(value:string){
       this.tableList = this.processList.filter((item: any) => {
         return new Date(item.todayDate) >= new Date(this.fromDate) && new Date(item.todayDate) <= new Date(this.toDate);
       })
-      this.aggregateCalculatort(this.tableList);
+      this.aggregateCalculator(this.tableList);
       $('table').show();
     }
   } else if(value === "30"){
@@ -148,7 +148,7 @@ updateTable(value:string){
       return b - a;
     });
     this.tableList = this.processList.slice(0,30);
-    this.aggregateCalculatort(this.tableList);
+    this.aggregateCalculator(this.tableList);
     $('table').show();
   }
 }
@@ -162,7 +162,7 @@ dateFilter(fromDate, toDate){
   
 }
 
-aggregateCalculatort(list,length?: string){
+aggregateCalculator(list,length?: string){
 
   var sum = 0;
   list.forEach(item => {

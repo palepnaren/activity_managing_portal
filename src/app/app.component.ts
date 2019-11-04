@@ -37,7 +37,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   };
   tempArray;
   messaging;
-  src = "../assets/images/profile-image-default.jpeg"
+  src = "../assets/images/profile-image-default.jpeg";
 
   constructor(private http: HttpClient, private router: Router, private login: LoginService, 
     private userService: UserService, private notification: PushNotificationsService) {
@@ -52,7 +52,11 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.isLoggedIn = this.login.isLoggedIn;
         if (this.isLoggedIn) {
           this.name = sessionStorage.getItem('name');
-          this.src = sessionStorage.getItem("profileImage");
+          if(sessionStorage.getItem("profileImage") != "undefined"){
+            this.src = sessionStorage.getItem("profileImage");
+          } else {
+            this.src = "../assets/images/profile-image-default.jpeg";
+          }
           // console.log(this.name);
           this.isLoggedIn = this.login.isLoggedIn;
         }
@@ -72,6 +76,8 @@ export class AppComponent implements OnInit, AfterViewInit {
           this.obj.preLaunch = localStorage.getItem('todayEntry').split('~')[10];
           this.obj.launch = localStorage.getItem('todayEntry').split('~')[11];
           this.obj.others = localStorage.getItem('todayEntry').split('~')[12];
+
+          localStorage.removeItem('todayEntry');
         }
         
       }, 200);
