@@ -230,6 +230,19 @@ routing.route('/process').post((req, res)=>{
 
 });
 
+routing.route('/deleteTalk/:fileName').delete((req, res) => {
+    var name = req.params.fileName;
+    name = decodeURI(name);
+    console.log(name);
+    db.removeDashboardFile(name, (deleted) => {
+        if(deleted){
+            res.status(200).send(deleted);
+        } else {
+            res.status(404).send(deleted);
+        } 
+    })
+});
+
 routing.route('/processList/:email').get((req, res) => {
 
     var email = req.params.email;

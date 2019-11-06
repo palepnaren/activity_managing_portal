@@ -6,7 +6,7 @@ export class EmailValidator {
         const email: string = control.value;
 
 
-        if (email.match('^([1-zA-Z0-1@.\s]{1,255})$')) {
+        if (email.match('^([1-zA-Z0-1@.\s]{1,255})$') && email.substr(email.lastIndexOf('.')).length >= 1 && email.lastIndexOf('.') != -1) {
             console.log('matched');
         } else {
             console.log('error matching string');

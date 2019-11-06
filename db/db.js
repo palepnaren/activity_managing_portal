@@ -39,6 +39,17 @@ exports.saveFile = (name, data,cb) => {
   
 };
 
+exports.removeDashboardFile = (fileName, cb) => {
+
+    console.log(fileName);
+
+    firebase.database().ref('/promotedTalks').child(fileName).remove().then(success => {
+        cb(true);
+    }).catch(err =>{
+        cb(false);
+    });
+}
+
 exports.promotedFiles = (fileData, cb) =>{
     var data;
     var key;
@@ -85,6 +96,9 @@ exports.downloadFiles = () =>{
 };
 
 exports.saveUser = (user) =>{
+
+    // will be usefull to check if username is valid or unique.
+    // db.child('/usernames').push(user.username);
 
     var key = db.child('/'+user.email.split('@')[0]).push(user);
 

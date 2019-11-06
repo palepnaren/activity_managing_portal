@@ -58,4 +58,9 @@ export class AudioService {
     const url = window.location.origin + '/getPromoted';
     return this.http.get(url).map(data => data);
   }
+
+  deletePromotedFile(file) {
+    const url = window.location.origin + '/deleteTalk/'+file.name;
+    return this.http.delete(url).map(deleted => deleted);
+  }
 }

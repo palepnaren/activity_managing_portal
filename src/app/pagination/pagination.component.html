@@ -31,7 +31,7 @@
         <!-- <br> -->
         <div class="padding-talks container">
             <ul *ngFor="let item of itemList" class="list-group" id="list" >
-                <li class="list-group-item list-group-item-action mp3">
+                <li class="list-group-item list-group-item-action mp3" (click)='delete(item)'>
                   <span>{{item.name}}</span>&nbsp;&nbsp;
                   <audio controls id="audio">
                     <source [src]="item.url" type="audio/mp3"> 

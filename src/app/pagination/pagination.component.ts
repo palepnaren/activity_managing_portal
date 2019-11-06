@@ -109,6 +109,23 @@ export class PaginationComponent implements OnInit, AfterViewInit {
     }
   }
 
+  delete(item){
+    const role = sessionStorage.getItem('role');
+    if (role.toLowerCase() === 'ibo' || role.toLowerCase() === 'silver' || role.toLowerCase() === 'eagle') {
+
+    } else{
+      this.audioService.deletePromotedFile(item).subscribe(deleted => {
+        console.log(deleted);
+        if(deleted){
+          alert("File removed from dashboard");
+          window.location.reload();
+        } else {
+          alert("Unable to remove file currenlty");
+        }
+      });
+    }
+  }
+
   showSetIn(e, set) {
 
     e.preventDefault();
