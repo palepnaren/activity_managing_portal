@@ -124,7 +124,7 @@ exports.authUser = (user, cb) => {
     });
 }
 
-exports.updateUserProcess = (obj, email) => {
+exports.updateUserProcess = (obj, email, cb) => {
     var key;
     var msg;
 
@@ -133,11 +133,12 @@ exports.updateUserProcess = (obj, email) => {
     });
 
     setTimeout(() => {
-        db.child('/'+email.split('@')[0]+'/'+key).child('process').push().set(obj);
+        db.child('/'+email.split('@')[0]+'/'+key).child('process').push().set(obj).then(success =>{
+            cb("Saved");
+        }).catch(err => {
+            cb("Error While saving");
+        });
     }, 200);
-    msg = "Saved";
-            
-   return msg;
 }
 
 exports.getProcess = (email, cb) => {

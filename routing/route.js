@@ -224,10 +224,14 @@ routing.route('/process').post((req, res)=>{
     var data = req.body.data;
     var email = req.body.user;
 
-    var message = db.updateUserProcess(data,email);
+    db.updateUserProcess(data,email,(process) =>{
 
-    res.send({msg:message});
-
+        if(process){
+            res.status(200).send(process);
+        } else {
+            res.status(404).send(process);
+        }
+    });
 });
 
 routing.route('/deleteTalk/:fileName').delete((req, res) => {
