@@ -1,44 +1,57 @@
 
 <div class="container" [formGroup]="talksGroup">
     <div id="files">
-      <div class="input-group">
-            <input 
-            name="file_name" 
-            formControlName="file_name"
-            class="form-control input-group-text" type="text" placeholder="File Name" #file_name>
-      </div>
-      <div class="alert alert-danger" *ngIf='f.file_name.invalid && f.file_name.touched'>
-            <div *ngIf='f.file_name.errors.required || f.file_name.errors.maxlength'>
-                Name is required and max 30 chars.
+        <div class="row">
+            <div class="col-3">
+                <p>File Upload:</p>
             </div>
-      </div>
-      <br>
-      <div class="custom-file">
-          <input 
-          id="customFile"
-          formControlName="file" 
-          type="file"
-          name="file"
-          class="custom-file-input form-control-file" placeholder="choose a file" #file (change)="getFile($event)">
-          <label class="custom-file-label" for="customFile">{{fileName}}</label>
-      </div>
-      <br>
-        <button id="upload" class="btn btn-success" type="submit" 
-        [disabled]='talksGroup.invalid' (click)="fileUpload(file_name.value)">Upload</button>&nbsp;&nbsp;
+        </div>
+        <div class="row">
+           <div class="input-group col-3">
+                <input 
+                name="file_name" 
+                formControlName="file_name"
+                class="form-control input-group-text" type="text" placeholder="File Name" #file_name>
+                <div class="alert alert-danger" *ngIf='f.file_name.invalid && f.file_name.touched'>
+                    <div *ngIf='f.file_name.errors.required || f.file_name.errors.maxlength'>
+                        Name is required and max 30 chars.
+                    </div>
+                </div>
+           </div>
+          
+           <div class="custom-file col-6">
+                <input 
+                id="customFile"
+                formControlName="file" 
+                type="file"
+                name="file"
+                class="custom-file-input form-control-file" placeholder="choose a file" #file (change)="getFile($event)">
+                <label class="custom-file-label" for="customFile">{{fileName}}</label>
+           </div>
+
+           <div class="col-3">
+                <button id="upload" class="btn btn-success" type="submit" 
+                [disabled]='talksGroup.invalid' (click)="fileUpload(file_name.value)">Upload</button>
+           </div> 
+        </div>
+      
         
     </div>
-</div>
-<br>
-
-<div id="search" class="container-fuild">
-    <div class="form-group container">
-        <div class="input-group">
-            <a (click)="searching(search.value)" ><i id="icon-search" class="fas fa-search input-group-addon"></i></a>
-            <input (value)="searching(search.value)"
-                 type="search" class="form-control input-group-text" placeholder="search for a talk" #search>
+    <div class="row">
+        <div id="search" class="container-fuild col-6">
+            <div class="form-group container">
+                <div class="input-group">
+                    <a (click)="searching(search.value)" ><i id="icon-search" class="fas fa-search input-group-addon"></i></a>
+                    <input (keyup)="searching(search.value)"
+                         type="search" class="form-control input-group-text" placeholder="search for a talk" #search>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+
+
 <br>
 <div class="progress" *ngIf= "uploadResponse.status === 'progress'" id="progress-bar">
     <div class="progress-bar progress-bar-striped progress-bar-animated" [style.width.%]="uploadResponse.upload" role="progressbar" [attr.aria-valuenow]="10" aria-valuemin="0" aria-valuemax="100">{{uploadResponse.upload}}%</div>

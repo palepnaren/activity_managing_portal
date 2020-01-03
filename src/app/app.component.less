@@ -36,10 +36,6 @@ img{
     right:20px;
 }
 
-.fa-ellipsis-v{
-    color: white;
-    font-size: 20px;
-}
 
 .left{
     position: absolute;
@@ -66,11 +62,10 @@ img{
 }
 
 #loop{
-    height: auto;
-    
+    height: auto;  
 }
 .nav-color{
-    background-color: rgba(185, 182, 184, 0.3);
+    background-color: rgba(250, 249, 248, 0.3);
     
 }
 
@@ -83,40 +78,25 @@ img{
     }
 }
 
-#main-menu{
-    display: none;
+.menu-position{
+    margin-right: 10px;
 }
 
+
 #nav-menu{
-    width: 30%;
+    width: 100%;
+    display: none;
+    position: fixed;
+    top: 50px;
+    z-index: 110 !important;
 }
 
 #main-body{
     padding: 15px;
-    width: 70%;
+    width: 100%;
 }
 
 
-
-
-@media only screen and (max-width: 770px){
-
-    #nav-menu{
-        display: none;
-    }
-
-
-    #main-menu{
-        display: initial;
-    }
-
-    #main-body{
-        width: 100%;
-        z-index: 1 !important;
-
-    }
-
-}
 
 @media only screen and (max-width: @small){
 
@@ -133,6 +113,7 @@ img{
         width: 50px;
         height: 50px;
         display: inline; 
+        margin-left: -20px;
     }
 
     #collapsibleNavbar{
@@ -145,9 +126,30 @@ img{
 
 }
 
+@media only screen and (min-width:320px) and (max-width: 349px){
+    #collapsibleNavbar{
+        margin-top: 85px;
+    }
+    #nav-menu{
+        position: fixed;
+        top: 150px;
+    }
+}
+
+@media only screen and (min-width:360px) and (max-width: 375px){
+    #collapsibleNavbar{
+        margin-top: 30px !important;
+    }
+}
+
+
 @media only screen and (min-width:@small) and (max-width: 380px){
     #collapsibleNavbar{
         margin-top: 60px;
+    }
+    #nav-menu{
+        position: fixed;
+        top: 80px;
     }
 }
 
@@ -162,8 +164,21 @@ img{
        display: none;
     }
 
+    .menu-position{
+        position: absolute;
+        top: 5px;
+        right: 20px;
+        margin-right: 0px;
+    }
+
+    #nav-menu{
+        position: fixed;
+        top: 80px;
+    }
+
     #nav-profile{
         display: inline;
+        margin-left: -20px;
         width: 50px;
         height: 50px;
     }

@@ -10,7 +10,7 @@
     "heroku-postbuild": "ng build --prod"
   },
   "engines": {
-    "node": "10.14.1",
+    "node": "^10.0.0",
     "npm": "6.9.0"
   },
   "private": true,
@@ -46,6 +46,7 @@
     "fs": "0.0.1-security",
     "jquery": "^3.4.0",
     "less": "^2.7.3",
+    "localStorage": "^1.0.4",
     "ng-push": "^0.2.2",
     "ngx-cookie-service": "^2.2.0",
     "os": "^0.1.1",

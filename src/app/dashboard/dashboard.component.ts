@@ -44,6 +44,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   // chart;
   processList;
   tableList;
+  audios;
+  len = 0;
   i = 0;
   // events = ['value', 'child_added', 'child_removed', 'child_moved', 'child_changed'];
   // result;
@@ -108,6 +110,15 @@ ngAfterViewInit() {
    setTimeout(() => {
     this.populateProcess(sessionStorage.getItem('email'));
    }, 101);
+
+   document.addEventListener('play', (e) => {
+    this.audios = document.getElementsByTagName('audio');
+    for (this.i = 0, this.len = this.audios.length; this.i < this.len; this.i++) {
+        if (this.audios[this.i] !== e.target) {
+            this.audios[this.i].pause();
+        }
+    }
+  }, true);
    
   // this.updateGraph('conversations');
 

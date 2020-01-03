@@ -153,7 +153,7 @@ searching(keyword){
 
   } else{
 
-    this.listOfTalks = this.listOfTalks.filter(talk => talk.name.includes(keyword));
+    this.listOfTalks = this.listOfTalks.filter(talk => talk.name.toLowerCase().includes(keyword.toLowerCase()));
      
     console.log(this.listOfTalks);
     this.lengthOfItems = this.listOfTalks.length;

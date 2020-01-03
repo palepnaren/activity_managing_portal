@@ -3,6 +3,7 @@ var app = express();
 var routing = express.Router();
 var db = require('../db/db.js');
 var crypt = require('bcrypt');
+var localStorage = require('localStorage');
 
 var file;
 var files = [];
@@ -54,7 +55,7 @@ routing.route('/getPromoted').get((req, res) => {
     });
 
     setTimeout(() => {
-        if(req.session.loggedIn == true){
+        if(localStorage.getItem("loggedIn") == "true"){
             res.json(files);
         } else {
             res.json({message:'Session is destroyed'})
@@ -118,14 +119,14 @@ routing.route('/download').get((req, res) => {
         setTimeout(()=>{
             if(isAdd){
                 console.log("res " + files.length);
-                if(req.session.loggedIn == true){
+                if(localStorage.getItem("loggedIn") == "true"){
                     res.json(files);
                 } else {
                     res.json({message:'Session is destroyed'});
                 }
             } else {
                 console.log("res " + deleted.length);
-                if(req.session.loggedIn == true){
+                if(localStorage.getItem("loggedIn") == "true"){
                     res.json(deleted);
                 } else {
                     res.json({message:'Session is destroyed'})
@@ -192,6 +193,7 @@ routing.route('/auth').post((req, res) => {
                 crypt.compare(req.body.pwd, isUser.pwd, (err,  match) => {
                     req.session.loggedIn = match;
                     isValid = match;
+                    localStorage.setItem("loggedIn",""+isValid);
                 });
             } else {
                 isValid = false;
@@ -270,7 +272,7 @@ routing.route('/processList/:email').get((req, res) => {
     });
 
     setTimeout(() => {
-        if(req.session.loggedIn == true){
+        if(localStorage.getItem("loggedIn") == "true"){
             res.send(values);
         } else {
             res.send({message: "Session is destroyed"});
@@ -311,6 +313,8 @@ routing.route('/updatePassword').post((req, res) => {
 
 routing.route('/destroy').get((req,res) =>{
     req.session.loggedIn = false;
+    isValid = false;
+    localStorage.removeItem("loggedIn");
     req.session.destroy((err) => {
         if(err) {
             return console.log(err);
@@ -339,7 +343,7 @@ routing.route('/getUserProfile/:email').get((req,res) => {
         });
 
         setTimeout(() => {
-            if(req.session.loggedIn == true){
+            if(localStorage.getItem("loggedIn") == "true"){
                 res.status(200).send(obj);
             } else {
                 res.status(404).send({message: "Session is destroyed"});

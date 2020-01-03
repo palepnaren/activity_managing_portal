@@ -2,7 +2,9 @@
 
 
 <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top sticky-top">
+    <span id="main-menu" [class]="isLoggedIn ? 'menu-position' : '' " style="color: white;"> Menu <i id="menu-icon" class= "fas fa-bars"></i></span>
     <a class="navbar-brand" routerLink="/profile" *ngIf="isLoggedIn"><img src="{{src}}" class=" img-fluid rounded-circle" id="nav-profile"> Welcome {{name}}</a>
+    
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar" id="toggle">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -21,9 +23,6 @@
           <a *ngIf="isLoggedIn" class="nav-link" (click)="logout()" routerLink="/"><i class="fas fa-sign-out-alt"></i><span></span></a>
         </li>    
       </ul>
-    </div> 
-    <div id="main-menu">
-      <i class="fas fa-ellipsis-v"></i>
     </div> 
   </nav>
 
@@ -107,13 +106,16 @@
                     </li>
                     <li class=" col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
                       <a class=" nav-link " routerLink=""><i class="fas fa-chart-area"></i><span> Progress</span></a>
-                  </li> -->
-                  <li class=" col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" id="training">
-                    <a class=" nav-link " routerLink="sharedTalks"><i class="fas fa-file-audio"></i><span> Training</span></a>
-                </li>
-                <li class=" col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" id="profile">
-                  <a class=" nav-link " routerLink="profile"><i class="fas fa-user"></i><span> Profile</span></a>
-              </li>
+                    </li> -->
+                    <li class=" col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" id="training">
+                      <a class=" nav-link " routerLink="sharedTalks"><i class="fas fa-file-audio"></i><span> Training</span></a>
+                    </li>
+                    <li class=" col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" id="profile">
+                      <a class=" nav-link " routerLink="profile"><i class="fas fa-user"></i><span> Profile</span></a>
+                    </li>
+                    <li class=" col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" id="profile" *ngIf = "isAdmin == 'true' && isLoggedIn">
+                      <a class=" nav-link " routerLink=""><i class="fas fa-chart-line"></i><span>Team Stats</span></a>
+                    </li>
                 </ul>
         </nav>
 
