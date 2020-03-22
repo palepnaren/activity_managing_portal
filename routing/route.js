@@ -4,6 +4,7 @@ var routing = express.Router();
 var db = require('../db/db.js');
 var crypt = require('bcrypt');
 var localStorage = require('localStorage');
+var jwtToken = require('jsonwebtoken');
 
 var file;
 var files = [];
@@ -11,6 +12,7 @@ var count;
 var flag;
 var max_count = 0;
 var _url;
+var token;
 var user = {
     fname: '',
     lname: '',
@@ -42,7 +44,7 @@ routing.route('/promote').put((req, res) =>{
 });
 
 routing.route('/getPromoted').get((req, res) => {
-    console.log(req.session.loggedIn);
+    // console.log(req.session.loggedIn);
     var files = {
         keys: [],
         values: []
@@ -92,7 +94,7 @@ routing.route('/download').get((req, res) => {
                         if(files.findIndex(f => f.name == file.name) >= 0){
 
                         } else {
-                            console.log(file.name);
+                            // console.log(file.name);
                             files.push({name: file.name, _url: url[0]}); 
                         }
                     },100)
@@ -148,21 +150,27 @@ routing.route('/save').post((req, res) => {
     crypt.genSalt(salt, (err, salt) => {
         crypt.hash(req.body.password, salt, (err, hash) => {
             hashed = hash;
+            user.pwd = hashed;
+            user.role = req.body.role;
+            user.upline = req.body.upline;
+            user.date = Date.now().toString();
+            isSaved = db.saveUser(user);
+            res.send(isSaved);
         });
     });
 
-    setTimeout(()=>{
-        user.pwd = hashed;
-    }, 10000);
+    // setTimeout(()=>{
+    //     user.pwd = hashed;
+    // }, 10000);
 
-    user.role = req.body.role;
-    user.upline = req.body.upline;
-    user.date = Date.now().toString();
+    // user.role = req.body.role;
+    // user.upline = req.body.upline;
+    // user.date = Date.now().toString();
 
-    setTimeout(() =>{
-        isSaved = db.saveUser(user);
-        res.send(isSaved);
-    }, 13000);
+    // setTimeout(() =>{
+    //     isSaved = db.saveUser(user);
+    //     res.send(isSaved);
+    // }, 13000);
     
 });
 
@@ -190,32 +198,33 @@ routing.route('/auth').post((req, res) => {
             key = Object.keys(authUser);
             isUser = authUser[key[0]];
             if((req.body.email === isUser.email || req.body.email === isUser.username)){
+                
                 crypt.compare(req.body.pwd, isUser.pwd, (err,  match) => {
                     req.session.loggedIn = match;
                     isValid = match;
                     localStorage.setItem("loggedIn",""+isValid);
+                    token = jwtToken.sign({userID: isUser.email}, "dcr-tracking", {expiresIn: '1h'});
                 });
-            } else {
-                isValid = false;
-                req.session.loggedIn = false;
-                console.log('Password did not match');
-            }
-        }
-        
+            } 
+        } 
         
     });
 
-    
         setTimeout(() => {
-            if(isUser != null || isUser != undefined){
-                loggedInUser.fullName = isUser.fname+ ' ' + isUser.lname;
-                loggedInUser.username = isUser.username;
-                loggedInUser.role = isUser.role;
-                loggedInUser.upline = isUser.upline;
-                loggedInUser.profileImage = isUser.profileImage;
-                res.send({loggedIn:isValid, user: loggedInUser});
-            }
-        }, 3000);
+                if(isValid){
+                    if(isUser != null || isUser != undefined){
+                        loggedInUser.fullName = isUser.fname+ ' ' + isUser.lname;
+                        loggedInUser.username = isUser.username;
+                        loggedInUser.role = isUser.role;
+                        loggedInUser.upline = isUser.upline;
+                        loggedInUser.profileImage = isUser.profileImage;
+                        res.status(200).send({loggedIn:isValid, user: loggedInUser, token: token});
+                    }
+                } else {
+                    res.status(200).send({loggedIn:isValid, user: {}});
+                    console.log('Password did not match');
+                }
+        }, 2500);
     
     
 });
@@ -228,13 +237,14 @@ routing.route('/process').post((req, res)=>{
 
     db.updateUserProcess(data,email,(process) =>{
 
-        if(process){
-            res.status(200).send(process);
+        if(process == "Saved"){
+            res.status(200).send({msg:process});
         } else {
-            res.status(404).send(process);
+            res.status(404).send({msg:process});
         }
     });
 });
+
 
 routing.route('/deleteTalk/:fileName').delete((req, res) => {
     var name = req.params.fileName;
@@ -254,7 +264,7 @@ routing.route('/processList/:email').get((req, res) => {
     var email = req.params.email;
     var key;
     var values;
-    console.log(email + 'inside routing');
+    // console.log(email + 'inside routing');
 
     db.getProcess(email, (list) => {
 
@@ -286,29 +296,17 @@ routing.route('/updatePassword').post((req, res) => {
     var email = req.body.email;
     var isSet;
     var pwd;
-
     crypt.genSalt(salt, (err, salt) => {
         crypt.hash(req.body.pwd, salt, (err, hash) => {
             hashed = hash;
+            pwd = hashed;
+            db.forgotPwd(email, pwd, (flag) => {
+                isSet = flag;
+                console.log("Password updated: "+isSet);
+                res.status(200).send(isSet);
+            });  
         });
-    });
-
-    setTimeout(() => {
-        pwd = hashed;
-    },10000);
-
-   setTimeout(() => {
-    db.forgotPwd(email, pwd, (flag) => {
-        isSet = flag;
-        console.log(isSet);
-    });
-   },10500)
-
-    setTimeout(() =>{
-        console.log(isSet);
-        res.send(isSet);
-    }, 11000);
-    
+    }); 
 });
 
 routing.route('/destroy').get((req,res) =>{
@@ -355,18 +353,31 @@ routing.route('/getUserProfile/:email').get((req,res) => {
 
 routing.route('/updateProfile').post((req, res) => {
 
-    crypt.genSalt(salt, (err, salt) => {
-        crypt.hash(req.body.pwd, salt, (err, hash) => {
-            req.body.pwd = hash;
-        });
-    });
+    
+    if(req.body.pwd === '' || req.body.pwd === null || req.body.pwd === undefined){
+                db.updateUserProfile(req.body, (saved) => {
+                    // console.log(saved);
+                    res.status(200).send(saved);
+                });
 
-    setTimeout(() => {
-        db.updateUserProfile(req.body, (saved) => {
-            console.log(saved);
-            res.send(saved);
+    } else {
+        crypt.genSalt(salt, (err, salt) => {
+            crypt.hash(req.body.pwd, salt, (err, hash) => {
+                req.body.pwd = hash;
+                db.updateUserProfile(req.body, (saved) => {
+                    // console.log(saved);
+                    res.status(200).send(saved);
+                });
+            });
         });
-    },10000);
+    }
+
+    // setTimeout(() => {
+    //     db.updateUserProfile(req.body, (saved) => {
+    //         console.log(saved);
+    //         res.send(saved);
+    //     });
+    // },10000);
     
 
 })

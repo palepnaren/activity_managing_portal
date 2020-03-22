@@ -10,7 +10,7 @@ export class CanActivateRouterGuard implements CanActivate {
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree {
 
-        if (sessionStorage.getItem('isAuth') === 'true') {
+        if (sessionStorage.getItem('isAuth') === 'true' && sessionStorage.getItem('access-token') != "") {
             this.login.isLoggedIn = true;
         } else {
             this.login.isLoggedIn = false;

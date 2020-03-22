@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit, Output, EventEmitter, OnChanges } from '@angular/core';
 import { AudioService } from '../service/audio.service';
 
 @Component({
@@ -7,7 +7,7 @@ import { AudioService } from '../service/audio.service';
   templateUrl: './pagination.component.html',
   styleUrls: ['./pagination.component.less']
 })
-export class PaginationComponent implements OnInit, AfterViewInit {
+export class PaginationComponent implements OnChanges, OnInit, AfterViewInit {
 
   
   // tslint:disable-next-line:no-input-rename
@@ -15,24 +15,33 @@ export class PaginationComponent implements OnInit, AfterViewInit {
   // tslint:disable-next-line:no-input-rename
   @Input('size') lengthOfList: number;
   @Input('isDashboard') isDashboard: boolean;
+  @Output('refresh') refresh = new EventEmitter();
 
 
 
   currentList = [];
   itemList = [];
   currentSetIn;
-  isLoading = false;
 
   constructor(private audioService: AudioService) { }
 
   ngOnInit() {
-    this.isLoading = true;
-    setTimeout(() => {
-      console.log(this.listOfItems);
-      console.log(this.lengthOfList);
-    }, 1100);
-    console.log(this.listOfItems);
+    
   }
+
+  ngOnChanges(){
+    this.refresh.emit({items: this.listOfItems, size: this.lengthOfList});
+    
+    this.itemList = this.listOfItems.slice(0, 10);
+    if(this.itemList.length == 0){
+      this.currentSetIn = '0 - ' + this.itemList.length + ' of ' + this.listOfItems.length;
+    } else {
+      this.currentSetIn = '1 - ' + this.itemList.length + ' of ' + this.listOfItems.length;
+    }
+    this.paginate(this.lengthOfList);
+    
+  }
+
 
   ngAfterViewInit() {
     setTimeout(() => {
@@ -43,43 +52,55 @@ export class PaginationComponent implements OnInit, AfterViewInit {
       } else {
         this.currentSetIn = '1 - ' + this.itemList.length + ' of ' + this.listOfItems.length;
       }
-      this.isLoading = false;
+      
+      console.log(this.listOfItems);
+      console.log(this.lengthOfList);
     }, 2200);
   }
 
   paginate(size) {
     console.log(size);
-
+    
     if ( size < 10) {
-      this.currentList.push(['Showing All ' + size]);
+      this.currentList =[];
+      this.currentList.push(['Showing All ' +size]);
     } else if (size === 10) {
+      this.currentList =[];
       this.currentList.push(['10']);
     } else if (size > 10 && size < 20) {
+      this.currentList =[];
       this.currentList.push(['10', 'ALL']);
     } else if (size === 20) {
+      this.currentList =[];
       this.currentList.push(['10', '20']);
     } else if (size > 20 && size < 30) {
+      this.currentList =[];
       this.currentList.push(['10', '20', 'ALL']);
     } else if (size === 30) {
+      this.currentList =[];
       this.currentList.push(['10', '20', '30']);
     } else if (size > 30 && size < 40) {
+      this.currentList =[];
       this.currentList.push(['10', '20', '30', 'ALL']);
     } else if (size === 40) {
+      this.currentList =[];
       this.currentList.push(['10', '20', '30', '40']);
     } else if (size > 40 && size < 50) {
+      this.currentList =[];
       this.currentList.push(['10', '20', '30', '40', 'ALL']);
     } else if ( size === 50) {
+      this.currentList =[];
       this.currentList.push(['10', '20', '30', '40', '50']);
     } else {
+      this.currentList =[];
       this.currentList.push(['10', '20', '30', '40', '50', 'ALL']);
     }
-    // console.log(this.currentList);
+    console.log(this.currentList);
 
   }
 
   promote(item) {
 
-    this.isLoading = true;
     console.log(item);
     const role = sessionStorage.getItem('role');
     console.log(role);
@@ -104,7 +125,7 @@ export class PaginationComponent implements OnInit, AfterViewInit {
           alert('Maximum of 5 files can be promoted');
         }
 
-        this.isLoading = false;
+        
       });
     }
   }

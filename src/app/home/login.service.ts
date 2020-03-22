@@ -23,7 +23,8 @@ export class LoginService {
 
   authUser = {
     loggedIn: false,
-    user: null
+    user: null,
+    token: ""
   };
 
   isAuth(email, pwd) {
@@ -37,9 +38,8 @@ export class LoginService {
     this.http.post(url, this.userLogin, { responseType: 'json'}).subscribe(user => {
       this.authUser.loggedIn = Object.values(user)[0];
       this.authUser.user = Object.values(user)[1];
-    });
+      this.authUser.token = Object.values(user)[2];
 
-    setTimeout( () => {
       if (this.authUser.loggedIn === true) {
         this.isLoading = false;
         this.isLoggedIn = true;
@@ -48,6 +48,9 @@ export class LoginService {
         sessionStorage.setItem('email', this.userLogin.email);
         sessionStorage.setItem('isAuth', '' + this.isLoggedIn);
         sessionStorage.setItem('profileImage', this.authUser.user.profileImage);
+        sessionStorage.setItem('access-token',this.authUser.token);
+        console.log("Token" +this.authUser.token);
+        console.log("Session Token" +sessionStorage.getItem('access-token'));
         $('#loop > li#dashboard >a').addClass('active');
         this.router.navigateByUrl('/dashboard');
       } else {
@@ -57,7 +60,7 @@ export class LoginService {
         sessionStorage.setItem('isAuth', '' + this.isLoggedIn);
         this.router.navigateByUrl('');
       }
-    }, 3500);
+    });
 
   }
 

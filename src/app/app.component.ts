@@ -89,8 +89,6 @@ export class AppComponent implements OnInit, AfterViewInit {
         
       }, 200);
   
-
-      // this.j_Query();
 }
 
 ngAfterViewInit(): void {
@@ -134,65 +132,33 @@ j_Query() {
     });
 
     
-    this.toggleMainMenu();
+    // this.toggleMainMenu();
 
   });
 }
 
 
- toggleMainMenu(){
+//  toggleMainMenu(){
 
-  let counter = 0;
-    $('#main-menu').click(()=>{
-      counter = 1;
-      $('#nav-menu').slideToggle(200);
+//   let counter = 0;
+//     $('#main-menu').click(()=>{
+//       counter = 1;
+//       // $('#nav-menu').slideToggle(200);
       
-      if(counter === 1){
-        if($('#menu-icon').hasClass('fa-bars')){
-          $('#menu-icon').removeClass('fa-bars');
-          $('#menu-icon').addClass('fa-times');
-        } else{
-          $('#menu-icon').removeClass('fa-times');
-          $('#menu-icon').addClass('fa-bars');
-        }
-      }
-      
-    });
-
- }
-
-// adjustHeight(){
-//   // this.events.forEach((event) => {
-//     // window.addEventListener('resize', () => {
-//       console.log(event);
-//       console.log("Inner width: " +window.innerWidth);
-//       if(window.innerWidth <= 770){
-//         $('#main-menu').click(() => {
-//             console.log('Im Here@@@@@@');
-//             console.log(document.getElementById('nav-menu').style.display);
-//             if(document.getElementById('nav-menu').style.display === '' || document.getElementById('nav-menu').style.display === 'none'){
-//               console.log('Im Here!!!');
-//               document.getElementById('nav-menu').style.display = 'inline';
-//               document.getElementById('nav-menu').style.zIndex = '100';
-//               document.getElementById('nav-menu').style.width = '30%';
-//               document.getElementById('main-body').style.width = '100%';
-//               document.getElementById('nav-menu').style.height = $('body').height()+'px';
-//               document.getElementById('nav-menu').style.position = 'absolute';
-//               document.getElementById('nav-menu').style.top = '125px';
-//               document.getElementById('nav-menu').style.left = '0px';
-//               document.getElementById('nav-menu').style.backgroundColor = 'white';
-              
-//             } else {
-//               document.getElementById('nav-menu').style.display = 'none';
-//               document.getElementById('main-body').style.width = '100%';
-//             }
-//         });
-//       } else {
-//         // document.getElementById('nav-menu').style.top = '50px';
+//       if(counter === 1){
+//         if($('#menu-icon').hasClass('fa-bars')){
+//           $('#menu-icon').removeClass('fa-bars');
+//           $('#menu-icon').addClass('fa-times');
+//         } else{
+//           $('#menu-icon').removeClass('fa-times');
+//           $('#menu-icon').addClass('fa-bars');
+//         }
 //       }
-//     // });
-//   // });
-// }
+      
+//     });
+
+//  }
+
 
 copy(){
   

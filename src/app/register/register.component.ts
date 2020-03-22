@@ -69,22 +69,34 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
     this.service.regUser(this.user).subscribe( savedUser => {
       this.saved = savedUser;
-    });
-
-    setTimeout(() => {
       console.log(this.saved);
       if (this.saved) {
         $('loader').css({'display':'none'});
         setTimeout(() => {
           alert('User registered successfully');
-        }, 200);
+        }, 100);
       } else {
         $('loader').css({'display':'none'});
         setTimeout(() => {
           alert('Error saving user');
-        }, 200);
+        }, 100);
       }
-    }, 16000);
+    });
+
+    // setTimeout(() => {
+    //   console.log(this.saved);
+    //   if (this.saved) {
+    //     $('loader').css({'display':'none'});
+    //     setTimeout(() => {
+    //       alert('User registered successfully');
+    //     }, 200);
+    //   } else {
+    //     $('loader').css({'display':'none'});
+    //     setTimeout(() => {
+    //       alert('Error saving user');
+    //     }, 200);
+    //   }
+    // }, 16000);
     this.registerGroup.reset({
       first_name: '',
       last_name: '',

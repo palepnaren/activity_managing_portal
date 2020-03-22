@@ -44,6 +44,12 @@ export class PasswordResetComponent implements OnInit, AfterViewInit {
       this.isChanged = updated;
       console.log('Pwd successfully updated' + this.isChanged);
     });
+
+    this.resetGroup.reset({
+      email: '',
+      password: '',
+      pwd_renter: ''
+    });
   }
 
 

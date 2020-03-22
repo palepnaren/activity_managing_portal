@@ -97,17 +97,8 @@ ngOnInit() {
 
 ngAfterViewInit() {
 
-  // this.refresh = true;
-
-  // this.createGraph();
-  // window.addEventListener('resize', this.createGraph);
-
-  // this.getData('conversations');
-  setTimeout(() => {
-    this.talksPromoted();
-   }, 101);
-
    setTimeout(() => {
+    this.talksPromoted();
     this.populateProcess(sessionStorage.getItem('email'));
    }, 101);
 
@@ -490,7 +481,7 @@ numOfappointments(date, conv, dtm, mg1, mg2, mg3, bp1, bp2, fp1, fp2, pre, launc
     localStorage.setItem('todayEntry',string);
 
     this.userService.updateProcess(obj, sessionStorage.getItem('email')).subscribe(res => {
-       this.message = res;
+       this.message = Object.values(res)[0];
        $('loader').css({'display':'none'});
        this.populateProcess(sessionStorage.getItem('email'));
     });
@@ -503,6 +494,7 @@ numOfappointments(date, conv, dtm, mg1, mg2, mg3, bp1, bp2, fp1, fp2, pre, launc
     console.log(email);
     this.userService.getProcess(email).subscribe(list => {
       this.processList = list;
+      console.log("New Updated list is: ");
       console.log(list);
       $('loader').css({'display':'none'});
       this.updateTable("5");

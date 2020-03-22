@@ -58,6 +58,6 @@
 </div>
   
 <br>
-<pagination [items]="listOfTalks" [size]="lengthOfItems" *ngIf="refresh"></pagination>
+<pagination [items]="listOfTalks" [size]="lengthOfItems" (refresh)="refresh($event)"></pagination>
 
 <loader [message]="'Loading'"></loader>

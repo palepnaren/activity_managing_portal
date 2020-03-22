@@ -26,6 +26,11 @@ import { PasswordResetComponent } from './password-reset/password-reset.componen
 import { LoaderComponent } from './loader/loader.component';
 import { PushNotificationsModule} from 'ng-push';
 import { DateModifyPipe } from './custom-pipes/custom-pipes.pipe';
+import {JwtModule} from '@auth0/angular-jwt';
+
+export function tokenGetter() {
+  return localStorage.getItem('access-token');
+}
 
 @NgModule({
   declarations: [
@@ -89,7 +94,13 @@ import { DateModifyPipe } from './custom-pipes/custom-pipes.pipe';
         path: 'login',
         component: HomeComponent
       }
-  ])
+  ]),
+  JwtModule.forRoot({
+    config:{
+      tokenGetter: tokenGetter,
+      whitelistedDomains: ['localhost:4200','localhost:9500']
+    }
+  })
   ],
   providers: [
     WeatherService,

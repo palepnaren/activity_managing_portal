@@ -12,7 +12,7 @@ import { PaginationComponent } from '../pagination/pagination.component';
 })
 export class SharedTalksComponent implements OnInit, AfterViewInit {
 
-  // listOfTalks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31];
+  
   lengthOfItems = 0;
   talksGroup: FormGroup;
   fileType;
@@ -23,7 +23,6 @@ export class SharedTalksComponent implements OnInit, AfterViewInit {
   listOfTalks = [];
   audios;
   len;
-  refresh: boolean = true;
   uploadResponse = {
     status: '',
     upload: 0
@@ -38,27 +37,23 @@ export class SharedTalksComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-
+    $('loader').show();
    
   }
 
 
   ngAfterViewInit() {
-     setTimeout(() => {
+    $('loader').hide();
       this.fileDownload();
-     }, 500);
 
-     setTimeout(() => {
-      document.addEventListener('play', (e) => {
-        this.audios = document.getElementsByTagName('audio');
-        for (this.i = 0, this.len = this.audios.length; this.i < this.len; this.i++) {
-            if (this.audios[this.i] !== e.target) {
-                this.audios[this.i].pause();
-            }
-        }
-      }, true);
-      $('loader').css({'display':'none'});
-     }, 1501);
+     document.addEventListener('play', (e) => {
+      this.audios = document.getElementsByTagName('audio');
+      for (this.i = 0, this.len = this.audios.length; this.i < this.len; this.i++) {
+          if (this.audios[this.i] !== e.target) {
+              this.audios[this.i].pause();
+          }
+      }
+    }, true);
  
   }
 
@@ -72,7 +67,6 @@ getFile(e) {
     this.fileType = this.fileName.substr(index);
     console.log(this.file.size);
 
-    // if (this.fileType === '.mp3' || this.fileType === '.ogg' || this.fileType === '.wav') {
     const reader = new FileReader();
     reader.addEventListener('load', () => {
       this.fileData = reader.result;
@@ -81,24 +75,21 @@ getFile(e) {
     });
 
     reader.readAsArrayBuffer(this.file);
-    // }
 
 }
 
    fileUpload(name) {
  
-    $('loader').css({'display':'block'});
+    $('loader').show();
 
     let options = {
       body: "File:"+name+" Uploaded by "+sessionStorage.getItem('name'),
       icon: sessionStorage.getItem("profileImage")
     }
 
-    // if (this.fileType === '.mp3' || this.fileType === '.ogg' || this.fileType === '.wav' || this.fileType === '.m4a') {
-
       this.service.fileUpload(name, this.unit8Array).subscribe(res => {
 
-        this.refresh = false;
+        $('pagination').hide();
 
         this.uploadResponse.status = res.status;
         this.uploadResponse.upload = res.upload;
@@ -117,15 +108,13 @@ getFile(e) {
 
       }, err => {
         console.log(err);
-        $('loader').css({'display':'none'});
+        $('loader').hide();
       });
 
   }
 
 fileDownload() {
-
-
-  $('loader').css({'display':'block'});
+  $('loader').show();
    this.service.fileDownload().subscribe(file => {
      // tslint:disable-next-line:prefer-for-of
      for (this.i = 0; this.i < Object.keys(file).length; this.i++) {
@@ -138,35 +127,35 @@ fileDownload() {
         
      }
      this.lengthOfItems = this.listOfTalks.length;
-     $('loader').css({'display':'none'});
-     this.refresh = true;
+     $('loader').hide();
+     $('pagination').show();
    });
 
 }
 
-searching(keyword){
-  this.refresh = false;
+searching(keyword:string){
+  
   if(keyword === null || keyword === undefined || keyword === ''){
 
     this.listOfTalks = [];
     this.fileDownload();
 
   } else{
-
     this.listOfTalks = this.listOfTalks.filter(talk => talk.name.toLowerCase().includes(keyword.toLowerCase()));
-     
     console.log(this.listOfTalks);
     this.lengthOfItems = this.listOfTalks.length;
-    setTimeout(() => {
-      this.pagination.listOfItems = this.listOfTalks;
-      this.pagination.lengthOfList = this.lengthOfItems;
-      this.pagination.ngOnInit();
-      this.pagination.ngAfterViewInit();
-      this.refresh = true;
-    }, 200);
+    this.pagination.listOfItems = this.listOfTalks;
+    this.pagination.lengthOfList = this.lengthOfItems;
   }
   
   
+}
+
+refresh(event){
+  console.log("Event triggered");
+  console.log(event);
+  this.listOfTalks = event.items;
+  this.lengthOfItems = event.size;
 }
 
 get f() {

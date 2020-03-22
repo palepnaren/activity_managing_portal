@@ -1,7 +1,7 @@
 
     <div *ngIf="!isDashboard">
         <div id="indexing">
-            <ul *ngFor="let set of currentList[0]" id="pagination">
+            <ul *ngFor="let set of currentList" id="pagination">
                 <li><a href="#" (click)="showSetIn($event, set)">{{set}}</a></li>
               </ul>
         </div>
@@ -22,7 +22,7 @@
 
     <div *ngIf="isDashboard">
         <div id="indexing">
-            <ul *ngFor="let set of currentList[0]" id="pagination">
+            <ul *ngFor="let set of currentList" id="pagination">
                 <li><a href="#" (click)="showSetIn($event, set)">{{set}}</a></li>
             </ul>
         </div>

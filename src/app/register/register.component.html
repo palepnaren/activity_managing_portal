@@ -113,7 +113,7 @@
       </div>
    </div>
     <button id="register" class="btn btn-success" (click)="register(first_name.value, last_name.value, email.value, username.value, password.value, role.value, upline.value)" 
-    [disabled]='registerGroup.invalid' type="submit">Register</button>
+    [disabled]='registerGroup.invalid && comparePwd(password.value, cmp_password.value)' type="submit">Register</button>
     <p>Have an account already?<a routerLink="/"> login here.</a></p>
   </form>
 </div>

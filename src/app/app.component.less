@@ -10,20 +10,11 @@
 }
 
 #nav-profile{
-    display: none;
+    width: 50px;
+    height: 50px;
+    display: inline;
 }
 
-nav{
-    padding: 25px;
-}
-
-
-img{
-    width: 100px;
-    height: 100px;
-    margin-bottom: 15px;
-    
-}
 .dot{
     font-size: 8px;
     color: red;
@@ -32,8 +23,7 @@ img{
 }
 
 .right{
-    position: absolute;
-    right:20px;
+    position: relative;
 }
 
 
@@ -65,7 +55,7 @@ img{
     height: auto;  
 }
 .nav-color{
-    background-color: rgba(250, 249, 248, 0.3);
+    background-color: rgba(250, 249, 248, 1);
     
 }
 
@@ -85,10 +75,25 @@ img{
 
 #nav-menu{
     width: 100%;
-    display: none;
     position: fixed;
     top: 50px;
-    z-index: 110 !important;
+    z-index: 10 !important;
+}
+
+#nav-menu > ul {
+   list-style-type: none !important;
+   margin-top: 25px;
+   
+   & > li {
+            position: relative; 
+            display: inline;
+        & > a {
+            position: relative;
+            display: inline;
+            margin-right: 50px;
+            
+        }
+   }
 }
 
 #main-body{
@@ -132,7 +137,7 @@ img{
     }
     #nav-menu{
         position: fixed;
-        top: 150px;
+        top: 100px;
     }
 }
 
@@ -149,7 +154,7 @@ img{
     }
     #nav-menu{
         position: fixed;
-        top: 80px;
+        top: 75px;
     }
 }
 

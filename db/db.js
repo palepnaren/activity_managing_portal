@@ -41,7 +41,7 @@ exports.saveFile = (name, data,cb) => {
 
 exports.removeDashboardFile = (fileName, cb) => {
 
-    console.log(fileName);
+    // console.log(fileName);
 
     firebase.database().ref('/promotedTalks').child(fileName).remove().then(success => {
         cb(true);
@@ -129,7 +129,7 @@ exports.updateUserProcess = (obj, email, cb) => {
     var msg;
 
     db.child('/'+email.split('@')[0]).on('value', (snapshot) => {
-        key = Object.keys(snapshot.val());   
+        key = Object.keys(snapshot.val());  
     });
 
     setTimeout(() => {
@@ -138,12 +138,12 @@ exports.updateUserProcess = (obj, email, cb) => {
         }).catch(err => {
             cb("Error While saving");
         });
-    }, 200);
+    }, 100);
 }
 
 exports.getProcess = (email, cb) => {
 
-    console.log(email + 'inside db');
+    // console.log(email + 'inside db');
     var key;
 
     db.child('/'+email.split('@')[0]).on('value', (snapshot) => {
@@ -165,7 +165,7 @@ exports.forgotPwd = (email, newPwd, cb) => {
         db.child('/'+email.split('@')[0]+'/'+key).update({pwd:newPwd}, (success) => {
             cb(true);
         }); 
-    },200); 
+    },100); 
     
 }
 
@@ -212,27 +212,37 @@ exports.getUserDetails = (email, cb) => {
 exports.updateUserProfile = (user, cb) => {
     var key;
     var msg;
+    var obj = {};
     // console.log(user);
     db.child('/'+user.email.split('@')[0]).on('value', (snapshot) => {
         key = Object.keys(snapshot.val());
     });
-
     setTimeout(() => {
+        
+        if(user.pwd === null || user.pwd === undefined || user.pwd === ''){
+            obj.email = user.email;
+            obj.fname = user.fname;
+            obj.lname = user.lname;
+            obj.role = user.role;
+            obj.address = user.address;
+            obj.city = user.city;
+            obj.state = user.state;
+            obj.profileImage = user.profileImage;
+        } else {
+            obj.email = user.email;
+            obj.fname = user.fname;
+            obj.lname = user.lname;
+            obj.role = user.role;
+            obj.address = user.address;
+            obj.city = user.city;
+            obj.state = user.state;
+            obj.profileImage = user.profileImage;
+            obj.pwd = user.pwd;
+        }
 
-        db.child('/'+user.email.split('@')[0]+'/'+key).update({
-            email: user.email,
-            fname: user.fname,
-            lname: user.lname,
-            role: user.role,
-            address: user.address,
-            city: user.city,
-            state: user.state,
-            profileImage: user.profileImage,
-            pwd: user.pwd
-            
-        }, (success) => {
+        db.child('/'+user.email.split('@')[0]+'/'+key).update(obj, (success) => {
             cb(true);
         });
-    },200);
+    },100);
 
 }
