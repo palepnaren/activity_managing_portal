@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Injectable } from '@angular/core';
 
@@ -9,6 +9,7 @@ export class UserService {
 
   isSaved;
   savedUser;
+  private headers: HttpHeaders;
 
   constructor(private http: HttpClient) { }
 
@@ -28,9 +29,16 @@ export class UserService {
 
   getProcess(email) {
 
+    this.headers = new HttpHeaders();
+    const token = sessionStorage.getItem('access-token');
+    this.headers = this.headers.set('x-access-token', token);
+    this.headers = this.headers .set('content-type', 'application/json')
+    this.headers = this.headers .set('Access-Control-Allow-Origin', '*')
+    console.log(this.headers);
+
     const url = window.location.origin + '/processList/'+email;
 
-    return this.http.get(url).map(res => res);
+    return this.http.get(url,{headers: this.headers}).map(res => res);
   }
 
 
@@ -48,9 +56,15 @@ export class UserService {
 
 
   getProfile(email){
+    this.headers = new HttpHeaders();
+    const token = sessionStorage.getItem('access-token');
+    this.headers = this.headers.set('x-access-token', token);
+    this.headers = this.headers .set('content-type', 'application/json')
+    this.headers = this.headers .set('Access-Control-Allow-Origin', '*')
+    console.log(this.headers);
     const url = window.location.origin + '/getUserProfile/'+email;
 
-    return this.http.get(url).map(res => res);
+    return this.http.get(url,{headers: this.headers}).map(res => res);
   }
 
   updateProfile(user){

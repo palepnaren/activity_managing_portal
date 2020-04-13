@@ -3,9 +3,10 @@ var app = express();
 var routing = express.Router();
 var db = require('../db/db.js');
 var crypt = require('bcrypt');
-var localStorage = require('localStorage');
 var jwtToken = require('jsonwebtoken');
+var env = require('../src/environments/environment.prod.js');
 
+var token;
 var file;
 var files = [];
 var count;
@@ -49,6 +50,7 @@ routing.route('/getPromoted').get((req, res) => {
         keys: [],
         values: []
     }
+    token = req.headers['x-access-token'];
     db.getPromoted((data) => {
         for(var i=0; i<=data.values.length-1; i++){
             files.keys[i] = Object.keys(data.values[i]);
@@ -57,10 +59,10 @@ routing.route('/getPromoted').get((req, res) => {
     });
 
     setTimeout(() => {
-        if(localStorage.getItem("loggedIn") == "true"){
+        if(token){
             res.json(files);
         } else {
-            res.json({message:'Session is destroyed'})
+            res.json({message:'User not authenticated'})
         }
         
     },500);
@@ -79,7 +81,9 @@ routing.route('/file').post((req, res) => {
 });
 
 routing.route('/download').get((req, res) => {
-    console.log(req.session.loggedIn);
+    console.log("Files downloading");
+    console.log(req.headers['x-access-token']);
+    token = req.headers['x-access-token'];
     db.downloadFiles().then(file =>{
         count = file[0].length;
         console.log(count);
@@ -121,17 +125,17 @@ routing.route('/download').get((req, res) => {
         setTimeout(()=>{
             if(isAdd){
                 console.log("res " + files.length);
-                if(localStorage.getItem("loggedIn") == "true"){
+                if(token){
                     res.json(files);
                 } else {
-                    res.json({message:'Session is destroyed'});
+                    res.json({message:'User not authenticated'});
                 }
             } else {
                 console.log("res " + deleted.length);
-                if(localStorage.getItem("loggedIn") == "true"){
+                if(token){
                     res.json(deleted);
                 } else {
-                    res.json({message:'Session is destroyed'})
+                    res.json({message:'User not authenticated'})
                 }
                 
             }
@@ -202,8 +206,7 @@ routing.route('/auth').post((req, res) => {
                 crypt.compare(req.body.pwd, isUser.pwd, (err,  match) => {
                     req.session.loggedIn = match;
                     isValid = match;
-                    localStorage.setItem("loggedIn",""+isValid);
-                    token = jwtToken.sign({userID: isUser.email}, "dcr-tracking", {expiresIn: '1h'});
+                    token = jwtToken.sign({userID: isUser.email}, env.secret, {expiresIn: '1h'});
                 });
             } 
         } 
@@ -211,7 +214,7 @@ routing.route('/auth').post((req, res) => {
     });
 
         setTimeout(() => {
-                if(isValid){
+                if(token){
                     if(isUser != null || isUser != undefined){
                         loggedInUser.fullName = isUser.fname+ ' ' + isUser.lname;
                         loggedInUser.username = isUser.username;
@@ -221,7 +224,7 @@ routing.route('/auth').post((req, res) => {
                         res.status(200).send({loggedIn:isValid, user: loggedInUser, token: token});
                     }
                 } else {
-                    res.status(200).send({loggedIn:isValid, user: {}});
+                    res.status(200).send({loggedIn:isValid, user: {}, token: ''});
                     console.log('Password did not match');
                 }
         }, 2500);
@@ -231,7 +234,6 @@ routing.route('/auth').post((req, res) => {
 
 routing.route('/process').post((req, res)=>{
 
-    console.log(req.session.loggedIn);
     var data = req.body.data;
     var email = req.body.user;
 
@@ -264,6 +266,7 @@ routing.route('/processList/:email').get((req, res) => {
     var email = req.params.email;
     var key;
     var values;
+    token = req.headers['x-access-token'];
     // console.log(email + 'inside routing');
 
     db.getProcess(email, (list) => {
@@ -282,10 +285,10 @@ routing.route('/processList/:email').get((req, res) => {
     });
 
     setTimeout(() => {
-        if(localStorage.getItem("loggedIn") == "true"){
+        if(token){
             res.send(values);
         } else {
-            res.send({message: "Session is destroyed"});
+            res.send({message: "User not authenticated"});
         }
         
     }, 200);
@@ -312,7 +315,6 @@ routing.route('/updatePassword').post((req, res) => {
 routing.route('/destroy').get((req,res) =>{
     req.session.loggedIn = false;
     isValid = false;
-    localStorage.removeItem("loggedIn");
     req.session.destroy((err) => {
         if(err) {
             return console.log(err);
@@ -341,10 +343,10 @@ routing.route('/getUserProfile/:email').get((req,res) => {
         });
 
         setTimeout(() => {
-            if(localStorage.getItem("loggedIn") == "true"){
+            if(token){
                 res.status(200).send(obj);
             } else {
-                res.status(404).send({message: "Session is destroyed"});
+                res.status(404).send({message: "User not authenticated"});
             }
         }, 200);
     

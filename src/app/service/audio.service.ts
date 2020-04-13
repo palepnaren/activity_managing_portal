@@ -1,4 +1,4 @@
-import { HttpClient, HttpEventType } from '@angular/common/http';
+import { HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import { map } from 'rxjs/operators';
@@ -19,7 +19,11 @@ export class AudioService {
     name: undefined,
     content: undefined
   };
-  constructor(private http: HttpClient) { }
+  private headers: HttpHeaders;
+  
+  constructor(private http: HttpClient) { 
+    // console.log(sessionStorage.getItem('access-token'));
+  }
 
   fileUpload(name, data) {
     this.data.name = name;
@@ -43,10 +47,18 @@ export class AudioService {
   }
 
   fileDownload() {
+    this.headers = new HttpHeaders();
+    const token = sessionStorage.getItem('access-token');
+    this.headers = this.headers.set('x-access-token', token);
+    this.headers = this.headers .set('content-type', 'application/json')
+    this.headers = this.headers .set('Access-Control-Allow-Origin', '*')
+    console.log(this.headers);
     const url = window.location.origin +  '/download';
+    
 
     // tslint:disable-next-line:no-shadowed-variable
-    return this.http.get(url).map(file => file);
+    console.log(this.headers.get('x-access-token'));
+    return this.http.get(url,{headers: this.headers}).map(file => file);
   }
 
   audioPromotion(data) {
@@ -55,8 +67,14 @@ export class AudioService {
   }
 
   getPromotedFiles() {
+    this.headers = new HttpHeaders();
+    const token = sessionStorage.getItem('access-token');
+    this.headers = this.headers.set('x-access-token', token);
+    this.headers = this.headers .set('content-type', 'application/json')
+    this.headers = this.headers .set('Access-Control-Allow-Origin', '*')
+    console.log(this.headers);
     const url = window.location.origin + '/getPromoted';
-    return this.http.get(url).map(data => data);
+    return this.http.get(url,{headers: this.headers}).map(data => data);
   }
 
   deletePromotedFile(file) {
