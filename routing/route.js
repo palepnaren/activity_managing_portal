@@ -37,6 +37,10 @@ var port_redis = process.env.PORT || 6379;
 
 const redis_client = redis.createClient(port_redis);
 
+redis_client.on('error',(err)=>{
+    console.log("Error " + err);
+});
+
 
 routing.route('/promote').put((req, res) =>{
     var isPromoted;
