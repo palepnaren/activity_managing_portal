@@ -32,10 +32,16 @@ var hashed = null;
 var key = null;
 var isValid;
 var isUser;
+var redis_client = null;
 
 var port_redis = process.env.PORT || 6379;
 
-const redis_client = redis.createClient(port_redis);
+if(process.env.REDIS_URL){
+    redis_client = redis.createClient(process.env.REDIS_URL);
+} else {
+    redis_client = redis.createClient(port_redis);
+}
+
 
 redis_client.on('error',(err)=>{
     console.log("Error " + err);
