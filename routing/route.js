@@ -79,8 +79,7 @@ routing.route('/file').post((req, res) => {
         if(flag){
             res.status(200).send();
         }
-    });
-    
+    }); 
 });
 
 routing.route('/download').get((req, res) => {
