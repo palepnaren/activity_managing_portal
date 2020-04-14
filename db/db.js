@@ -5,11 +5,13 @@ const rawdata = fs.readFileSync('firebase.json');
 const serviceAccount = JSON.parse(rawdata);
 
 
+
 firebase.initializeApp({
     credential: firebase.credential.cert(serviceAccount),
     databaseURL:'https://team-portal-dd915.firebaseio.com',
     storageBucket:'gs://team-portal-dd915.appspot.com'
 });
+
 
 // fire.initializeApp(firebaseConfig);
 
@@ -25,7 +27,7 @@ exports.saveFile = (name, data,cb) => {
     // const index = name.lastIndexOf('\\');
     // name = name.substr(index + 1);
 
-    console.log(name);
+   console.log(name);
    data = Object.values(data);
    var buffer = Buffer.from(data);
    //console.log(buffer);

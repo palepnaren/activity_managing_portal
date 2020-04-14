@@ -5,8 +5,8 @@ var db = require('../db/db.js');
 var crypt = require('bcrypt');
 var jwtToken = require('jsonwebtoken');
 var env = require('../src/environments/environment.prod.js');
+const redis = require('redis');
 
-var token;
 var file;
 var files = [];
 var count;
@@ -33,15 +33,17 @@ var key = null;
 var isValid;
 var isUser;
 
+var port_redis = process.env.PORT || 6379;
+
+const redis_client = redis.createClient(port_redis);
+
+
 routing.route('/promote').put((req, res) =>{
     var isPromoted;
     db.promotedFiles(req.body, (flag) =>{
         isPromoted = flag;
-    });
-
-    setTimeout(()=>{
         res.json(isPromoted);
-    }, 200);
+    });
 });
 
 routing.route('/getPromoted').get((req, res) => {
@@ -56,16 +58,17 @@ routing.route('/getPromoted').get((req, res) => {
             files.keys[i] = Object.keys(data.values[i]);
             files.values[i] = Object.values(data.values[i]);
         }
+        jwtToken.verify(token, env.secret, (err,decoded)=>{
+            if(!token){
+                res.status(401).json({message:'Token not present'});
+            }
+            else if(err){
+                res.status(500).json({message:'User not authenticated'});
+            } else{
+                res.status(200).json(files);
+            }
+        });
     });
-
-    setTimeout(() => {
-        if(token){
-            res.json(files);
-        } else {
-            res.json({message:'User not authenticated'})
-        }
-        
-    },500);
 });
 
 routing.route('/file').post((req, res) => {
@@ -122,23 +125,24 @@ routing.route('/download').get((req, res) => {
                 });
             });
         }
+
+        
         setTimeout(()=>{
-            if(isAdd){
-                console.log("res " + files.length);
-                if(token){
-                    res.json(files);
-                } else {
-                    res.json({message:'User not authenticated'});
+            jwtToken.verify(token, env.secret, (err,decoded)=>{
+                if(!token){
+                    res.status(401).json({message:'Token not present'});
                 }
-            } else {
-                console.log("res " + deleted.length);
-                if(token){
-                    res.json(deleted);
-                } else {
-                    res.json({message:'User not authenticated'})
+                else if(err){
+                    res.status(500).json({message:'User not authenticated'});
+                } else{
+                    if(isAdd){
+                        res.status(200).json(files);
+                    } else{
+                        res.status(200).json(deleted);
+                    }
+                    
                 }
-                
-            }
+            });
             
         }, 300);
     });  
@@ -269,29 +273,40 @@ routing.route('/processList/:email').get((req, res) => {
     token = req.headers['x-access-token'];
     // console.log(email + 'inside routing');
 
-    db.getProcess(email, (list) => {
+    redis_client.get(email,(err, process_list)=>{
+        if(process_list){
+            console.log("I am inside process exists in cache block");
+            // console.log(process_list);
+            res.status(200).send(process_list);
+        } else{
+            console.log("I am inside process does not exists in cache block");
+            db.getProcess(email, (list) => {
 
-    if(list === null || list === undefined){
-
-    } else {
-        key = Object.keys(list);
-
-        if(list[key].process === null || list[key].process === undefined){
-
-        } else {
-            values = Object.values(list[key].process);
-        }  
-    }    
-    });
-
-    setTimeout(() => {
-        if(token){
-            res.send(values);
-        } else {
-            res.send({message: "User not authenticated"});
+                if(list === null || list === undefined){
+            
+                } else {
+                    key = Object.keys(list);
+            
+                    if(list[key].process === null || list[key].process === undefined){
+            
+                    } else {
+                        values = Object.values(list[key].process);
+                        redis_client.setex(email,3600,JSON.stringify(values));
+                        jwtToken.verify(token, env.secret, (err,decoded)=>{
+                            if(!token){
+                                res.status(401).json({message:'Token not present'});
+                            }
+                            else if(err){
+                                res.status(500).json({message:'User not authenticated'});
+                            } else{
+                                res.status(200).json(values);
+                            }
+                        });
+                    }  
+                }    
+                });
         }
-        
-    }, 200);
+    });
 
 });
 
@@ -319,11 +334,9 @@ routing.route('/destroy').get((req,res) =>{
         if(err) {
             return console.log(err);
         }
+        console.log("Session has been destroyed");
         res.status(200).send();
     });
-    setTimeout(()=>{
-        console.log("Session has been destroyed");
-    },200);
 });
 
 
@@ -331,25 +344,35 @@ routing.route('/getUserProfile/:email').get((req,res) => {
 
     const email = req.params.email;
     var obj = {};
-    
-        db.getUserDetails(email, (user) => {
-            if(user != null){
-                
-                obj = user;
-                
-            } else {
-                console.log("User not found");
-            }
-        });
+    token = req.headers['x-access-token'];
 
-        setTimeout(() => {
-            if(token){
-                res.status(200).send(obj);
-            } else {
-                res.status(404).send({message: "User not authenticated"});
-            }
-        }, 200);
-    
+    redis_client.get(email+'-profile',(err, profile) => {
+        if(profile){
+            res.status(200).send(profile);
+        } else{
+            db.getUserDetails(email, (user) => {
+                if(user != null){
+                    
+                    obj = user;
+                    redis_client.setex(email+'-profile',3600,JSON.stringify(obj));
+                    jwtToken.verify(token, env.secret, (err,decoded)=>{
+                        if(!token){
+                            res.status(401).json({message:'Token not present'});
+                        }
+                        else if(err){
+                            res.status(500).json({message:'User not authenticated'});
+                        } else{
+                            res.status(200).json(obj);
+                        }
+                    });
+                    
+                } else {
+                    console.log("User not found");
+                }
+            });
+        }
+    });
+ 
 
 });
 

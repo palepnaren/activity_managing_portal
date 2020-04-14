@@ -97,8 +97,8 @@ ngOnInit() {
 
 ngAfterViewInit() {
 
+   this.talksPromoted();
    setTimeout(() => {
-    this.talksPromoted();
     this.populateProcess(sessionStorage.getItem('email'));
    }, 101);
 

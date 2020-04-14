@@ -21,9 +21,7 @@ export class AudioService {
   };
   private headers: HttpHeaders;
   
-  constructor(private http: HttpClient) { 
-    // console.log(sessionStorage.getItem('access-token'));
-  }
+  constructor(private http: HttpClient) { }
 
   fileUpload(name, data) {
     this.data.name = name;
