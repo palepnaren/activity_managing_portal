@@ -157,8 +157,11 @@ exports.getProcess = (email, cb) => {
     var key;
 
     db.child('/'+email.split('@')[0]).on('value', (snapshot) => {
-        key = Object.keys(snapshot.val());
-        return cb(snapshot.val());
+        if(snapshot.exists()){
+            key = Object.keys(snapshot.val());
+            return cb(snapshot.val());
+        }
+        
     }, (err) => {
         return cb(null);
     });
