@@ -18,6 +18,8 @@ firebase.initializeApp({
 
  var bucket = firebase.storage().bucket();
  var db = firebase.database().ref('/users');
+ var notifications = firebase.database().ref('/notificationSystem');
+ var talks = firebase.database().ref('/promotedTalks');
  var flag;
 
 //creating a file and saving some date to it.
@@ -34,9 +36,9 @@ exports.saveFile = (name, data,cb) => {
    
     bucket.file('/audio/'+name).save(buffer,{contentType:'audio/mp3'}).then(() => {
         console.log("File pushed onto server ");
-        cb(true);
+        return cb(true);
     }).catch(err => {
-        cb(false);
+        return cb(false);
     });
   
 };
@@ -45,10 +47,10 @@ exports.removeDashboardFile = (fileName, cb) => {
 
     // console.log(fileName);
 
-    firebase.database().ref('/promotedTalks').child(fileName).remove().then(success => {
-        cb(true);
+    talks.child(fileName).remove().then(success => {
+        return cb(true);
     }).catch(err =>{
-        cb(false);
+        return cb(false);
     });
 }
 
@@ -57,21 +59,22 @@ exports.promotedFiles = (fileData, cb) =>{
     var key;
     var flag = '';
 
-    firebase.database().ref('/promotedTalks').on('value', (snapshot) =>{
+    talks.on('value', (snapshot) =>{
+        // if(snapshot.exists())
         console.log("promoted talks length: "+Object.keys(snapshot.val()).length);
 
         if(Object.keys(snapshot.val()).length === 5){
-            cb('maxLimit');
+            return cb('maxLimit');
         } else {
-            firebase.database().ref('/promotedTalks').child(fileData.data.name).on('value', (snapshot) => {
+            talks.child(fileData.data.name).on('value', (snapshot) => {
 
                 if(snapshot.exists()){
-                    cb('exists')
+                    return cb('exists')
                 } else{
                     console.log('Adding new child')
                     flag = true;
-                    key = firebase.database().ref('/promotedTalks').child(fileData.data.name).push(fileData);
-                    cb('promoted'); 
+                    key = talks.child(fileData.data.name).push(fileData);
+                    return cb('promoted'); 
                 }
             }); 
         }
@@ -85,11 +88,16 @@ exports.getPromoted = (cb) => {
         keys: [],
         values: []
     }
-    firebase.database().ref('/promotedTalks').on('value', (snapshot) => {
-        files.keys = Object.keys(snapshot.val());
-        files.values = Object.values(snapshot.val());
-        // console.log(files);
-        cb(files);
+    talks.on('value', (snapshot) => {
+        if(snapshot.exists()){
+            files.keys = Object.keys(snapshot.val());
+            files.values = Object.values(snapshot.val());
+            // console.log(files);
+            return cb(files);
+        } else {
+            return cb(null);
+        }
+        
     });
 }
 
@@ -118,11 +126,11 @@ exports.authUser = (user, cb) => {
     var data;
     db.child('/'+user.email.split('@')[0]).on('value', (snapshot) => {
         data = snapshot.val();
-        cb(data);
+        return cb(data);
     }, (err) => {
         console.log("no details found");
         data = null;
-        cb(data);
+        return cb(data);
     });
 }
 
@@ -136,9 +144,9 @@ exports.updateUserProcess = (obj, email, cb) => {
 
     setTimeout(() => {
         db.child('/'+email.split('@')[0]+'/'+key).child('process').push().set(obj).then(success =>{
-            cb("Saved");
+            return cb("Saved");
         }).catch(err => {
-            cb("Error While saving");
+            return cb("Error While saving");
         });
     }, 100);
 }
@@ -150,9 +158,9 @@ exports.getProcess = (email, cb) => {
 
     db.child('/'+email.split('@')[0]).on('value', (snapshot) => {
         key = Object.keys(snapshot.val());
-        cb(snapshot.val());
+        return cb(snapshot.val());
     }, (err) => {
-        cb(null);
+        return cb(null);
     });
 }
 
@@ -165,7 +173,7 @@ exports.forgotPwd = (email, newPwd, cb) => {
 
     setTimeout(() => {
         db.child('/'+email.split('@')[0]+'/'+key).update({pwd:newPwd}, (success) => {
-            cb(true);
+            return cb(true);
         }); 
     },100); 
     
@@ -200,12 +208,12 @@ exports.getUserDetails = (email, cb) => {
             obj.city = array[0].city;
             obj.state = array[0].state;
             obj.profileImage = array[0].profileImage;
-            cb(obj);
+            return cb(obj);
             // console.log(obj);
 
         } else {
             console.log("User not Found");
-            cb(null);
+            return cb(null);
         }
         
     });
@@ -243,8 +251,66 @@ exports.updateUserProfile = (user, cb) => {
         }
 
         db.child('/'+user.email.split('@')[0]+'/'+key).update(obj, (success) => {
-            cb(true);
+            return cb(true);
         });
     },100);
 
 }
+
+exports.manageNotifications = (object,cb) =>{
+
+    notifications.child('/'+object.file_name).push().set(object).then(success => {
+        return cb(success);
+    });
+
+}
+
+exports.fetchNotifications = (cb) =>{
+    notifications.on('value',(alerts) => {
+        if(alerts.exists()){
+            return cb(alerts.val());
+        } else{
+           return cb(null);
+        }
+    });
+}
+
+exports.updateNotificationForUser = (file_name, username,cb) => {
+
+    var _users = [];
+    var key;
+    var values;
+    notifications.child('/'+file_name).on('value',(snapshot) => {
+        key = Object.keys(snapshot.val());
+        values = Object.values(snapshot.val());
+        if(snapshot.exists()){
+            for(var i=0; i<values.length; i++){
+                if(values[i].users != null || values[i].users != undefined){
+                    for(var j=0; j<values[i].users.length;j++){
+                        _users.push(values[i].users[j]);
+                    }
+                    if(Object.values(values[i].users).indexOf(username) > -1){
+                        console.log("You have already seen the alert.")
+                    } else {
+                        _users.push(username);
+                        notifications.child('/'+file_name).child('/'+key).update({users:_users},(err) => {
+                            if(err){
+                                return cb(false);
+                            }
+                                return cb(true);
+                        });
+                    }
+                } else {
+                        _users.push(username);
+                        notifications.child('/'+file_name).child('/'+key).update({users:_users},(err) => {
+                            if(err){
+                                return cb(false);
+                            }
+                                return cb(true);
+                        });
+                } 
+            } 
+        }
+    });
+}
+

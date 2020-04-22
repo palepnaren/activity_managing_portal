@@ -29,7 +29,7 @@ import { DateModifyPipe } from './custom-pipes/custom-pipes.pipe';
 import {JwtModule} from '@auth0/angular-jwt';
 
 export function tokenGetter() {
-  return localStorage.getItem('access-token');
+  return sessionStorage.getItem('access-token');
 }
 
 @NgModule({

@@ -11,7 +11,7 @@
     <div class="collapse navbar-collapse right" id="collapsibleNavbar">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a  id="modal" class="nav-link" routerLink=""><i class="fas fa-bell"></i><i class="fas fa-circle dot"></i></a>
+          <a class="nav-link" (click)="dropDown()"><i class="fas fa-bell"></i><i *ngIf="notifications.length > 0" class="fas fa-circle dot"></i></a>
         </li>
         <li class="nav-item">
           <a  class="nav-link" routerLink=""><i class="fas fa-tasks"></i><span></span></a>
@@ -25,6 +25,17 @@
       </ul>
     </div> 
   </nav>
+
+  <!-- custome dorpdown -->
+  <div class="custom-dropdown">
+    <div id="myDropdown" class="custom-dropdown-content" >
+      <div *ngFor="let alert of notifications">
+        
+        <a (click)="updateNotification($event,alert.file_name)"><img src="{{alert.image}}" class="img-fluid rounded-circle">  {{alert.name}} Has Uploaded file {{alert.file_name | uppercase}}.</a>
+      </div>
+      
+    </div>
+  </div>
 
 <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

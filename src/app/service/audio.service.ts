@@ -1,4 +1,4 @@
-import { HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpEventType, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import { map } from 'rxjs/operators';
@@ -20,6 +20,7 @@ export class AudioService {
     content: undefined
   };
   private headers: HttpHeaders;
+  
   
   constructor(private http: HttpClient) { }
 
@@ -78,5 +79,24 @@ export class AudioService {
   deletePromotedFile(file) {
     const url = window.location.origin + '/deleteTalk/'+file.name;
     return this.http.delete(url).map(deleted => deleted);
+  }
+
+  notificationService(object){
+    const url = window.location.origin + '/notifyAll';
+    return this.http.post(url, object).map(notification => notification);
+
+  }
+
+  removeCheckedNotificationForUser(username, fileName){
+    this.headers = new HttpHeaders();
+    const token = sessionStorage.getItem('access-token');
+    this.headers = this.headers.set('x-access-token', token);
+    this.headers = this.headers.set('file_name', fileName);
+    const url = window.location.origin + '/update/notification/'+username;
+    return this.http.delete(url,{headers:this.headers}).map(notification => notification);
+  }
+
+  removeOldNotificationsForAll(){
+
   }
 }

@@ -4,6 +4,8 @@ import { Component, OnInit, AfterViewInit, AfterContentInit, AfterContentChecked
 import * as $ from 'jquery';
 import { PushNotificationsService } from 'ng-push';
 import { PaginationComponent } from '../pagination/pagination.component';
+import { UserService } from '../service/user.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-shared-talks',
@@ -23,17 +25,23 @@ export class SharedTalksComponent implements OnInit, AfterViewInit {
   listOfTalks = [];
   audios;
   len;
+  alerts:any = [];
+  newAlerts:any = [];
   uploadResponse = {
     status: '',
     upload: 0
   };
   i;
-  constructor(private builder: FormBuilder, private service: AudioService, private notification: PushNotificationsService, private pagination: PaginationComponent) {
+  notificationObject:any = {};
+  constructor(private builder: FormBuilder, private service: AudioService, private notification: PushNotificationsService,
+     private pagination: PaginationComponent, private userService: UserService, private router:ActivatedRoute, private route:Router) {
     this.talksGroup = this.builder.group({
       file_name: ['', [Validators.required, Validators.maxLength(30)]],
       file: ['', [Validators.required]]
     });
 
+    
+    
   }
 
   ngOnInit() {
@@ -87,7 +95,21 @@ getFile(e) {
       icon: sessionStorage.getItem("profileImage")
     }
 
+    
+
       this.service.fileUpload(name, this.unit8Array).subscribe(res => {
+
+        if(res){
+          this.notificationObject = {
+            name: sessionStorage.getItem('name'),
+            image: sessionStorage.getItem('profileImage'),
+            file_name: name,
+            email: sessionStorage.getItem('email'),
+            label: 'new',
+            users:[],
+            posted: Date.now()
+          }
+        }
 
         $('pagination').hide();
 
@@ -95,8 +117,11 @@ getFile(e) {
         this.uploadResponse.upload = res.upload;
         // $('loader').css({'display':'none'});
         console.log(res);
+        ;
 
         if (this.uploadResponse.status === 'complete' || this.uploadResponse.upload === 100) {
+          this.talksGroup.reset();
+          // this.fileName = 'Audio files';
           $('#progress-bar').hide().fadeOut();
           console.log("File Upload is done");
           this.notification.create("File Upload", options).subscribe(res => {
@@ -104,12 +129,20 @@ getFile(e) {
           }, err => {
             console.log(err);
           });
-        }
+        } 
 
       }, err => {
         console.log(err);
         $('loader').hide();
       });
+      if(this.notificationObject == null || this.notificationObject == undefined || this.notificationObject == {}){
+
+      } else {
+        this.service.notificationService(this.notificationObject).subscribe(res => {
+          console.log(res);
+        });
+      }
+      this.fileName = 'Audio files';
 
   }
 
@@ -119,14 +152,21 @@ fileDownload() {
      // tslint:disable-next-line:prefer-for-of
      for (this.i = 0; this.i < Object.keys(file).length; this.i++) {
         if(this.listOfTalks.findIndex(fileDetails => fileDetails.name == file[this.i].name.split('/')[1]) >=0){
-          console.log("File Details matched");
-          console.log(this.listOfTalks);
+         
         } else {
           this.listOfTalks.push({name: file[this.i].name.split('/')[1], url: file[this.i]._url});
         }
         
      }
      this.lengthOfItems = this.listOfTalks.length;
+
+     if(this.route.url.indexOf('query') > -1){
+        this.router.queryParams.subscribe(params => {
+          console.log(params.query);
+          this.searching(params.query);
+        });
+     }
+     
      $('loader').hide();
      $('pagination').show();
    });

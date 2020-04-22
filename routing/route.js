@@ -64,6 +64,7 @@ routing.route('/getPromoted').get((req, res) => {
     }
     token = req.headers['x-access-token'];
     db.getPromoted((data) => {
+        if(data == null) return;
         for(var i=0; i<=data.values.length-1; i++){
             files.keys[i] = Object.keys(data.values[i]);
             files.values[i] = Object.values(data.values[i]);
@@ -93,8 +94,6 @@ routing.route('/file').post((req, res) => {
 });
 
 routing.route('/download').get((req, res) => {
-    console.log("Files downloading");
-    console.log(req.headers['x-access-token']);
     token = req.headers['x-access-token'];
     db.downloadFiles().then(file =>{
         count = file[0].length;
@@ -204,8 +203,6 @@ routing.route('/auth').post((req, res) => {
         upline: '',
         profileImage: ''
     }
-    
-    // console.log(req.session.user);
     
     db.authUser(user, (authUser) => {
         
@@ -414,9 +411,55 @@ routing.route('/updateProfile').post((req, res) => {
     // },10000);
     
 
-})
+});
 
+routing.route('/notifyAll').post((req,res)=>{
 
+    db.manageNotifications(req.body,(result)=>{
+        res.status(200).send({message:'saved'});
+    });
 
+});
+
+routing.route('/getAlerts').get((req,res) =>{
+   var values;
+   token = req.headers['x-access-token'];
+        jwtToken.verify(token, env.secret, (err,decoded)=>{
+            if(!token){
+                return res.status(401).json({message:'Token not present'});
+            } else if(err){
+                 return res.status(500).json({message:'User not authenticated'});
+            } else{
+                db.fetchNotifications((alerts) => {
+                    values = alerts;
+                }); 
+            }
+        });     
+    setTimeout(()=>{
+        var results;
+        if(values === null || values === undefined){
+            res.status(401).json(values);
+        } else{
+            results = Object.values(values);
+            res.status(200).json(results);
+        }
+    },500)
+});
+
+routing.route('/update/notification/:username').delete((req,res) => {
+
+    var username = req.params.username;
+    var fileName = req.headers['file_name'];
+    console.log('User: '+username+' File is: '+fileName);
+    db.updateNotificationForUser(fileName,username,(response) => {
+        if(response){
+            res.status(200).send({status:200});
+        } else {
+            res.status(401).send({status:401});
+        }
+    });
+    
+
+});
 
 module.exports = routing;

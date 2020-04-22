@@ -1,11 +1,12 @@
 import { LoginService } from './home/login.service';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnChanges } from '@angular/core';
 import * as $ from 'jquery';
 import { Router } from '@angular/router';
 import { UserService } from './service/user.service';
 import * as copy from 'copy-to-clipboard';
 import { PushNotificationsService } from 'ng-push';
+import { AudioService } from './service/audio.service';
 
 
 @Component({
@@ -13,7 +14,7 @@ import { PushNotificationsService } from 'ng-push';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.less']
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements OnInit, AfterViewInit, OnChanges {
 
   title = 'team-project';
   test: any;
@@ -21,6 +22,9 @@ export class AppComponent implements OnInit, AfterViewInit {
   isAdmin: string = "false";
   name;
   events = ['load', 'resize'];
+  talkName = 'test';
+  notifications = [];
+  hideAlerts:boolean = false;
   obj= {
       todayDate: '2019-10-10',
       conversations: '1',
@@ -41,17 +45,20 @@ export class AppComponent implements OnInit, AfterViewInit {
   src = "../assets/images/profile-image-default.jpeg";
 
   constructor(private http: HttpClient, private router: Router, private login: LoginService, 
-    private userService: UserService, private notification: PushNotificationsService) {
+    private userService: UserService, private notification: PushNotificationsService, private audioService: AudioService) {
 
       this.notification.requestPermission();
+      
     
   }
+
+  ngOnChanges(){}
 
   ngOnInit() {
 
       setInterval(() => {
         this.isLoggedIn = this.login.isLoggedIn;
-        
+        this.notifications = this.userService.getNotifications();
         if (this.isLoggedIn) {
           this.name = sessionStorage.getItem('name');
           if(sessionStorage.getItem('role').toLowerCase() === 'ibo' || sessionStorage.getItem('role').toLowerCase() === 'silver' || sessionStorage.getItem('role').toLowerCase() === 'eagle'){
@@ -67,6 +74,9 @@ export class AppComponent implements OnInit, AfterViewInit {
           // console.log(this.name);
           this.isLoggedIn = this.login.isLoggedIn;
         }
+
+        this.notifications = this.notifications.filter(_alert =>  _alert.users ? _alert.users.indexOf(this.name) == -1 : _alert);
+
         if(localStorage.getItem('todayEntry') === '' || localStorage.getItem('todayEntry') === null || localStorage.getItem('todayEntry') === undefined){
           
         } else {
@@ -88,7 +98,19 @@ export class AppComponent implements OnInit, AfterViewInit {
         }
         
       }, 200);
-  
+
+      window.onclick = function(event){
+        if(!(<HTMLElement>event.target).matches('.fa-bell')){
+          var dropdowns = document.getElementsByClassName("custom-dropdown-content");
+          var i;
+          for (i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+          }
+        }
+      }
 }
 
 ngAfterViewInit(): void {
@@ -96,11 +118,23 @@ ngAfterViewInit(): void {
   
 }
 
+updateNotification(event,file_name){
+  event.preventDefault();
+  this.audioService.removeCheckedNotificationForUser(sessionStorage.getItem('name'), file_name).subscribe(res =>{
+    console.log(res);
+    if(res['status'] == 200){
+      this.router.navigateByUrl("/sharedTalks?query="+file_name);
+    }
+  });
+  
+}
 
+dropDown(){
+  $('#myDropdown').toggleClass('show');
+}
 
 j_Query() {
   $(document).ready(() => {
-
     $('#toggle').click((e) => {
         e.preventDefault();
         $('#collapsibleNavbar').toggleClass('active');
@@ -131,33 +165,8 @@ j_Query() {
       e.preventDefault();
     });
 
-    
-    // this.toggleMainMenu();
-
   });
 }
-
-
-//  toggleMainMenu(){
-
-//   let counter = 0;
-//     $('#main-menu').click(()=>{
-//       counter = 1;
-//       // $('#nav-menu').slideToggle(200);
-      
-//       if(counter === 1){
-//         if($('#menu-icon').hasClass('fa-bars')){
-//           $('#menu-icon').removeClass('fa-bars');
-//           $('#menu-icon').addClass('fa-times');
-//         } else{
-//           $('#menu-icon').removeClass('fa-times');
-//           $('#menu-icon').addClass('fa-bars');
-//         }
-//       }
-      
-//     });
-
-//  }
 
 
 copy(){
@@ -203,16 +212,14 @@ logout() {
   $('#loop > li#profile >a').removeClass('active');
   this.login.isLoggedIn = false;
   sessionStorage.setItem('isAuth', '' + this.login.isLoggedIn);
-  sessionStorage.removeItem('name');
-  sessionStorage.removeItem('role');
-  sessionStorage.removeItem('email');
-  sessionStorage.removeItem('isAuth');
+  sessionStorage.clear();
+  // sessionStorage.removeItem('name');
+  // sessionStorage.removeItem('role');
+  // sessionStorage.removeItem('email');
+  // sessionStorage.removeItem('isAuth');
   this.login.userLogout().subscribe(() => {
     console.log('User Logged out');
-    // window.location.reload();
   });
-
-
 }
 
 }

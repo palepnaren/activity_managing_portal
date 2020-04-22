@@ -28,8 +28,6 @@ app.get("/*", function(req, res){
 var port = process.env.PORT || 9500;
 
 app.listen(port, (req, res) => {
-
-    
     console.log("Server started on http://localhost:" +port);
 
 });

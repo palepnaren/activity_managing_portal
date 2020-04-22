@@ -28,6 +28,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   obj;
   fromDate;
   toDate;
+  alerts:any = [];
+  newAlerts:any = [];
   map = new Map();
   // barwidth;
   // svg;
@@ -64,7 +66,21 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 constructor(private router: Router,
             private fbuilder: FormBuilder, private userService: UserService,
             private db: AngularFireDatabase, private audioService: AudioService, private pagination: PaginationComponent) {
+
+              this.userService.showNotificationAlert().subscribe(alerts => {
+                if(alerts === null){
+                  return;
+                }
+                this.alerts = alerts;
+                for(var i=0; i<this.alerts.length;i++){
+                  let values = Object.values(alerts[i]);
+                  this.newAlerts.push(values[0]); 
+                }
+                this.userService.setNotifications(this.newAlerts);
+              });
   }
+
+
 
 ngOnInit() {
 
