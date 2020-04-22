@@ -19,16 +19,12 @@ app.use(session({secret: crypt.createHash('sha1').digest('hex'), resave: false, 
 app.use('/',route);
 
 app.get("/*", function(req, res){
-
     res.sendFile(path.join(__dirname,'/dist/team-project/index.html'));
-
 });
-
 
 var port = process.env.PORT || 9500;
 
 app.listen(port, (req, res) => {
     console.log("Server started on http://localhost:" +port);
-
 });
 

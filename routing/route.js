@@ -52,7 +52,7 @@ routing.route('/promote').put((req, res) =>{
     var isPromoted;
     db.promotedFiles(req.body, (flag) =>{
         isPromoted = flag;
-        res.json(isPromoted);
+        return res.json(isPromoted);
     });
 });
 
@@ -71,12 +71,12 @@ routing.route('/getPromoted').get((req, res) => {
         }
         jwtToken.verify(token, env.secret, (err,decoded)=>{
             if(!token){
-                res.status(401).json({message:'Token not present'});
+                return res.status(401).json({message:'Token not present'});
             }
             else if(err){
-                res.status(500).json({message:'User not authenticated'});
+                return res.status(500).json({message:'User not authenticated'});
             } else{
-                res.status(200).json(files);
+                return res.status(200).json(files);
             }
         });
     });
@@ -88,7 +88,7 @@ routing.route('/file').post((req, res) => {
     console.log(file);
     db.saveFile(file, data, flag => {
         if(flag){
-            res.status(200).send();
+            return res.status(200).send();
         }
     }); 
 });
@@ -138,15 +138,15 @@ routing.route('/download').get((req, res) => {
         setTimeout(()=>{
             jwtToken.verify(token, env.secret, (err,decoded)=>{
                 if(!token){
-                    res.status(401).json({message:'Token not present'});
+                    return res.status(401).json({message:'Token not present'});
                 }
                 else if(err){
-                    res.status(500).json({message:'User not authenticated'});
+                    return res.status(500).json({message:'User not authenticated'});
                 } else{
                     if(isAdd){
-                        res.status(200).json(files);
+                        return res.status(200).json(files);
                     } else{
-                        res.status(200).json(deleted);
+                        return res.status(200).json(deleted);
                     }
                     
                 }
@@ -171,7 +171,7 @@ routing.route('/save').post((req, res) => {
             user.upline = req.body.upline;
             user.date = Date.now().toString();
             isSaved = db.saveUser(user);
-            res.send(isSaved);
+            return res.send(isSaved);
         });
     });
 
@@ -231,11 +231,12 @@ routing.route('/auth').post((req, res) => {
                         loggedInUser.role = isUser.role;
                         loggedInUser.upline = isUser.upline;
                         loggedInUser.profileImage = isUser.profileImage;
-                        res.status(200).send({loggedIn:isValid, user: loggedInUser, token: token});
+                        return res.status(200).send({loggedIn:isValid, user: loggedInUser, token: token});
                     }
                 } else {
-                    res.status(200).send({loggedIn:isValid, user: {}, token: ''});
                     console.log('Password did not match');
+                    return res.status(200).send({loggedIn:isValid, user: {}, token: ''});
+                    
                 }
         }, 2500);
     
@@ -250,9 +251,9 @@ routing.route('/process').post((req, res)=>{
     db.updateUserProcess(data,email,(process) =>{
 
         if(process == "Saved"){
-            res.status(200).send({msg:process});
+            return res.status(200).send({msg:process});
         } else {
-            res.status(404).send({msg:process});
+            return res.status(404).send({msg:process});
         }
     });
 });
@@ -264,9 +265,9 @@ routing.route('/deleteTalk/:fileName').delete((req, res) => {
     console.log(name);
     db.removeDashboardFile(name, (deleted) => {
         if(deleted){
-            res.status(200).send(deleted);
+            return res.status(200).send(deleted);
         } else {
-            res.status(404).send(deleted);
+            return res.status(404).send(deleted);
         } 
     })
 });
@@ -283,7 +284,7 @@ routing.route('/processList/:email').get((req, res) => {
         if(process_list){
             console.log("I am inside process exists in cache block");
             // console.log(process_list);
-            res.status(200).send(process_list);
+            return res.status(200).send(process_list);
         } else{
             console.log("I am inside process does not exists in cache block");
             db.getProcess(email, (list) => {
@@ -300,12 +301,12 @@ routing.route('/processList/:email').get((req, res) => {
                         redis_client.setex(email,3600,JSON.stringify(values));
                         jwtToken.verify(token, env.secret, (err,decoded)=>{
                             if(!token){
-                                res.status(401).json({message:'Token not present'});
+                                return res.status(401).json({message:'Token not present'});
                             }
                             else if(err){
-                                res.status(500).json({message:'User not authenticated'});
+                                return res.status(500).json({message:'User not authenticated'});
                             } else{
-                                res.status(200).json(values);
+                                return res.status(200).json(values);
                             }
                         });
                     }  
@@ -327,7 +328,7 @@ routing.route('/updatePassword').post((req, res) => {
             db.forgotPwd(email, pwd, (flag) => {
                 isSet = flag;
                 console.log("Password updated: "+isSet);
-                res.status(200).send(isSet);
+                return res.status(200).send(isSet);
             });  
         });
     }); 
@@ -341,7 +342,7 @@ routing.route('/destroy').get((req,res) =>{
             return console.log(err);
         }
         console.log("Session has been destroyed");
-        res.status(200).send();
+        return res.status(200).send();
     });
 });
 
@@ -354,7 +355,7 @@ routing.route('/getUserProfile/:email').get((req,res) => {
 
     redis_client.get(email+'-profile',(err, profile) => {
         if(profile){
-            res.status(200).send(profile);
+            return res.status(200).send(profile);
         } else{
             db.getUserDetails(email, (user) => {
                 if(user != null){
@@ -363,12 +364,12 @@ routing.route('/getUserProfile/:email').get((req,res) => {
                     redis_client.setex(email+'-profile',3600,JSON.stringify(obj));
                     jwtToken.verify(token, env.secret, (err,decoded)=>{
                         if(!token){
-                            res.status(401).json({message:'Token not present'});
+                            return res.status(401).json({message:'Token not present'});
                         }
                         else if(err){
-                            res.status(500).json({message:'User not authenticated'});
+                            return res.status(500).json({message:'User not authenticated'});
                         } else{
-                            res.status(200).json(obj);
+                            return res.status(200).json(obj);
                         }
                     });
                     
@@ -388,7 +389,7 @@ routing.route('/updateProfile').post((req, res) => {
     if(req.body.pwd === '' || req.body.pwd === null || req.body.pwd === undefined){
                 db.updateUserProfile(req.body, (saved) => {
                     // console.log(saved);
-                    res.status(200).send(saved);
+                    return res.status(200).send(saved);
                 });
 
     } else {
@@ -397,7 +398,7 @@ routing.route('/updateProfile').post((req, res) => {
                 req.body.pwd = hash;
                 db.updateUserProfile(req.body, (saved) => {
                     // console.log(saved);
-                    res.status(200).send(saved);
+                    return res.status(200).send(saved);
                 });
             });
         });
@@ -416,7 +417,7 @@ routing.route('/updateProfile').post((req, res) => {
 routing.route('/notifyAll').post((req,res)=>{
 
     db.manageNotifications(req.body,(result)=>{
-        res.status(200).send({message:'saved'});
+        return res.status(200).send({message:'saved'});
     });
 
 });
@@ -438,10 +439,10 @@ routing.route('/getAlerts').get((req,res) =>{
     setTimeout(()=>{
         var results;
         if(values === null || values === undefined){
-            res.status(401).json(values);
+            return res.status(401).json(values);
         } else{
             results = Object.values(values);
-            res.status(200).json(results);
+            return res.status(200).json(results);
         }
     },500)
 });
@@ -453,9 +454,9 @@ routing.route('/update/notification/:username').delete((req,res) => {
     console.log('User: '+username+' File is: '+fileName);
     db.updateNotificationForUser(fileName,username,(response) => {
         if(response){
-            res.status(200).send({status:200});
+            return res.status(200).send({status:200});
         } else {
-            res.status(401).send({status:401});
+            return res.status(401).send({status:401});
         }
     });
     
