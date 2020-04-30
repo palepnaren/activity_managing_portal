@@ -47,7 +47,7 @@
     "firebase": "^5.11.1",
     "firebase-admin": "^7.3.0",
     "fs": "0.0.1-security",
-    "jquery": "^3.4.0",
+    "jquery": "^3.5.0",
     "jsonwebtoken": "^8.5.1",
     "less": "^2.7.3",
     "localStorage": "^1.0.4",
