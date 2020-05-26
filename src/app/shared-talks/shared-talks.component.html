@@ -7,7 +7,7 @@
             </div>
         </div>
         <div class="row">
-           <div class="input-group col-3">
+           <div class="input-group col-lg-3 col-sm-6">
                 <input 
                 name="file_name" 
                 formControlName="file_name"
@@ -19,7 +19,7 @@
                 </div>
            </div>
           
-           <div class="custom-file col-6">
+           <div class="custom-file col-lg-6 col-sm-9">
                 <input 
                 id="customFile"
                 formControlName="file" 
@@ -35,10 +35,13 @@
            </div> 
         </div>
       
-        
+        <div class="progress" *ngIf= "uploadResponse.status === 'progress'" id="progress-bar">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" [style.width.%]="uploadResponse.upload" role="progressbar" [attr.aria-valuenow]="10" aria-valuemin="0" aria-valuemax="100">{{uploadResponse.upload}}%</div>
+        </div>
+
     </div>
     <div class="row">
-        <div id="search" class="container-fuild col-6">
+        <div id="search" class="container-fuild col-lg-6 col-sm-12">
             <div class="form-group container">
                 <div class="input-group">
                     <a (click)="searching(search.value)" ><i id="icon-search" class="fas fa-search input-group-addon"></i></a>
@@ -53,11 +56,9 @@
 
 
 <br>
-<div class="progress" *ngIf= "uploadResponse.status === 'progress'" id="progress-bar">
+<!-- <div class="progress" *ngIf= "uploadResponse.status === 'progress'" id="progress-bar">
     <div class="progress-bar progress-bar-striped progress-bar-animated" [style.width.%]="uploadResponse.upload" role="progressbar" [attr.aria-valuenow]="10" aria-valuemin="0" aria-valuemax="100">{{uploadResponse.upload}}%</div>
-</div>
-  
-<br>
+</div> -->
 <pagination [items]="listOfTalks" [size]="lengthOfItems" (refresh)="refresh($event)"></pagination>
 
 <loader [message]="'Loading'"></loader>

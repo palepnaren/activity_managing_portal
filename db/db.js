@@ -136,17 +136,20 @@ exports.authUser = (user, cb) => {
 
 exports.updateUserProcess = (obj, email, cb) => {
     var key;
-    var msg;
+    var value;
 
     db.child('/'+email.split('@')[0]).on('value', (snapshot) => {
-        key = Object.keys(snapshot.val());  
+        if(snapshot.exists()){
+            key = Object.keys(snapshot.val());
+            value = snapshot.val();
+        }   
     });
 
     setTimeout(() => {
         db.child('/'+email.split('@')[0]+'/'+key).child('process').push().set(obj).then(success =>{
-            return cb("Saved");
+            return cb("Saved",value);
         }).catch(err => {
-            return cb("Error While saving");
+            return cb("Error While saving",null);
         });
     }, 100);
 }
@@ -155,16 +158,22 @@ exports.getProcess = (email, cb) => {
 
     // console.log(email + 'inside db');
     var key;
+    var values;
 
-    db.child('/'+email.split('@')[0]).on('value', (snapshot) => {
-        if(snapshot.exists()){
-            key = Object.keys(snapshot.val());
-            return cb(snapshot.val());
-        }
-        
-    }, (err) => {
-        return cb(null);
-    });
+        db.child('/'+email.split('@')[0]).on('value', (snapshot) => {
+            if(snapshot.exists()){
+                key = Object.keys(snapshot.val());
+                // return cb(snapshot.val());
+                values = snapshot.val();
+            } 
+        }, (err) => {
+            // return cb(null);
+            values = null;
+        });
+
+        setTimeout(() => {
+            cb(values);
+        }, 100);
 }
 
 exports.forgotPwd = (email, newPwd, cb) => {
@@ -197,6 +206,7 @@ exports.getUserDetails = (email, cb) => {
         state: '',
         profileImage: ''
     };
+    var values;
     var array = [];
     db.child('/'+email.split('@')[0]).on('value', (snapshot) => {
         if(snapshot.exists()){
@@ -211,15 +221,21 @@ exports.getUserDetails = (email, cb) => {
             obj.city = array[0].city;
             obj.state = array[0].state;
             obj.profileImage = array[0].profileImage;
-            return cb(obj);
+            values = obj;
+            // return cb(obj);
             // console.log(obj);
 
         } else {
             console.log("User not Found");
-            return cb(null);
+            // return cb(null);
+            values = null;
         }
         
     });
+
+    setTimeout(() => {
+        cb(values);
+    },100)
 }
 
 exports.updateUserProfile = (user, cb) => {

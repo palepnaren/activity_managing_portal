@@ -1,7 +1,7 @@
 import { AngularFireDatabase } from '@angular/fire/database';
 import { UserService } from './../service/user.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, EventEmitter, OnChanges } from '@angular/core';
 // import '../js/histogram.js';
 import * as d3 from 'd3';
 import * as $ from 'jquery';
@@ -9,12 +9,13 @@ import { WeatherService } from '../service/weather.service';
 import { Router } from '@angular/router';
 import { AudioService } from '../service/audio.service';
 import { PaginationComponent } from '../pagination/pagination.component';
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.less']
 })
-export class DashboardComponent implements OnInit, AfterViewInit {
+export class DashboardComponent implements OnInit, AfterViewInit, OnChanges {
   dataset = [];
   promotedTalkes = [];
   length;
@@ -80,6 +81,10 @@ constructor(private router: Router,
               });
   }
 
+ngOnChanges(){
+  
+}
+
 
 
 ngOnInit() {
@@ -114,10 +119,7 @@ ngOnInit() {
 ngAfterViewInit() {
 
    this.talksPromoted();
-   setTimeout(() => {
-    this.populateProcess(sessionStorage.getItem('email'));
-   }, 101);
-
+   this.populateProcess(sessionStorage.getItem('email'));
    document.addEventListener('play', (e) => {
     this.audios = document.getElementsByTagName('audio');
     for (this.i = 0, this.len = this.audios.length; this.i < this.len; this.i++) {
@@ -497,15 +499,16 @@ numOfappointments(date, conv, dtm, mg1, mg2, mg3, bp1, bp2, fp1, fp2, pre, launc
     localStorage.setItem('todayEntry',string);
 
     this.userService.updateProcess(obj, sessionStorage.getItem('email')).subscribe(res => {
-       this.message = Object.values(res)[0];
-       $('loader').css({'display':'none'});
-       this.populateProcess(sessionStorage.getItem('email'));
+      if(res){
+        this.message = Object.values(res)[0];
+        this.processList = Object.values(res)[1];
+        this.updateTable("5");
+        $('loader').css({'display':'none'});
+      } 
     });
   }
 
-
   populateProcess(email){
-
     $('loader').css({'display':'block'});
     console.log(email);
     this.userService.getProcess(email).subscribe(list => {

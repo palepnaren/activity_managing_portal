@@ -35,33 +35,16 @@ export class LoginService {
     this.userLogin.email = email;
     this.userLogin.pwd = pwd;
 
-    this.http.post(url, this.userLogin, { responseType: 'json'}).subscribe(user => {
-      this.authUser.loggedIn = Object.values(user)[0];
-      this.authUser.user = Object.values(user)[1];
-      this.authUser.token = Object.values(user)[2];
+    return this.http.post(url, this.userLogin, { responseType: 'json'}).map(user => user);
 
-      if (this.authUser.loggedIn === true) {
-        this.isLoading = false;
-        this.isLoggedIn = true;
-        sessionStorage.setItem('name', this.authUser.user.fullName);
-        sessionStorage.setItem('role', this.authUser.user.role);
-        sessionStorage.setItem('email', this.userLogin.email);
-        sessionStorage.setItem('isAuth', '' + this.isLoggedIn);
-        sessionStorage.setItem('profileImage', this.authUser.user.profileImage);
-        sessionStorage.setItem('access-token',this.authUser.token);
-        console.log("Token" +this.authUser.token);
-        console.log("Session Token" +sessionStorage.getItem('access-token'));
-        $('#loop > li#dashboard >a').addClass('active');
-        this.router.navigateByUrl('/dashboard');
-      } else {
-        this.isLoading = false;
-        this.isLoggedIn = false;
-        this.isfailed = false;
-        sessionStorage.setItem('isAuth', '' + this.isLoggedIn);
-        this.router.navigateByUrl('');
-      }
-    });
+  }
 
+  setLoginStatus(status){
+    this.isLoggedIn = status;
+  }
+
+  getLoginStatus(){
+    return this.isLoggedIn;
   }
 
   userLogout() {

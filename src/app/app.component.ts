@@ -118,6 +118,10 @@ ngAfterViewInit(): void {
   
 }
 
+refreshTable(){
+  
+}
+
 updateNotification(event,file_name){
   event.preventDefault();
   this.audioService.removeCheckedNotificationForUser(sessionStorage.getItem('name'), file_name).subscribe(res =>{

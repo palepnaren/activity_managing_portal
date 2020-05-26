@@ -32,7 +32,7 @@
         (change)='isChecked($event)' #remember><span id="remember"
         >Remember Me</span>
     </div>
-    <button id="login" class="btn btn-success text-center" (click)="auth(email.value, password.value)" type="submit"
+    <button id="login-button" class="btn btn-success text-center" (click)="auth(email.value, password.value)" type="submit"
     [disabled]='f.email.invalid'>login</button>
     <p>Are you new user?<a routerLink="/register"> signup here.</a></p>
     <p>Forgot your password?<a routerLink="/passwordReset"> click here.</a></p>

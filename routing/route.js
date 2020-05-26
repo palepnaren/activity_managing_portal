@@ -42,7 +42,6 @@ if(process.env.REDIS_URL){
     redis_client = redis.createClient(port_redis);
 }
 
-
 redis_client.on('error',(err)=>{
     console.log("Error " + err);
 });
@@ -247,13 +246,30 @@ routing.route('/process').post((req, res)=>{
 
     var data = req.body.data;
     var email = req.body.user;
+    var key;
+    var value;
 
-    db.updateUserProcess(data,email,(process) =>{
+    db.updateUserProcess(data,email,(message,processList) =>{
 
-        if(process == "Saved"){
-            return res.status(200).send({msg:process});
+        if(message == "Saved"){
+            redis_client.del(email,(err,response) => {
+                if(response == 1){
+                    console.log("Cache Deleted for ProcessList");
+                    key = Object.keys(processList)
+                    if(processList[key].process === null || processList[key].process === undefined){
+
+                    }else{
+                        values = Object.values(processList[key].process);
+                        return res.send({msg:message,list:values});
+                    }
+                    
+                } else {
+                    console.log("Could not delete it.");
+                    return res.send({msg:message});
+                }
+            })
         } else {
-            return res.status(404).send({msg:process});
+            return res.send({msg:message});
         }
     });
 });
@@ -277,14 +293,14 @@ routing.route('/processList/:email').get((req, res) => {
     var email = req.params.email;
     var key;
     var values;
+    var flag = false;
     token = req.headers['x-access-token'];
     // console.log(email + 'inside routing');
 
-    redis_client.get(email,(err, process_list)=>{
+     redis_client.get(email,(err, process_list)=>{
         if(process_list){
             console.log("I am inside process exists in cache block");
-            // console.log(process_list);
-            return res.status(200).send(process_list);
+            return res.send(process_list);
         } else{
             console.log("I am inside process does not exists in cache block");
             db.getProcess(email, (list) => {
@@ -301,20 +317,19 @@ routing.route('/processList/:email').get((req, res) => {
                         redis_client.setex(email,3600,JSON.stringify(values));
                         jwtToken.verify(token, env.secret, (err,decoded)=>{
                             if(!token){
-                                return res.status(401).json({message:'Token not present'});
+                                return res.json({message:'Token not present'});
                             }
                             else if(err){
-                                return res.status(500).json({message:'User not authenticated'});
+                                return res.json({message:'User not authenticated'});
                             } else{
-                                return res.status(200).json(values);
+                                return res.json(values);
                             }
                         });
                     }  
                 }    
-                });
+            });
         }
     });
-
 });
 
 routing.route('/updatePassword').post((req, res) => {
@@ -380,7 +395,6 @@ routing.route('/getUserProfile/:email').get((req,res) => {
         }
     });
  
-
 });
 
 routing.route('/updateProfile').post((req, res) => {
@@ -388,8 +402,18 @@ routing.route('/updateProfile').post((req, res) => {
     
     if(req.body.pwd === '' || req.body.pwd === null || req.body.pwd === undefined){
                 db.updateUserProfile(req.body, (saved) => {
-                    // console.log(saved);
-                    return res.status(200).send(saved);
+                    if(saved){
+                        redis_client.del(req.body.email+'-profile',(err,response) => {
+                            if(response == 1){
+                                console.log("Cache Deleted for UserProfile");
+                                return res.status(200).send(saved);
+                                
+                            } else {
+                                console.log("Could not delete it.");
+                                return res.status(200).send(saved);
+                            }
+                        })
+                    }
                 });
 
     } else {
@@ -397,8 +421,18 @@ routing.route('/updateProfile').post((req, res) => {
             crypt.hash(req.body.pwd, salt, (err, hash) => {
                 req.body.pwd = hash;
                 db.updateUserProfile(req.body, (saved) => {
-                    // console.log(saved);
-                    return res.status(200).send(saved);
+                    if(saved){
+                        redis_client.del(req.body.email+'-profile',(err,response) => {
+                            if(response == 1){
+                                console.log("Cache Deleted for UserProfile");
+                                return res.status(200).send(saved);
+                                
+                            } else {
+                                console.log("Could not delete it.");
+                                return res.status(200).send(saved);
+                            }
+                        })
+                    }
                 });
             });
         });
@@ -458,9 +492,7 @@ routing.route('/update/notification/:username').delete((req,res) => {
         } else {
             return res.status(401).send({status:401});
         }
-    });
-    
-
+    }); 
 });
 
 module.exports = routing;
