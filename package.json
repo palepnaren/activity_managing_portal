@@ -48,7 +48,7 @@
     "firebase-admin": "^7.3.0",
     "fs": "0.0.1-security",
     "jquery": "^3.4.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "less": "^2.7.3",
     "localStorage": "^1.0.4",
     "ng-push": "^0.2.2",
